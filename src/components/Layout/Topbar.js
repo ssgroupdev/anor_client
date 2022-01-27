@@ -21,6 +21,9 @@ import NavbarButtons from "../Shared/NavbarButtons";
 import {bindActionCreators} from "redux";
 import {changeLang} from "../../redux/actions/lang";
 import {connect} from "react-redux";
+import {deleteCookie, getCookie} from "../../utils/useCookies";
+import {getUser} from "../../server/config/web-site/user";
+import {userAccessTokenName} from "../../constants/application";
 
 class Topbar extends Component {
     constructor(props) {
@@ -179,6 +182,7 @@ class Topbar extends Component {
     }
 
     onLanguageChange = () => {
+
         localStorage.setItem("lang", this.state.isLang ? "ru" : "uz")
         this.props.changeLang(localStorage.getItem("lang"))
         this.setState({isLang: localStorage.getItem("lang") === "uz"})
@@ -213,12 +217,30 @@ class Topbar extends Component {
     }
     handleLogOut = () => {
 
+        deleteCookie(userAccessTokenName);
         this.setState({
             isLogin: false,
             modalLogout: false
         })
 
     };
+    getMe = () => {
+
+        getUser().then(res => {
+            this.setState({
+                user: {
+                    ...res.data,
+                    fullName: res.data.firstName +" "+ res.data.lastName
+                },
+                isLogin: true
+            })
+        }).catch(err => {
+            this.setState({
+                isLogin: false}
+            )
+        })
+    }
+
 
     componentDidMount() {
 
@@ -226,27 +248,48 @@ class Topbar extends Component {
         var ul = document.getElementById("top-menu");
         var items = ul.getElementsByTagName("a");
         for (var i = 0; i < items.length; ++i) {
+
             if (this.props.location.pathname === items[i].pathname) {
+
                 matchingMenuItem = items[i];
                 break;
+
             }
+
         }
 
         window.addEventListener("scroll", () => {
+
             if (window.scrollY === 0) {
                 this.setState({isScrollNav: true})
             } else {
                 this.setState({isScrollNav: false})
             }
+
         })
+
         if (matchingMenuItem) {
+
             this.activateParentDropdown(matchingMenuItem);
+
+        }
+
+       if (getCookie(userAccessTokenName) != null) {
+            this.getMe();
+
+        } else {
+
+            this.setState({
+            isLogin: false}
+        )
         }
 
     }
 
     activateParentDropdown = (item) => {
+
         const parent = item.parentElement;
+
         if (parent) {
             parent.classList.add("active"); // li
             const parent1 = parent.parentElement;

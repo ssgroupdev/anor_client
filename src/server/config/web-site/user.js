@@ -8,10 +8,10 @@ export const getUser = () => {
     return HttpRequestHub(config);
 }
 
-export const getAddressByUser = (id) => {
+export const getAddressByUser = () => {
     const config = {
         method: 'GET',
-        url: `/address/user/` + id,
+        url: `/user/address`,
     }
     return HttpRequestHub(config);
 }

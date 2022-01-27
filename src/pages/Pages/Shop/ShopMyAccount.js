@@ -28,9 +28,9 @@ import PageBreadcrumb from "../../../components/Shared/PageBreadcrumb";
 //Import Images
 import client from "../../../assets/images/client/05.jpg";
 import {connect} from "react-redux";
-import {getUser} from "../../../server/config/web-site/user";
+import {getAddressByUser, getUser} from "../../../server/config/web-site/user";
 import {TOKEN} from "../../../utils/constants";
-import {axiosInstance} from "../../../server/host";
+import {axiosInstance, imgUrl} from "../../../server/host";
 import {getCookie} from "../../../utils/useCookies";
 import {userAccessTokenName} from "../../../constants/application";
 
@@ -79,7 +79,21 @@ class ShopMyAccount extends Component {
 
             },
             user: {
-                fullName: "fullName"
+                fullName: "fullName",
+                avatarUrl: null
+            },
+            address: {
+                provinceId:null,
+                provinceName:null,
+                regionId:null,
+                regionName:null,
+                floor: null,
+                household: null,
+                id: null,
+                numberHome: null,
+                porch: null,
+                postIndex: null,
+                street: null,
             }
         };
         this.toggleTab = this.toggleTab.bind(this);
@@ -114,20 +128,15 @@ class ShopMyAccount extends Component {
             this.setState({
                 user: {
                     ...res.data,
-                    fullName: res.data.firstName + res.data.lastName
+                    fullName: res.data.firstName +" "+ res.data.lastName
                 }
             })
         }).catch(err => {
             console.log(err)
-            // localStorage.setItem(TOKEN, null)
-            // this.props?.props?.history?.push("/login")
-        })
+          })
     }
 
     componentDidMount() {
-        console.log(axiosInstance);
-        console.log(localStorage.getItem("TOKEN"));
-        const token = (localStorage.getItem(TOKEN));
         if (getCookie(userAccessTokenName) != null) {
             this.getMe();
 
@@ -141,6 +150,7 @@ class ShopMyAccount extends Component {
 
     render() {
         const {words, user} = this.state
+        const {provinceId, regionId, provinceName, regionName, floor, porch, household, numberHome, street, postIndex} = this.state.address
         return (
             <React.Fragment>
                 {/* breadcrumb */}
@@ -168,7 +178,7 @@ class ShopMyAccount extends Component {
                             <Col md={4} className="mt-4 pt-2">
                                 <div className="media align-items-center">
                                     <img
-                                        src={client}
+                                        src={user.avatarUrl!=null?imgUrl+user.avatarUrl:client}
                                         className="avatar avatar-md-md rounded-circle"
                                         alt=""
                                     />
@@ -335,13 +345,16 @@ class ShopMyAccount extends Component {
                                                     </Link>
                                                 </div>
                                                 <div className="pt-4 border-top">
-                                                    <p className="h6">Cally Joseph</p>
+                                                    <p className="h6">{user.fullName}</p>
                                                     <p className="h6 text-muted">
-                                                        C/54 Northwest Freeway,{" "}
+            {provinceName}{" "}{words.province},{" "}{regionName}{" "}{words.regions},{"\n "}{street}{" "}{words.street}
                                                     </p>
-                                                    <p className="h6 text-muted">Suite 558,</p>
-                                                    <p className="h6 text-muted">Houston, USA 485</p>
-                                                    <p className="h6 text-muted mb-0">+123 897 5468</p>
+                                                    <p className="h6 text-muted">{numberHome}</p>
+                                                    <p className="h6 text-muted">{household}</p>
+                                                    <p className="h6 text-muted">{porch}</p>
+                                                    <p className="h6 text-muted">{floor}</p>
+                                                    <p className="h6 text-muted">{numberHome}</p>
+                                                    <p className="h6 text-muted mb-0">{user.username}</p>
                                                 </div>
                                             </Col>
 
