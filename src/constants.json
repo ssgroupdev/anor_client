@@ -1,0 +1,20 @@
+{
+  "phone": "+777777777",
+  "mail": "mail",
+  "location": "LINK",
+  "google_play": "http://localhost:3000/dashboard/references/news",
+  "socials": [
+    {
+      "icon": "instagram",
+      "link": "https://t.me/yunusjanoff"
+    },
+    {
+      "icon": "navigation",
+      "link": "https://t.me/yunusjanoff"
+    },
+    {
+      "icon": "facebook",
+      "link": "https://t.me/yunusjanoff"
+    }
+  ]
+}

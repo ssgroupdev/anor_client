@@ -1,0 +1,31 @@
+//
+//tbody.future {
+//  max-width: 37em;
+//  padding: 0;
+//  overflow-x: hidden;
+//  list-style: none;
+//
+//  tr:before {
+//    float: left;
+//    width: 0;
+//    white-space: nowrap;
+//    color: green;
+//    content: ". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ";
+//  }
+//
+//  &-col:first-child {
+//    font-weight: 600;
+//    letter-spacing: 2px;
+//    padding-right: 0.33em;
+//  }
+//
+//  &-col + &-col {
+//    float: right;
+//    padding-left: 0.33em;
+//  }
+//
+//  &-col + &-col:before {
+//    content: '$';
+//    padding-right: 0.15em;
+//  }
+//}
