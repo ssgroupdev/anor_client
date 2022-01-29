@@ -16,3 +16,10 @@ export const registerUser = (obj) => {
     }
     return HttpRequestHub(config);
 }
+export const checkCode = (username,code) => {
+    const config = {
+        method: 'POST',
+        url: `/auth/check-code/`+username+"?code="+code
+    }
+    return HttpRequestHub(config);
+}

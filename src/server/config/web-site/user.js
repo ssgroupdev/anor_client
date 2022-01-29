@@ -28,7 +28,23 @@ export const createUser = (obj) => {
 export const updateUser = (obj) => {
     const config = {
         method: 'PUT',
-        url: `/admin/user/`,
+        url: `/user/edit-personal`,
+        data: obj
+    }
+    return HttpRequestHub(config);
+}
+export const updateUserAddress = (obj) => {
+    const config = {
+        method: 'PUT',
+        url: `/user/edit-address`,
+        data: obj
+    }
+    return HttpRequestHub(config);
+}
+export const resetPassword = (obj) => {
+    const config = {
+        method: 'PUT',
+        url: `/user/reset-password`,
         data: obj
     }
     return HttpRequestHub(config);
@@ -61,18 +77,6 @@ export const changePassword = (id, newPassword) => {
     const config = {
         method: 'PATCH',
         url: `/admin/user/password/` + id + "?password=" + newPassword
-    }
-    return HttpRequestHub(config);
-}
-
-export const resetPassword = (obj) => {
-    const config = {
-        method: 'POST',
-        url: `/users/set_password`,
-        data: {
-            meta: {},
-            payload: [{...obj}],
-        }
     }
     return HttpRequestHub(config);
 }

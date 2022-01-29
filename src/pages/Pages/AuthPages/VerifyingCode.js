@@ -15,14 +15,33 @@ import {AvForm, AvField} from "availity-reactstrap-validation";
 //Import Icons
 import FeatherIcon from "feather-icons-react";
 import {connect} from "react-redux";
+import {checkCode} from "../../../server/config/authentication";
+import {toast} from "react-toastify";
 
 class VerifyingCode extends Component {
+
+    state = {
+        username: null
+    }
+
     handleValidSubmit = (event, values) => {
 
-        console.log(event, values)
-        this.props.history.push("/login")
+        checkCode(this.state.username, values.code).then(res=> {
+            console.log(res.data)
+            this.props.history.push("/login")
+        }).catch(err=>toast.error(this.props.lang.lang.errorCode))
 
     };
+
+    componentDidMount() {
+        console.log(this.props.location)
+        if (!this.props.location.state){
+            this.props.history.push("/register")
+        } else {
+            this.setState({username: this.props.location.state.username})
+        }
+    }
+
 
     render() {
         const {verifyingAccount,verifyingDesc, code, yourPhone, recoveryDesc,login, rememberPassword , send} = this.props.lang.lang;
@@ -69,7 +88,9 @@ class VerifyingCode extends Component {
                                                             name="code"
                                                                errorMessage="Invalid Code"
                                                             validate={{
-                                                                required: {value: true}
+                                                                required: {value: true},
+                                                                minLength: {value:6},
+                                                                maxLength: {value:6}
                                                             }}
                                                             type="number"
                                                             className="form-control pl-5"

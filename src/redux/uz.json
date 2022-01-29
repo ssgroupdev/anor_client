@@ -19,6 +19,7 @@
   "privacyPolicy": "Xavfsizlik qoidalari",
   "support": "Qo'llab-quvvatlash",
   "phone": "Tel. Raqam",
+  "phoneTwo": "Ikkinchi. Raqam",
   "ok": "Ha",
   "cancel": "Bekor qilish",
   "logOutDesc": "Chiqishni xoxlaysizmi?",
@@ -126,6 +127,10 @@
   "errorRegister": "Biron nima xato iltimos qaytadan uruning!",
   "success": "Yuborildi",
   "error": "Biron nima xato",
+  "errorCode": "Kod xato bo'lishi mumkin!",
+  "floor": "Uy qavatligi",
+  "porch": "Podezd",
+  "finish": "Muvaffaqiyatli yakunlandi",
 
   "usefullLinks": "Foydali linklar",
   "sections": "Bo'limlar"

@@ -12,7 +12,7 @@ import {
 } from "reactstrap";
 import {Link} from "react-router-dom";
 import {AvForm, AvField, AvInput} from "availity-reactstrap-validation";
-import { ToastContainer, toast } from 'react-toastify';
+import {ToastContainer, toast} from 'react-toastify';
 
 //Import Icons
 import FeatherIcon from "feather-icons-react";
@@ -59,19 +59,36 @@ class PageSignupThree extends Component {
 
     handleValidSubmit = (event, values) => {
 
-        register(values).then(res => {
-            console.log(res)
-            this.props.history.push("/verifying")
+        const sendData = {
+            firstName: values.firstName,
+            lastName: values.lastName,
+            username: values.phone,
+            password: values.password,
+            address: {
+                regionId: values.regionId,
+                provinceId: values.provinceId,
+                street: values.street,
+                household: values.household,
+                postIndex: values.post,
+            }
+        }
+
+        register(sendData).then(res => {
+
+            this.props.history.push({
+                pathname: '/verifying',
+                state: {username: res.data.username}
+            })
         }).catch(err => {
             this.error();
         })
     };
     onProvinceChange = (e, v) => {
         this.setState({
-            data:{
+            data: {
                 provinceId: v
             }
-        }, ()=>this.getRegions())
+        }, () => this.getRegions())
     }
 
 
@@ -247,17 +264,18 @@ class PageSignupThree extends Component {
                                                             <FormGroup className="position-relative">
 
                                                                 <AvField type="select" name="provinceId"
-                                                                                  label={province}
-                                                                // helpMessage="This is an example. Deal with it!"
-                                                                                  required
-                                                                                  onChange={this.onProvinceChange}
-                                                            >
-                                                                {
-                                                                    provinces?.map(item => (
-                                                                        <option value={item.id}>{item.name}</option>
-                                                                    ))
-                                                                }
-                                                            </AvField>
+                                                                         label={province}
+                                                                    // helpMessage="This is an example. Deal with it!"
+                                                                         required
+                                                                         onChange={this.onProvinceChange}
+                                                                >
+
+                                                                    {
+                                                                        provinces?.map(item => (
+                                                                            <option value={item.id}>{item.name}</option>
+                                                                        ))
+                                                                    }
+                                                                </AvField>
                                                             </FormGroup>
                                                         </Col>
                                                         <Col md={6}>
@@ -314,7 +332,7 @@ class PageSignupThree extends Component {
                                                                 <AvField
                                                                     type="text"
                                                                     className="form-control pl-5"
-                                                                    errorMessage={"Enter "+household}
+                                                                    errorMessage={"Enter " + household}
                                                                     validate={{required: {value: true}}}
                                                                     name={"household"}
                                                                     placeholder={household}
@@ -338,10 +356,10 @@ class PageSignupThree extends Component {
                                                                 <AvField
                                                                     type="number"
                                                                     className="form-control pl-5"
-                                                                    errorMessage={"Enter "+post}
+                                                                    errorMessage={"Enter " + post}
                                                                     validate={{
                                                                         required: {value: true},
-                                                                   }}
+                                                                    }}
                                                                     name="post"
                                                                     placeholder={post}
                                                                 />
@@ -352,28 +370,29 @@ class PageSignupThree extends Component {
                                                 <Col md={12}>
                                                     <FormGroup>
                                                         {/*<div className="custom-control custom-checkbox">*/}
-                                                            {/*<AvField*/}
-                                                            {/*    name={"iAccept"}*/}
-                                                            {/*    type="checkbox"*/}
-                                                            {/*    className="custom-control-input"*/}
-                                                            {/*    id="customCheck1"*/}
-                                                            {/*    // validate={{required: {value: true}}}*/}
-                                                            {/*    errorMessage={"Required"}*/}
+                                                        {/*<AvField*/}
+                                                        {/*    name={"iAccept"}*/}
+                                                        {/*    type="checkbox"*/}
+                                                        {/*    className="custom-control-input"*/}
+                                                        {/*    id="customCheck1"*/}
+                                                        {/*    // validate={{required: {value: true}}}*/}
+                                                        {/*    errorMessage={"Required"}*/}
 
-                                                            {/*/>*/}
+                                                        {/*/>*/}
 
-                                                            <Label
-                                                                className="ml-3"
-                                                                htmlFor="customCheck1"
-                                                            >
-                                                                <AvInput type="checkbox" name="agree" required errorMessage={"This field must required"}/>
+                                                        <Label
+                                                            className="ml-3"
+                                                            htmlFor="customCheck1"
+                                                        >
+                                                            <AvInput type="checkbox" name="agree" required
+                                                                     errorMessage={"This field must required"}/>
 
-                                                                <Link to="/page-terms" className="text-primary"
-                                                                      target={"_blank"}>
-                                                                    {termsOfServices}{" "}
-                                                                </Link>
-                                                                {iAccept}
-                                                            </Label>
+                                                            <Link to="/page-terms" className="text-primary"
+                                                                  target={"_blank"}>
+                                                                {termsOfServices}{" "}
+                                                            </Link>
+                                                            {iAccept}
+                                                        </Label>
                                                         {/*</div>*/}
                                                     </FormGroup>
                                                 </Col>
