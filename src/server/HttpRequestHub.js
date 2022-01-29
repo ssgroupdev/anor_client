@@ -8,7 +8,7 @@ export const HttpRequestHub = (config = null) => {
         if (err.response) {
             console.log(err.response);
         }
-        message.error('Error happened!');
+        // message.error('Error happened!');
         return null;
     })
 }

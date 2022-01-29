@@ -7,13 +7,13 @@ import {
     Card,
     CardBody,
     Collapse,
-    CardHeader,
-    Media, Form, FormGroup, Button,
+    CardHeader
 } from "reactstrap";
 
 //Import components
 import PageBreadcrumb from "../../../components/Shared/PageBreadcrumb";
 import {connect} from "react-redux";
+import {getQuestionGlobal} from "../../../server/config/web-site/client";
 
 class HelpCenterOverview extends Component {
     constructor(props) {
@@ -48,19 +48,6 @@ class HelpCenterOverview extends Component {
                 },
             ],
             globalQuestions: [
-                {
-                    id: 1,
-                    question: "How it works?",
-                    answer: "It is easy", col: true
-                }, {
-                    id: 2,
-                    question: "How it works?",
-                    answer: "It is easy", col: false
-                }, {
-                    id: 3,
-                    question: "How it works?",
-                    answer: "It is easy", col: false
-                }
             ],
             titleGetStarted: props.lang.lang.getStarts,
             descGetStarted:  props.lang.lang.getStartsDesc,
@@ -87,9 +74,18 @@ class HelpCenterOverview extends Component {
         }
 
     }
+    getList = () => {
+        getQuestionGlobal().then(res=>{
+            this.setState({
+                globalQuestions: res.data
+            })
+        }).catch(err=>{
 
+        })
+    }
     componentDidMount() {
         window.addEventListener("scroll", this.scrollNavigation, true);
+        this.getList();
     }
 
     // Make sure to remove the DOM listener when the component is unmounted.
@@ -189,14 +185,14 @@ class HelpCenterOverview extends Component {
                                                         >
                                                             <h6 className="title mb-0">
                                                                 {" "}
-                                                                {value.question}
+                                                                 {value.question}
                                                                 <i
                                                                     className={
                                                                         value.col
                                                                             ? "mdi mdi-chevron-up float-right"
                                                                             : "mdi mdi-chevron-down float-right"
                                                                     }
-                                                                ></i>
+                                                               />
                                                             </h6>
                                                         </CardHeader>
                                                     </Link>

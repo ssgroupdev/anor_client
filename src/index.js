@@ -9,10 +9,12 @@ import {applyMiddleware, createStore} from "redux";
 import {rootReducer} from "./redux/reducer";
 import "antd/dist/antd.css";import { message } from "antd";
 import promiseMiddleware from "redux-promise"
+// import '@availity/reactstrap-validation-select/styles.scss';
 message.config({
     duration: 2,
     maxCount: 3,
 });
+import 'react-toastify/dist/ReactToastify.css';
 
 const store = applyMiddleware(promiseMiddleware)(createStore);
 ReactDOM.render(

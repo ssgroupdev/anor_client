@@ -19,7 +19,7 @@ import routes from "./routes";
 import {bindActionCreators} from "redux";
 import {changeLang} from "./redux/actions/lang";
 import {connect} from "react-redux";
-
+import {ToastContainer} from "react-toastify"
 function withLayout(WrappedComponent) {
   // ...and returns another component...
   return class extends React.Component {
@@ -82,6 +82,7 @@ class App extends Component {
             </Switch>
           </Suspense>
         </Router>
+        <ToastContainer/>
       </React.Fragment>
     );
   }

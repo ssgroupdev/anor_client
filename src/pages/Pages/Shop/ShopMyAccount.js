@@ -83,10 +83,10 @@ class ShopMyAccount extends Component {
                 avatarUrl: null
             },
             address: {
-                provinceId:null,
-                provinceName:null,
-                regionId:null,
-                regionName:null,
+                provinceId: null,
+                provinceName: null,
+                regionId: null,
+                regionName: null,
                 floor: null,
                 household: null,
                 id: null,
@@ -128,12 +128,12 @@ class ShopMyAccount extends Component {
             this.setState({
                 user: {
                     ...res.data,
-                    fullName: res.data.firstName +" "+ res.data.lastName
+                    fullName: res.data.firstName + " " + res.data.lastName
                 }
             })
         }).catch(err => {
             console.log(err)
-          })
+        })
     }
 
     componentDidMount() {
@@ -150,7 +150,18 @@ class ShopMyAccount extends Component {
 
     render() {
         const {words, user} = this.state
-        const {provinceId, regionId, provinceName, regionName, floor, porch, household, numberHome, street, postIndex} = this.state.address
+        const {
+            provinceId,
+            regionId,
+            provinceName,
+            regionName,
+            floor,
+            porch,
+            household,
+            numberHome,
+            street,
+            postIndex
+        } = this.state.address
         return (
             <React.Fragment>
                 {/* breadcrumb */}
@@ -178,7 +189,7 @@ class ShopMyAccount extends Component {
                             <Col md={4} className="mt-4 pt-2">
                                 <div className="media align-items-center">
                                     <img
-                                        src={user.avatarUrl!=null?imgUrl+user.avatarUrl:client}
+                                        src={user.avatarUrl != null ? imgUrl + user.avatarUrl : client}
                                         className="avatar avatar-md-md rounded-circle"
                                         alt=""
                                     />
@@ -347,14 +358,15 @@ class ShopMyAccount extends Component {
                                                 <div className="pt-4 border-top">
                                                     <p className="h6">{user.fullName}</p>
                                                     <p className="h6 text-muted">
-            {provinceName}{" "}{words.province},{" "}{regionName}{" "}{words.regions},{"\n "}{street}{" "}{words.street}
+                                                        {provinceName && (provinceName + " " + words.province + " \n")}
+                                                        {regionName && (regionName + " " + words.regions + ", ")}
+                                                        {street && ("\n " + street + " " + words.street)}
                                                     </p>
-                                                    <p className="h6 text-muted">{numberHome}</p>
-                                                    <p className="h6 text-muted">{household}</p>
-                                                    <p className="h6 text-muted">{porch}</p>
-                                                    <p className="h6 text-muted">{floor}</p>
-                                                    <p className="h6 text-muted">{numberHome}</p>
-                                                    <p className="h6 text-muted mb-0">{user.username}</p>
+                                                    {numberHome&&<p className="h6 text-muted">{words.numberOfHome + ": "+numberHome}</p>}
+                                                    {porch&&  <p className="h6 text-muted">{words.porch+": "+porch}</p>}
+                                                    {floor&& <p className="h6 text-muted">{words.floor+": "+floor}</p>}
+                                                    {household&&<p className="h6 text-muted">{words.household+": "+household}</p>}
+                                                    {user.username && <p className="h6 text-muted mb-0">{words.phone+": "+user.username}</p>}
                                                 </div>
                                             </Col>
 

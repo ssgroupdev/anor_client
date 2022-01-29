@@ -16,6 +16,7 @@ import FeatherIcon from "feather-icons-react";
 
 //Import components
 import PageBreadcrumb from "../../../components/Shared/PageBreadcrumb";
+import {connect} from "react-redux";
 
 class PageTerms extends Component {
   constructor(props) {
@@ -23,8 +24,8 @@ class PageTerms extends Component {
     this.state = {
       pathItems: [
         //id must required
-        {id: 1, name: "Bosh Sahifa", link: "/"},
-        {id: 4, name: "Terms"},
+        {id: 1, name: this.props.lang.lang.index, link: "/"},
+        {id: 4, name: this.props.lang.lang.pageTerms},
       ],
     }
   }
@@ -183,14 +184,6 @@ class PageTerms extends Component {
                       </li>
                     </ul>
 
-                    <div className="mt-3">
-                      <Link to="#" className="btn btn-primary mt-2 mr-2">
-                        Accept
-                      </Link>
-                      <Link to="#" className="btn btn-outline-primary mt-2">
-                        Decline
-                      </Link>
-                    </div>
                   </CardBody>
                 </Card>
               </Col>
@@ -201,4 +194,6 @@ class PageTerms extends Component {
     );
   }
 }
-export default PageTerms;
+
+const mstp = state => state
+export default connect(mstp, null)(PageTerms);

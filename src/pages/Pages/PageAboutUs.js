@@ -27,61 +27,6 @@ class PageAboutUs extends Component {
         { id: 1, name: "Bosh Sahifa", link: "/" },
         { id: 3, name: "About Us" },
       ],
-
-      candidates: [
-        {
-          id: 1,
-          image: team1,
-          name: "Ronny Jofra",
-          designation: "C.E.O",
-          link: "",
-          socialIds: [
-            { icon: "facebook", link: "#" },
-            { icon: "instagram", link: "#" },
-            { icon: "twitter", link: "#" },
-            { icon: "linkedin", link: "#" },
-          ],
-        },
-        {
-          id: 2,
-          image: team4,
-          name: "Micheal Carlo",
-          designation: "Director",
-          link: "",
-          socialIds: [
-            { icon: "facebook", link: "#" },
-            { icon: "instagram", link: "#" },
-            { icon: "twitter", link: "#" },
-            { icon: "linkedin", link: "#" },
-          ],
-        },
-        {
-          id: 3,
-          image: team2,
-          name: "Aliana Rosy",
-          designation: "Manager",
-          link: "",
-          socialIds: [
-            { icon: "facebook", link: "#" },
-            { icon: "instagram", link: "#" },
-            { icon: "twitter", link: "#" },
-            { icon: "linkedin", link: "#" },
-          ],
-        },
-        {
-          id: 4,
-          image: team3,
-          name: "Sofia Razaq",
-          designation: "Developer",
-          link: "",
-          socialIds: [
-            { icon: "facebook", link: "#" },
-            { icon: "instagram", link: "#" },
-            { icon: "twitter", link: "#" },
-            { icon: "linkedin", link: "#" },
-          ],
-        },
-      ],
       isOpen: false,
     };
     this.openModal = this.openModal.bind(this);
@@ -175,9 +120,7 @@ class PageAboutUs extends Component {
                     available. Dummy texts have been in use by typesetters since
                     the 16th century.
                   </p>
-                  <Link to="#" className="btn btn-primary mt-3">
-                    Buy Now <i className="mdi mdi-chevron-right"></i>
-                  </Link>
+
                 </div>
               </Col>
             </Row>
@@ -185,23 +128,6 @@ class PageAboutUs extends Component {
 
         </section>
 
-        <section className="section bg-light">
-          <Container>
-            {/* Render Section Title */}
-            <SectionTitle
-              title="Our Greatest Minds"
-              desc="that can provide everything you need to generate awareness, drive traffic, connect."
-            />
-
-            <Row>
-              {/* teambox */}
-              <TeamBox
-                candidates={this.state.candidates}
-                isTransparent={true}
-              />
-            </Row>
-          </Container>
-        </section>
       </React.Fragment>
     );
   }

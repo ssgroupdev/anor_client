@@ -44,6 +44,7 @@
   "regions": "Tuman",
   "province": "Viloyat",
   "numberOfHome": "Uy raqami",
+  "household": "Xonadon raqami",
   "code": "Kod",
   "post": "Pochta indeksi",
   "avatar": "Profil Rasmi",
@@ -62,6 +63,7 @@
   "haveNotAccount": "Sizda profil mavjud emasmi?",
   "iAccept": " roziman",
   "termsOfServices": "Xizmat shartlariga",
+  "pageTerms": "Xizmat shartlari",
   "verifyingAccount": "Raqamni tekshirish",
   "send": "Yuborish",
   "recoveryAccount": "Profilni tiklash",
@@ -121,6 +123,9 @@
   "commentYourOrder": "Manzil haqida qo'shimcha ma'lumotlar",
   "payment": "To'lov qilish",
   "errorLogin": "Login yoki parol xato",
+  "errorRegister": "Biron nima xato iltimos qaytadan uruning!",
+  "success": "Yuborildi",
+  "error": "Biron nima xato",
 
   "usefullLinks": "Foydali linklar",
   "sections": "Bo'limlar"

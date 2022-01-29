@@ -1,7 +1,7 @@
 // React Basic and Bootstrap
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { Container, Row, Col, Card, CardBody  } from 'reactstrap';
+import React, {Component} from 'react';
+import {Link} from 'react-router-dom';
+import {Container, Row, Col, Card, CardBody} from 'reactstrap';
 
 //Import components
 import PageBreadcrumb from "../../../components/Shared/PageBreadcrumb";
@@ -20,6 +20,9 @@ import work10 from '../../../assets/images/work/10.jpg';
 import work11 from '../../../assets/images/work/11.jpg';
 import work12 from '../../../assets/images/work/12.jpg';
 import {connect} from "react-redux";
+import {getNews} from "../../../server/config/web-site/client";
+import {pageSize} from "../../../constants/all";
+import {imgUrl} from "../../../server/host";
 
 class PageWork extends Component {
 
@@ -27,26 +30,14 @@ class PageWork extends Component {
         super(props);
         this.state = {
             current: 1,
-            total: 20,
-            pageSize: 9,
-            pathItems : [
+            total: 0,
+            pageSize: pageSize-1,
+            pathItems: [
                 //id must required
-                { id : 1, name : props.lang.lang.index, link : "/" },
-                { id : 4, name : props.lang.lang.news },
+                {id: 1, name: props.lang.lang.index, link: "/"},
+                {id: 4, name: props.lang.lang.news},
             ],
-            works : [
-                { id: 1,image : work1, title : "Shifting Perspective", author : "Thomas Brewer", date : "13th August, 2019", category : "Designing" },
-                { id: 1,image : work2, title : "Colors Magazine", author : "Thomas Brewer", date : "13th August, 2019", category : "Photography" },
-                { id: 1,image : work3, title : "Spa Cosmetics", author : "Thomas Brewer", date : "13th August, 2019", category : "Designing" },
-                { id: 1,image : work4, title : "Riser Coffee", author : "Thomas Brewer", date : "13th August, 2019", category : "Designing" },
-                { id: 1,image : work5, title : "Dancing With My Self", author : "Thomas Brewer", date : "13th August, 2019", category : "Branding" },
-                { id: 1,image : work6, title : "New Trends in SEO", author : "Thomas Brewer", date : "13th August, 2019", category : "Development" },
-                { id: 1,image : work7, title : "Spa Cosmetics", author : "Thomas Brewer", date : "13th August, 2019", category : "Branding" },
-                { id: 1,image : work8, title : "Riser Coffee", author : "Thomas Brewer", date : "13th August, 2019", category : "Development" },
-                { id: 1,image : work9, title : "Riser Coffee", author : "Thomas Brewer", date : "13th August, 2019", category : "Development" },
-                { id: 1,image : work10, title : "Riser Coffee", author : "Thomas Brewer", date : "13th August, 2019", category : "Development" },
-                { id: 1,image : work11, title : "Riser Coffee", author : "Thomas Brewer", date : "13th August, 2019", category : "Development" },
-                { id: 1,image : work12, title : "Riser Coffee", author : "Thomas Brewer", date : "13th August, 2019", category : "Development" },
+            news: [
             ],
         }
         this.onPaginationChange.bind(this);
@@ -54,25 +45,42 @@ class PageWork extends Component {
 
     onPaginationChange = (e) => {
         // console.log(e)
-        this.setState({current: e})
+        this.setState({current: e},()=>this.getList())
+
+    }
+
+    getList = () => {
+        const {current, pageSize} = this.state;
+
+        getNews(current-1, pageSize).then(res=>{
+            this.setState({
+                news: res.data.content,
+                total: res.data.totalElements,
+                current: res.data.number+1
+            })
+        }).catch(err=>{
+            // console.log(err)
+        })
 
     }
 
     componentDidMount() {
         window.addEventListener("scroll", this.scrollNavigation, true);
+        this.getList();
     }
-     // Make sure to remove the DOM listener when the component is unmounted.
-     componentWillUnmount() {
+
+    // Make sure to remove the DOM listener when the component is unmounted.
+    componentWillUnmount() {
         window.removeEventListener("scroll", this.scrollNavigation, true);
-     }
+    }
+
     scrollNavigation = () => {
         var doc = document.documentElement;
         var top = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
         var topnav = document.getElementById('topnav');
         if (top > 80 && topnav) {
             topnav.classList.add('nav-sticky');
-        }
-        else if(topnav) {
+        } else if (topnav) {
             topnav.classList.remove('nav-sticky');
         }
     }
@@ -82,47 +90,48 @@ class PageWork extends Component {
         return (
             <React.Fragment>
                 {/* breadcrumb */}
-                <PageBreadcrumb title={news} pathItems = {this.state.pathItems} />
-                    <div className="position-relative">
-                        <div className="shape overflow-hidden text-white">
-                            <svg viewBox="0 0 2880 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M0 48H1437.5H2880V0H2160C1442.5 52 720 0 720 0H0V48Z" fill="currentColor"></path>
-                            </svg>
-                        </div>
+                <PageBreadcrumb title={news} pathItems={this.state.pathItems}/>
+                <div className="position-relative">
+                    <div className="shape overflow-hidden text-white">
+                        <svg viewBox="0 0 2880 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M0 48H1437.5H2880V0H2160C1442.5 52 720 0 720 0H0V48Z" fill="currentColor"></path>
+                        </svg>
                     </div>
+                </div>
 
                 <section className="section">
                     <Container>
                         <Row className="projects-wrapper d-flex">
                             {
-                                this.state.works.map((work, key) =>
+                                this.state.news.map((work, key) =>
                                     <Col lg="4" md="6" xs="12" key={key} className="mb-4 pb-2">
-                                        <Card className="work-container work-modern position-relative overflow-hidden shadow rounded border-0">
-                                            <CardBody className="p-0">
-                                                <img src={work.image} className="img-fluid rounded" alt="work" />
+                                        <Card
+                                            className="work-container work-modern position-relative overflow-hidden shadow rounded border-0">
+                                            <CardBody className="p-0"  height={"125px!important"}>
+                                                <img src={imgUrl+work.imageUrl} className="img-fluid rounded h-100" alt="work"/>
                                                 <div className="overlay-work bg-dark"></div>
                                                 <div className="content">
-                                                    <Link to={"/news/"+work.id} className="title text-white d-block font-weight-bold">{work.title}</Link>
-                                                    <small className="text-light">{work.category}</small>
+                                                    <Link  to={"/news/" + work.id}
+                                                          className="title text-white d-block font-weight-bold">{work.title}</Link>
                                                 </div>
                                                 <div className="client">
-                                                    <small className="text-light user d-block"><i className="mdi mdi-account"></i> {work.author}</small>
-                                                    <small className="text-light date"><i className="mdi mdi-calendar-check"></i> {work.date}</small>
+                                                    <small className="text-light date"><i
+                                                        className="mdi mdi-calendar-check"></i> {new Date(work.createdAt).toLocaleString().substr(0,17)}</small>
                                                 </div>
                                             </CardBody>
                                         </Card>
                                     </Col>
                                 )
                             }
-                            
-                                    <Col xs="12" className={"justify-items-center text-center"}>
-                                        <Pagination
-                                            current={this.state.current}
-                                            pageSize={this.state.pageSize}
-                                            total={this.state.total}
-                                            onChange={this.onPaginationChange}
-                                        />
-                                    </Col>
+
+                            <Col xs="12" className={"justify-items-center text-center"}>
+                                <Pagination
+                                    current={this.state.current}
+                                    pageSize={this.state.pageSize}
+                                    total={this.state.total}
+                                    onChange={this.onPaginationChange}
+                                />
+                            </Col>
                         </Row>
                     </Container>
                 </section>
@@ -130,6 +139,7 @@ class PageWork extends Component {
         );
     }
 }
+
 const mstp = state => state
 
-export default connect(mstp,null)(PageWork);
+export default connect(mstp, null)(PageWork);
