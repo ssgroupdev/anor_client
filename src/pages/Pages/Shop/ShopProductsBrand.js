@@ -51,6 +51,7 @@ import prodtctOverlay14 from "../../../assets/images/shop/product/s-14.jpg";
 import prodtctOverlay15 from "../../../assets/images/shop/product/s-15.jpg";
 import ProductGrid from "../../../components/Shared/ProductGrid";
 import {connect} from "react-redux";
+import {pageSize} from "../../../constants/all";
 
 class ShopProductsBrand extends Component {
     constructor(props) {
@@ -67,8 +68,8 @@ class ShopProductsBrand extends Component {
                 {id: 3, name: "Brand"},
             ],
             current: 1,
-            total: 20,
-            pageSize: 15,
+            total: 0,
+            pageSize: pageSize+2,
             products: [
                 {
                     id: 1,

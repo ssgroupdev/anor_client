@@ -45,6 +45,9 @@ const PageRePasswordThree = React.lazy(() =>
 const VerifyingCode = React.lazy(() =>
   import("./pages/Pages/AuthPages/VerifyingCode")
 );
+const ResetPassword = React.lazy(() =>
+  import("./pages/Pages/AuthPages/ResetPassword")
+);
 
 const Payments = React.lazy(() => import("./pages/Payments/index"));
 const SingleProduct = React.lazy(() => import("./pages/SingleProduct/index"));
@@ -217,18 +220,6 @@ const routes = [
     isWithoutLayout: true,
   },
 
-  //Email Pages
-  { path: "/email-alert", component: EmailAlert, isWithoutLayout: true },
-  {
-    path: "/email-password-reset",
-    component: EmailPasswordReset,
-    isWithoutLayout: true,
-  },
-  {
-    path: "/email-confirmation",
-    component: EmailConfirmation,
-    isWithoutLayout: true,
-  },
   { path: "/email-invoice", component: EmailInvoice, isWithoutLayout: true },
 
 
@@ -268,6 +259,11 @@ const routes = [
   {
     path: "/verifying",
     component: VerifyingCode,
+    isWithoutLayout: true,
+  },
+  {
+    path: "/reset-password",
+    component: ResetPassword,
     isWithoutLayout: true,
   },
 

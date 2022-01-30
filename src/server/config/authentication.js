@@ -23,3 +23,19 @@ export const checkCode = (username,code) => {
     }
     return HttpRequestHub(config);
 }
+
+export const forgotPassword = (username) => {
+    const config = {
+        method: 'POST',
+        url: `/auth/forgot-password?username=`+username,
+
+    }
+    return HttpRequestHub(config);
+}
+export const newPassword = (username, password) => {
+    const config = {
+        method: 'POST',
+        url: `/auth/reset-password/`+username+'?password='+password,
+    }
+    return HttpRequestHub(config);
+}

@@ -18,6 +18,22 @@ export const getNewsById = (id) => {
     return HttpRequestHub(config);
 }
 
+export const getBrand = (page = 0, size = 10) => {
+    const config = {
+        method: 'GET',
+        url: `/client/brand/language/?page=` + page + `&size=` + size,
+    }
+    return HttpRequestHub(config);
+}
+
+export const getBrandById = (id) => {
+    const config = {
+        method: 'GET',
+        url: `/client/brand/language/`+id,
+    }
+    return HttpRequestHub(config);
+}
+
 export const getQuestionGlobal = () => {
     const config = {
         method: 'GET',

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Container, Row, Card, CardBody} from 'reactstrap';
+import {Container, Row, Card, CardBody, Col} from 'reactstrap';
 import {Link} from "react-router-dom";
 
 //Import Light box
@@ -25,6 +25,10 @@ import work24 from "../../../assets/images/work/24.jpg";
 import work18 from "../../../assets/images/work/18.jpg";
 import work19 from "../../../assets/images/work/19.jpg";
 import {connect} from "react-redux";
+import {pageSize} from "../../../constants/all";
+import {getBrand, getNews} from "../../../server/config/web-site/client";
+import Pagination from "rc-pagination";
+import {imgUrl} from "../../../server/host";
 
 const images = [
     work13, work21, work14, work22, work16, work23, work15, work17, work24, work18, work19
@@ -41,25 +45,24 @@ class PageWorkMasonry extends Component {
                 {id: 1, name: props.lang.lang.index, link: "/"},
                 {id: 4, name: props.lang.lang.brands},
             ],
+            current: 1,
+            total: 0,
+            pageSize: 50,
+
             works: [
-                {id:2,image: work13, title: "Iphone mockup", subtitle: "Branding", category: "Branding"},
-                {id:2,image: work21, title: "Mockup Collection", subtitle: "Mockup", category: "Designing"},
-                {id:2,image: work14, title: "Abstract images", subtitle: "Abstract", category: "Photography"},
-                {id:2,image: work22, title: "Yellow bg with Books", subtitle: "Company V-card", category: "Development"},
-                {id:2,image: work16, title: "Company V-card", subtitle: "V-card", category: "Branding"},
-                {id:2,image: work23, title: "Mockup box with paints", subtitle: "Photography", category: "Branding"},
-                {id:2,image: work15, title: "Coffee cup", subtitle: "Cups", category: "Designing"},
-                {id:2,image: work17, title: "Pen and article", subtitle: "Article", category: "Development"},
-                {id:2,image: work24, title: "White mockup box", subtitle: "Color", category: "Photography"},
-                {id:2,image: work18, title: "Logo Vectors", subtitle: "Logos", category: "Photography"},
-                {id:2,image: work19, title: "Black and white T-shirt", subtitle: "Clothes", category: "Branding"},
-            ],
+                {id:2,image: work13, name: "Iphone mockup", subtitle: "Branding", category: "Branding"},
+                ],
             photoIndex: 0,
             isOpen: false,
         }
     }
+    onPaginationChange = (e) => {
+        // console.log(e)
+        this.setState({current: e},()=>this.getList())
 
+    }
     componentDidMount() {
+        this.getList();
         window.addEventListener("scroll", this.scrollNavigation, true);
     }
 
@@ -67,7 +70,20 @@ class PageWorkMasonry extends Component {
     componentWillUnmount() {
         window.removeEventListener("scroll", this.scrollNavigation, true);
     }
+    getList = () => {
+        const {current, pageSize} = this.state;
 
+        getBrand(current-1, pageSize).then(res=>{
+            this.setState({
+                works: res.data.content,
+                total: res.data.totalElements,
+                current: res.data.number+1
+            })
+        }).catch(err=>{
+            // console.log(err)
+        })
+
+    }
     scrollNavigation = () => {
         var doc = document.documentElement;
         var top = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
@@ -97,21 +113,21 @@ class PageWorkMasonry extends Component {
                 <section className="section">
                     <Container>
 
-                        <Row className="projects-wrapper mt-4 pt-2">
+                        <Row className="projects-wrapper  pt-2">
                             <div className="masonry-container">
                                 <Masonry brakePoints={brakePoints}>
                                     {this.state.works
-                                        .map(({id,title, image, subtitle}, key) => (
+                                        .map(({id,name, imageUrl}, key) => (
                                             <Card key={key}
                                                   className="tile border-0 work-container work-modern position-relative d-block overflow-hidden rounded-0">
                                                 <CardBody className="p-0">
-                                                    <img src={image} className="img-fluid" alt="work"/>
+                                                    <img src={imgUrl+imageUrl} className="img-fluid" alt="work"/>
                                                     <div className="overlay-work bg-dark"></div>
                                                     <div className="content">
                                                         <h5 className="mb-0"><Link to={"/brands/"+id+"/products"}
-                                                                                   className="text-white title">{title}</Link>
+                                                                                   className="text-white title">{name}</Link>
                                                         </h5>
-                                                        <h6 className="text-light tag mb-0">{subtitle}</h6>
+                                                        {/*<h6 className="text-light tag mb-0">{subtitle}</h6>*/}
                                                     </div>
                                                     <div className="icons text-center">
                                                         <Link to={"/brands/"+id+"/products"} onClick={(event) => {
@@ -146,6 +162,14 @@ class PageWorkMasonry extends Component {
                                     }
                                 />
                             )}
+                            <Col xs="12" className={"justify-items-center text-center mt-3"}>
+                                <Pagination
+                                    hideOnSinglePage={true} current={this.state.current}
+                                    pageSize={this.state.pageSize}
+                                    total={this.state.total}
+                                    onChange={this.onPaginationChange}
+                                />
+                            </Col>
                         </Row>
                     </Container>
                 </section>

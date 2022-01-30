@@ -15,49 +15,31 @@ import {AvForm, AvField} from "availity-reactstrap-validation";
 //Import Icons
 import FeatherIcon from "feather-icons-react";
 import {connect} from "react-redux";
-import {checkCode} from "../../../server/config/authentication";
+import {checkCode, newPassword} from "../../../server/config/authentication";
 import {toast} from "react-toastify";
+import {resetPassword} from "../../../server/config/web-site/user";
 
-class VerifyingCode extends Component {
+class ResetPassword extends Component {
 
     state = {
-        username: null,
-        isPassword: false
+        username: null
     }
 
     handleValidSubmit = (event, values) => {
 
-        if (this.state.isPassword) {
 
-            checkCode(this.state.username, values.code).then(res => {
-                console.log(res.data)
-                this.props.history.push({
-                        pathname: "/reset-password",
-                        state: {
-                            username: this.state.username
-                        }
-                    }
-                )
-            }).catch(err => toast.error(this.props.lang.lang.errorCode))
+        newPassword(this.state.username, values.password).then(res => {
+            toast.success(this.props.lang.lang.finish)
+            this.props.history.push("/login")
+        }).catch(err => toast.error(this.props.lang.lang.error))
 
-        } else {
-
-            checkCode(this.state.username, values.code).then(res => {
-                console.log(res.data)
-                this.props.history.push("/login")
-            }).catch(err => toast.error(this.props.lang.lang.errorCode))
-
-        }
     };
 
     componentDidMount() {
         if (!this.props.location.state) {
-            this.props.history.push("/register")
+            this.props.history.push("/login")
         } else {
-            this.setState({
-                username: this.props.location.state.username,
-                isPassword: this.props.location.state.isPassword != null ? this.props.location.state.isPassword : false
-            })
+            this.setState({username: this.props.location.state.username})
         }
     }
 
@@ -70,7 +52,10 @@ class VerifyingCode extends Component {
             yourPhone,
             recoveryDesc,
             login,
+            newPassword,
             rememberPassword,
+            rePassword, confirmPassword,
+
             send
         } = this.props.lang.lang;
 
@@ -91,29 +76,24 @@ class VerifyingCode extends Component {
                             <Col lg={5} md={8}>
                                 <Card className="login_page shadow rounded border-0">
                                     <CardBody>
-                                        <h4 className="card-title text-center">{verifyingAccount}</h4>
-
                                         <AvForm className="login-form mt-4" onValidSubmit={this.handleValidSubmit}>
                                             <Row>
                                                 <Col lg={12}>
-                                                    <p className="text-muted">
-                                                        {verifyingDesc}
-                                                    </p>
                                                     <FormGroup className="position-relative">
                                                         <Label>
-                                                            {code}
+                                                            {newPassword}
                                                             <span className="text-danger">*</span>
                                                         </Label>
                                                         <div className="position-relative">
                                                             <i>
                                                                 <FeatherIcon
-                                                                    icon="mail"
+                                                                    icon="lock"
                                                                     className="fea icon-sm icons"
                                                                 />
                                                             </i>
                                                         </div>
                                                         <AvField
-                                                            name="code"
+                                                            name="password"
                                                             errorMessage="Invalid Code"
                                                             validate={{
                                                                 required: {value: true},
@@ -123,6 +103,35 @@ class VerifyingCode extends Component {
                                                             type="number"
                                                             className="form-control pl-5"
                                                             placeholder={code}
+                                                        />
+                                                    </FormGroup>
+                                                </Col>
+                                                <Col lg={12}>
+                                                    <FormGroup className="position-relative">
+                                                        <Label>
+                                                            {rePassword}
+                                                            <span className="text-danger">*</span>
+                                                        </Label>
+                                                        <div className="position-relative">
+                                                            <i>
+                                                                <FeatherIcon
+                                                                    icon="lock"
+                                                                    className="fea icon-sm icons"
+                                                                />
+                                                            </i>
+                                                        </div>
+                                                        <AvField
+                                                            name="rePassword"
+                                                            errorMessage="Invalid Code"
+                                                            validate={{
+                                                                required: {value: true},
+                                                                minLength: {value: 6},
+                                                                maxLength: {value: 6},
+                                                                match: {value: "password"}
+                                                            }}
+                                                            type="number"
+                                                            className="form-control pl-5"
+                                                            placeholder={rePassword}
                                                         />
                                                     </FormGroup>
                                                 </Col>
@@ -147,5 +156,5 @@ class VerifyingCode extends Component {
 
 const mstp = state => state
 
-export default connect(mstp, null)(VerifyingCode);
+export default connect(mstp, null)(ResetPassword);
 

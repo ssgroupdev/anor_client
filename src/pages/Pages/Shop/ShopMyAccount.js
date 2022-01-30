@@ -38,7 +38,7 @@ import {
 } from "../../../server/config/web-site/user";
 import {TOKEN} from "../../../utils/constants";
 import {axiosInstance, imgUrl} from "../../../server/host";
-import {getCookie} from "../../../utils/useCookies";
+import {deleteCookie, getCookie} from "../../../utils/useCookies";
 import {userAccessTokenName} from "../../../constants/application";
 import {getProvince, getRegionsByProvince, register} from "../../../server/config/web-site/client";
 import {toast} from "react-toastify";
@@ -195,7 +195,11 @@ class ShopMyAccount extends Component {
 
     handleValidSubmitPassword = (event, values) => {
 
-        resetPassword(values).then(res => () => toast.success(this.props.lang.lang.finish)).catch(err => {
+        resetPassword(values).then(res => {
+            toast.success(this.props.lang.lang.finish)
+            deleteCookie(userAccessTokenName)
+            this.props.props.history.push("/login")
+        }).catch(err => {
             this.error();
         })
     };
