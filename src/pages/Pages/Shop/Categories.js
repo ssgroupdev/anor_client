@@ -34,8 +34,7 @@ class Categories extends Component {
     render() {
         return (
             <React.Fragment>
-                <CategorySection/>
-
+                <CategorySection id={this.props?.props?.match?.params?.id}/>
             </React.Fragment>
         );
     }

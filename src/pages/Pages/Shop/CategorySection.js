@@ -11,23 +11,34 @@ import car from "../../../assets/images/insurance/car.svg";
 import bike from "../../../assets/images/insurance/bike.svg";
 
 import bg from "../../../assets/images/insurance/bg.png";
+import {getCategoriesByMenu} from "../../../server/config/web-site/client";
+import {imgUrl} from "../../../server/host";
 
 class CategorySection extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      id:2,
+      id: props.id,
       name:"Laptops, Printers, Computers",
       categories: [
-        { id:1,img: health, title: "Health Insurance"},
-        { id:1,img: termLife, title: "Term Life Insurance"},
-        { id:1,img: familyHealth, title: "Family Health Insurance"},
-        { id:1,img: investment, title: "Investment Plans"},
-        { id:1,img: car, title: "4 Wheeler Insurance"},
-        { id:1,img: bike, title: "2 Wheeler Insurance"},
+        { id:1,img: health, name: "Health Insurance"}
       ],
     };
   }
+
+  getData = () => {
+    getCategoriesByMenu(this.state.id).then(res=>{
+      this.setState({
+        name: res.data.name,
+        categories: res.data.child
+      })
+    }).catch(err=> console.log(err))
+  }
+
+  componentDidMount() {
+    this.getData();
+  }
+
 
   render() {
     return (
@@ -39,8 +50,8 @@ class CategorySection extends Component {
           <Container>
             <Row className="mt-5 justify-content-center">
               <Col lg={12}>
-                <div className="title-heading text-center">
-                  <h1 className="heading title-dark text-dark mb-3">
+                <div className="name-heading text-center">
+                  <h1 className="heading name-dark text-dark mb-3">
                     {this.state.name}
                   </h1>
 
@@ -50,11 +61,11 @@ class CategorySection extends Component {
                         <Card className="explore-feature border-0 rounded text-center bg-white">
                           <Link
                               to={"/category-products/"+category.id}
-                              className="title text-dark"
+                              className="name text-dark"
                           >  <CardBody>
                             <div className="icon rounded-circle shadow-lg d-inline-block">
                               <img
-                                src={category.img}
+                                src={imgUrl + category.imageUrl}
                                 className="avatar avatar-md-sm"
                                 alt="Landrick"
                               />
@@ -62,7 +73,7 @@ class CategorySection extends Component {
                             <div className="content mt-3">
                               <h6 className="mb-0">
 
-                                  {category.title}
+                                  {category.name}
 
                               </h6>
                             </div>

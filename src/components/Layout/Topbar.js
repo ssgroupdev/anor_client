@@ -244,26 +244,26 @@ class Topbar extends Component {
     }
 
     getNavbar = () => {
-        getMenus().then(res=>{
+        getMenus().then(res => {
             console.log(res);
             const links = res.data;
             let setLinks = [];
             let objs = {};
             let childs = {};
             let nestedChilds = {};
-            links.map(item=>{
+            links.map(item => {
                 objs = item;
-                objs.isOpenSubMenu = false;
-                objs.link = "/category/"+item.id;
+                objs.isOpenSubMenu = !item.child.length > 0;
+                objs.link = "/category/" + item.id;
                 let arr1 = []
-                item.child.map(child=> {
+                item.child.map(child => {
                     childs = child;
-                    childs.isOpenNestedSubMenu = false;
-                    childs.link = "/category-products/"+child.id;
+                    childs.isOpenNestedSubMenu = !child.nestedChild.length > 0;
+                    childs.link = "/category-products/" + child.id;
                     let arr = [];
-                    child.nestedChild.map(nestedChild=>{
+                    child.nestedChild.map(nestedChild => {
                         nestedChilds = nestedChild;
-                        nestedChilds.link = "/category-products/"+nestedChild.id;
+                        nestedChilds.link = "/category-products/" + nestedChild.id;
                         arr.push(nestedChilds);
                     })
                     childs.nestedChild = [];
@@ -277,8 +277,8 @@ class Topbar extends Component {
             this.setState({
                 catLinks: setLinks
             })
-        }).catch(err=>{
-            this.props.history.push("/page-error")
+        }).catch(err => {
+            // this.props.history.push("/page-error")
         })
     }
 
@@ -638,60 +638,23 @@ class Topbar extends Component {
                                                 {navLink.name}
                                             </Link>
                                             {/* <i className="mdi mdi-chevron-right mr-1"></i> */}
-                                            <div className={"pl-4 h-100"} onClick={(event) => {
+                                            {navLink.child.length>0&&
+                                                <div className={"pl-4 h-100"} onClick={(event) => {
                                                 event.preventDefault();
                                                 this.openBlock(navLink.id);
                                             }}>
-                                                <span className="menu-arrow "></span>
+                                                  <span className="menu-arrow "></span>
 
-                                            </div>
+                                            </div> }
                                             {navLink.isMegaMenu ? (
                                                 // if menu is mega menu(2 columns grid)
                                                 <ul
                                                     className={
-                                                        navLink.isOpenSubMenu
+                                                        navLink.isOpenSubMenu && navLink.child.length>0
                                                             ? "submenu megamenu open"
                                                             : "submenu megamenu"
                                                     }
                                                 >
-                                                    <li>
-                                                        <ul>
-                                                            {navLink.child.map((item, childKey) =>
-                                                                    item.id < 18 ? (
-                                                                        <li key={childKey}>
-                                                                            <Link to={item.link}>
-                                                                                {item.name}
-                                                                                {item.isNew ? (
-                                                                                    <span
-                                                                                        className="badge badge-danger rounded ml-2">
-                                          new
-                                        </span>
-                                                                                ) : null}
-                                                                            </Link>
-                                                                        </li>
-                                                                    ) : null
-                                                            )}
-                                                        </ul>
-                                                    </li>
-                                                    <li>
-                                                        <ul>
-                                                            {navLink.child.map((item, childKey) =>
-                                                                    item.id < 33 && item.id > 17 ? (
-                                                                        <li key={childKey}>
-                                                                            <Link to={item.link}>
-                                                                                {item.name}
-                                                                                {item.isNew ? (
-                                                                                    <span
-                                                                                        className="badge badge-danger rounded ml-2">
-                                          new
-                                        </span>
-                                                                                ) : null}
-                                                                            </Link>
-                                                                        </li>
-                                                                    ) : null
-                                                            )}
-                                                        </ul>
-                                                    </li>
                                                     <li>
                                                         <ul>
                                                             {navLink.child.map((item, childKey) =>
@@ -722,21 +685,22 @@ class Topbar extends Component {
                                                 // if menu is not mega menu(1grid)
                                                 <ul
                                                     className={
-                                                        navLink.isOpenSubMenu ? "submenu open" : "submenu"
+                                                        navLink.isOpenSubMenu && navLink.child.length>0
+                                                            ? "submenu open" : "submenu"
                                                     }
                                                 >
                                                     {navLink.child.map((childArray, childKey) =>
                                                             childArray.nestedChild ? (
                                                                 // sub menu item - Level 2
-                                                                <li className="has-submenu" key={childKey}>
+                                                                <li className={childArray.nestedChild.length>0&&"has-submenu"} key={childKey}>
                                                                     <Link
                                                                         to={childArray.link}
                                                                         onMouseOver={(event) => {
                                                                             event.preventDefault();
-                                                                            this.openNestedBlock(
+                                                                            return childArray.nestedChild.length>0?this.openNestedBlock(
                                                                                 navLink.id,
                                                                                 childArray.id
-                                                                            );
+                                                                            ):null;
                                                                         }}
                                                                     >
                                                                         {childArray.name}{" "}
@@ -747,6 +711,7 @@ class Topbar extends Component {
                                     </span>
                                                                         ) : null}
                                                                     </Link>
+                                                                    {childArray.nestedChild.length>0&&
                                                                     <div className={"pl-4  h-100"} onClick={(event) => {
                                                                         event.preventDefault();
                                                                         this.openNestedBlock(navLink.id, childArray.id);
@@ -755,6 +720,7 @@ class Topbar extends Component {
                                                                         <span className="submenu-arrow"></span>
 
                                                                     </div>
+                                                                    }
 
                                                                     <ul
                                                                         className={
@@ -788,6 +754,7 @@ class Topbar extends Component {
                                                                     </ul>
                                                                 </li>
                                                             ) : (
+
                                                                 <li key={childKey}>
                                                                     <Link to={childArray.link}>
                                                                         {childArray.name}
