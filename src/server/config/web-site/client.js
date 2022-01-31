@@ -9,6 +9,13 @@ export const getNews = (page = 0, size = 10) => {
     }
     return HttpRequestHub(config);
 }
+export const getMenus = () => {
+    const config = {
+        method: 'GET',
+        url: `/client/menu/`,
+    }
+    return HttpRequestHub(config);
+}
 
 export const getNewsById = (id) => {
     const config = {

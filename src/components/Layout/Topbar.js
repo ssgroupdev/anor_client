@@ -24,6 +24,7 @@ import {connect} from "react-redux";
 import {deleteCookie, getCookie} from "../../utils/useCookies";
 import {getUser} from "../../server/config/web-site/user";
 import {userAccessTokenName} from "../../constants/application";
+import {getMenus} from "../../server/config/web-site/client";
 
 class Topbar extends Component {
     constructor(props) {
@@ -36,24 +37,24 @@ class Topbar extends Component {
                 //Note : each child and nested child must have unique id
                 {
                     id: 1,
-                    title: "Laptops, Printers",
+                    name: "Laptops, Printers",
                     link: "/category/" + this.id,
                     isOpenSubMenu: false,
                     child: [
                         {
                             id: 7,
-                            title: "Laptop",
+                            name: "Laptop",
                             link: "/category-products/" + this.id,
                             isOpenNestedSubMenu: false,
                             nestedChild: [
                                 {
-                                    title: "HP",
+                                    name: "HP",
                                     link: "/category-products/" + this.id,
                                 }, {
-                                    title: "DY",
+                                    name: "DY",
                                     link: "/category-products/" + this.id,
                                 }, {
-                                    title: "TEST",
+                                    name: "TEST",
                                     link: "/category-products/" + this.id,
                                 }
                             ],
@@ -62,24 +63,24 @@ class Topbar extends Component {
                     ],
                 }, {
                     id: 2,
-                    title: "Family",
+                    name: "Family",
                     link: "/category/" + this.id,
                     isOpenSubMenu: false,
                     child: [
                         {
                             id: 7,
-                            title: "Laptop",
+                            name: "Laptop",
                             link: "/category-products/" + this.id,
                             isOpenNestedSubMenu: false,
                             nestedChild: [
                                 {
-                                    title: "HP",
+                                    name: "HP",
                                     link: "/category-products/" + this.id,
                                 }, {
-                                    title: "DY",
+                                    name: "DY",
                                     link: "/category-products/" + this.id,
                                 }, {
-                                    title: "TEST",
+                                    name: "TEST",
                                     link: "/category-products/" + this.id,
                                 }
                             ],
@@ -88,24 +89,24 @@ class Topbar extends Component {
                     ],
                 }, {
                     id: 3,
-                    title: "Auto",
+                    name: "Auto",
                     link: "/category/" + this.id,
                     isOpenSubMenu: false,
                     child: [
                         {
                             id: 7,
-                            title: "Laptop",
+                            name: "Laptop",
                             link: "/category-products/" + this.id,
                             isOpenNestedSubMenu: false,
                             nestedChild: [
                                 {
-                                    title: "HP",
+                                    name: "HP",
                                     link: "/category-products/" + this.id,
                                 }, {
-                                    title: "DY",
+                                    name: "DY",
                                     link: "/category-products/" + this.id,
                                 }, {
-                                    title: "TEST",
+                                    name: "TEST",
                                     link: "/category-products/" + this.id,
                                 }
                             ],
@@ -114,24 +115,24 @@ class Topbar extends Component {
                     ],
                 }, {
                     id: 4,
-                    title: "Mobile, Accessuars",
+                    name: "Mobile, Accessuars",
                     link: "/category/" + this.id,
                     isOpenSubMenu: false,
                     child: [
                         {
                             id: 7,
-                            title: "Laptop",
+                            name: "Laptop",
                             link: "/category-products/" + this.id,
                             isOpenNestedSubMenu: false,
                             nestedChild: [
                                 {
-                                    title: "HP",
+                                    name: "HP",
                                     link: "/category-products/" + this.id,
                                 }, {
-                                    title: "DY",
+                                    name: "DY",
                                     link: "/category-products/" + this.id,
                                 }, {
-                                    title: "TEST",
+                                    name: "TEST",
                                     link: "/category-products/" + this.id,
                                 }
                             ],
@@ -140,25 +141,25 @@ class Topbar extends Component {
                     ],
                 }, {
                     id: 5,
-                    title: "GAMING",
+                    name: "GAMING",
                     link: "/category/" + this.id,
                     isOpenSubMenu: false,
                     child: [
                         {
                             id: 7,
-                            title: "Laptop",
+                            name: "Laptop",
                             link: "/category-products/" + this.id,
                             isOpenNestedSubMenu: false,
                         },
                         {
                             id: 7,
-                            title: "Laptop",
+                            name: "Laptop",
                             link: "/category-products/" + this.id,
                             isOpenNestedSubMenu: false,
                         },
                         {
                             id: 7,
-                            title: "Laptop",
+                            name: "Laptop",
                             link: "/category-products/" + this.id,
                             isOpenNestedSubMenu: false,
                         },
@@ -230,20 +231,59 @@ class Topbar extends Component {
             this.setState({
                 user: {
                     ...res.data,
-                    fullName: res.data.firstName +" "+ res.data.lastName
+                    fullName: res.data.firstName + " " + res.data.lastName
                 },
                 isLogin: true
             })
         }).catch(err => {
             this.setState({
-                isLogin: false}
+                    isLogin: false
+                }
             )
         })
     }
 
+    getNavbar = () => {
+        getMenus().then(res=>{
+            console.log(res);
+            const links = res.data;
+            let setLinks = [];
+            let objs = {};
+            let childs = {};
+            let nestedChilds = {};
+            links.map(item=>{
+                objs = item;
+                objs.isOpenSubMenu = false;
+                objs.link = "/category/"+item.id;
+                let arr1 = []
+                item.child.map(child=> {
+                    childs = child;
+                    childs.isOpenNestedSubMenu = false;
+                    childs.link = "/category-products/"+child.id;
+                    let arr = [];
+                    child.nestedChild.map(nestedChild=>{
+                        nestedChilds = nestedChild;
+                        nestedChilds.link = "/category-products/"+nestedChild.id;
+                        arr.push(nestedChilds);
+                    })
+                    childs.nestedChild = [];
+                    childs.nestedChild = arr;
+                    arr1.push(childs);
+                })
+                objs.child = []
+                objs.child = arr1
+                setLinks.push(objs);
+            })
+            this.setState({
+                catLinks: setLinks
+            })
+        }).catch(err=>{
+            this.props.history.push("/page-error")
+        })
+    }
 
     componentDidMount() {
-
+        this.getNavbar();
         var matchingMenuItem = null;
         var ul = document.getElementById("top-menu");
         var items = ul.getElementsByTagName("a");
@@ -274,16 +314,18 @@ class Topbar extends Component {
 
         }
 
-       if (getCookie(userAccessTokenName) != null) {
+        if (getCookie(userAccessTokenName) != null) {
             this.getMe();
 
         } else {
 
 
             this.setState({
-            isLogin: false}
-        )
+                    isLogin: false
+                }
+            )
         }
+
 
     }
 
@@ -593,14 +635,14 @@ class Topbar extends Component {
                                                 }} style={{fontSize: "13px!important"}}
 
                                             >
-                                                {navLink.title}
+                                                {navLink.name}
                                             </Link>
                                             {/* <i className="mdi mdi-chevron-right mr-1"></i> */}
-                                            <div className={"pl-4 h-100"}  onClick={(event) => {
+                                            <div className={"pl-4 h-100"} onClick={(event) => {
                                                 event.preventDefault();
                                                 this.openBlock(navLink.id);
                                             }}>
-                                            <span className="menu-arrow "></span>
+                                                <span className="menu-arrow "></span>
 
                                             </div>
                                             {navLink.isMegaMenu ? (
@@ -618,7 +660,7 @@ class Topbar extends Component {
                                                                     item.id < 18 ? (
                                                                         <li key={childKey}>
                                                                             <Link to={item.link}>
-                                                                                {item.title}
+                                                                                {item.name}
                                                                                 {item.isNew ? (
                                                                                     <span
                                                                                         className="badge badge-danger rounded ml-2">
@@ -637,7 +679,7 @@ class Topbar extends Component {
                                                                     item.id < 33 && item.id > 17 ? (
                                                                         <li key={childKey}>
                                                                             <Link to={item.link}>
-                                                                                {item.title}
+                                                                                {item.name}
                                                                                 {item.isNew ? (
                                                                                     <span
                                                                                         className="badge badge-danger rounded ml-2">
@@ -656,7 +698,7 @@ class Topbar extends Component {
                                                                     item.id > 32 ? (
                                                                         <li key={childKey}>
                                                                             <Link to={item.link}>
-                                                                                {item.title}
+                                                                                {item.name}
                                                                                 {item.isOnePage ? (
                                                                                     <span
                                                                                         className="badge badge-warning rounded ml-2">
@@ -697,7 +739,7 @@ class Topbar extends Component {
                                                                             );
                                                                         }}
                                                                     >
-                                                                        {childArray.title}{" "}
+                                                                        {childArray.name}{" "}
                                                                         {childArray.isNew ? (
                                                                             <span
                                                                                 className="badge badge-pill badge-success">
@@ -705,12 +747,12 @@ class Topbar extends Component {
                                     </span>
                                                                         ) : null}
                                                                     </Link>
-                                                                    <div className={"pl-4  h-100"}  onClick={(event) => {
+                                                                    <div className={"pl-4  h-100"} onClick={(event) => {
                                                                         event.preventDefault();
                                                                         this.openNestedBlock(navLink.id, childArray.id);
                                                                     }}>
 
-                                                                    <span className="submenu-arrow"></span>
+                                                                        <span className="submenu-arrow"></span>
 
                                                                     </div>
 
@@ -726,7 +768,7 @@ class Topbar extends Component {
                                                                                 // nested sub menu item - Level 3
                                                                                 <li key={nestedKey}>
                                                                                     <Link to={nestedChildArray.link}>
-                                                                                        {nestedChildArray.title}{" "}
+                                                                                        {nestedChildArray.name}{" "}
                                                                                         {nestedChildArray.isNewPage ? (
                                                                                             <span
                                                                                                 className="badge badge-danger rounded">
@@ -748,7 +790,7 @@ class Topbar extends Component {
                                                             ) : (
                                                                 <li key={childKey}>
                                                                     <Link to={childArray.link}>
-                                                                        {childArray.title}
+                                                                        {childArray.name}
                                                                     </Link>
                                                                 </li>
                                                             )
@@ -758,7 +800,7 @@ class Topbar extends Component {
                                         </li>
                                     ) : (
                                         <li key={key}>
-                                            <Link to={navLink.link}>{navLink.title}</Link>
+                                            <Link to={navLink.link}>{navLink.name}</Link>
                                         </li>
                                     )
                                 )}
