@@ -60,7 +60,7 @@ export const getBrandById = (id) => {
 export const getQuestionGlobal = () => {
     const config = {
         method: 'GET',
-        url: `/question-global/language/`,
+        url: `/client/question-global/language/`,
     }
     return HttpRequestHub(config);
 }
