@@ -8,6 +8,7 @@ import AccordianCommon from "../../../components/Shared/AccordianCommon";
 
 import ScrollspyNav from "./ScrollspyNav";
 import {connect} from "react-redux";
+import {getFAQs} from "../../../server/config/web-site/client";
 
 class HelpCenterFaqs extends Component {
     constructor(props) {
@@ -22,14 +23,9 @@ class HelpCenterFaqs extends Component {
             questions: [
                 {
                     id: 1,
-                    title: "Buying questions",
+                    name: "Buying questions",
                     questions: [
-                        {
-                            id: 1,
-                            question: "name?",
-                            answer: "test",
-                            col:true,
-                        },{
+                       {
                             id: 2,
                             question: "name?",
                             answer: "test",
@@ -41,52 +37,10 @@ class HelpCenterFaqs extends Component {
                             col:false,
                         },
                     ]
-                } ,  {
-                    id: 2,
-                    title: "Buying questions",
-                    questions: [
-                        {
-                            id: 4,
-                            question: "name?",
-                            answer: "test",
-                            col:false,
-                        },{
-                            id: 5,
-                            question: "name?",
-                            answer: "test",
-                            col:false,
-                        },{
-                            id: 6,
-                            question: "name?",
-                            answer: "test",
-                            col:false,
-                        },
-                    ]
-                },  {
-                    id: 3,
-                    title: "Buying questions",
-                    questions: [
-                        {
-                            id: 7,
-                            question: "name?",
-                            answer: "test",
-                            col:false,
-                        },{
-                            id: 8,
-                            question: "name?",
-                            answer: "test",
-                            col:false,
-                        },{
-                            id: 9,
-                            question: "name?",
-                            answer: "test",
-                            col:false,
-                        },
-                    ]
                 }
             ]
             , ids: [
-                1, 2, 3
+                1
             ]
         }
         this.scrollNavigation.bind(this);
@@ -115,8 +69,21 @@ class HelpCenterFaqs extends Component {
 
     }
 
+    getData = () => {
+        getFAQs().then(res=>{
+            console.log(res.data)
+            const ids = res.data.map(item=>item.id);
+            this.setState({
+                questions: res.data,
+                ids: ids
+            })
+        }).catch(err=>{
+
+        })
+    }
     componentDidMount() {
         window.addEventListener("scroll", this.scrollNavigation, true);
+        this.getData();
     }
 
     // Make sure to remove the DOM listener when the component is unmounted.
@@ -162,7 +129,7 @@ class HelpCenterFaqs extends Component {
                                                 this.state.questions.map((value, index) => (
                                                     <li key={index}>
                                                         <a href={"#" + value.id} className="mouse-down h6 text-dark">
-                                                            {value.title}
+                                                            {value.name}
                                                         </a>
                                                     </li>
                                                 ))
@@ -178,7 +145,7 @@ class HelpCenterFaqs extends Component {
                                     this.state.questions.map((value, index) => (
                                         <>
                                             <div className="section-title" id={value.id}>
-                                                <h4>{value.title}</h4>
+                                                <h4>{value.name}</h4>
                                             </div>
                                             <div className="faq-content mt-4 pt-2">
                                                 <div className="accordion" id="accordionExampleone">

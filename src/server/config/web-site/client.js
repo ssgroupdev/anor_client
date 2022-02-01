@@ -25,6 +25,14 @@ export const getCategoriesByMenu = (id) => {
     return HttpRequestHub(config);
 }
 
+export const getFAQs = () => {
+    const config = {
+        method: 'GET',
+        url: `/client/category-question/`,
+    }
+    return HttpRequestHub(config);
+}
+
 export const getNewsById = (id) => {
     const config = {
         method: 'GET',
