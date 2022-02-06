@@ -33,140 +33,7 @@ class Topbar extends Component {
             isOpen: false,
             dropdownOpenShop: false,
             isLogin: true,
-            catLinks: [
-                //Note : each child and nested child must have unique id
-                {
-                    id: 1,
-                    name: "Laptops, Printers",
-                    link: "/category/" + this.id,
-                    isOpenSubMenu: false,
-                    child: [
-                        {
-                            id: 7,
-                            name: "Laptop",
-                            link: "/category-products/" + this.id,
-                            isOpenNestedSubMenu: false,
-                            nestedChild: [
-                                {
-                                    name: "HP",
-                                    link: "/category-products/" + this.id,
-                                }, {
-                                    name: "DY",
-                                    link: "/category-products/" + this.id,
-                                }, {
-                                    name: "TEST",
-                                    link: "/category-products/" + this.id,
-                                }
-                            ],
-                        },
-
-                    ],
-                }, {
-                    id: 2,
-                    name: "Family",
-                    link: "/category/" + this.id,
-                    isOpenSubMenu: false,
-                    child: [
-                        {
-                            id: 7,
-                            name: "Laptop",
-                            link: "/category-products/" + this.id,
-                            isOpenNestedSubMenu: false,
-                            nestedChild: [
-                                {
-                                    name: "HP",
-                                    link: "/category-products/" + this.id,
-                                }, {
-                                    name: "DY",
-                                    link: "/category-products/" + this.id,
-                                }, {
-                                    name: "TEST",
-                                    link: "/category-products/" + this.id,
-                                }
-                            ],
-                        },
-
-                    ],
-                }, {
-                    id: 3,
-                    name: "Auto",
-                    link: "/category/" + this.id,
-                    isOpenSubMenu: false,
-                    child: [
-                        {
-                            id: 7,
-                            name: "Laptop",
-                            link: "/category-products/" + this.id,
-                            isOpenNestedSubMenu: false,
-                            nestedChild: [
-                                {
-                                    name: "HP",
-                                    link: "/category-products/" + this.id,
-                                }, {
-                                    name: "DY",
-                                    link: "/category-products/" + this.id,
-                                }, {
-                                    name: "TEST",
-                                    link: "/category-products/" + this.id,
-                                }
-                            ],
-                        },
-
-                    ],
-                }, {
-                    id: 4,
-                    name: "Mobile, Accessuars",
-                    link: "/category/" + this.id,
-                    isOpenSubMenu: false,
-                    child: [
-                        {
-                            id: 7,
-                            name: "Laptop",
-                            link: "/category-products/" + this.id,
-                            isOpenNestedSubMenu: false,
-                            nestedChild: [
-                                {
-                                    name: "HP",
-                                    link: "/category-products/" + this.id,
-                                }, {
-                                    name: "DY",
-                                    link: "/category-products/" + this.id,
-                                }, {
-                                    name: "TEST",
-                                    link: "/category-products/" + this.id,
-                                }
-                            ],
-                        },
-
-                    ],
-                }, {
-                    id: 5,
-                    name: "GAMING",
-                    link: "/category/" + this.id,
-                    isOpenSubMenu: false,
-                    child: [
-                        {
-                            id: 7,
-                            name: "Laptop",
-                            link: "/category-products/" + this.id,
-                            isOpenNestedSubMenu: false,
-                        },
-                        {
-                            id: 7,
-                            name: "Laptop",
-                            link: "/category-products/" + this.id,
-                            isOpenNestedSubMenu: false,
-                        },
-                        {
-                            id: 7,
-                            name: "Laptop",
-                            link: "/category-products/" + this.id,
-                            isOpenNestedSubMenu: false,
-                        },
-
-                    ],
-                }
-            ],
+            catLinks: [],
             wishlistModal: false,
             dropdownIsOpen: false,
             isScrollNav: true,
@@ -187,6 +54,7 @@ class Topbar extends Component {
         localStorage.setItem("lang", this.state.isLang ? "ru" : "uz")
         this.props.changeLang(localStorage.getItem("lang"))
         this.setState({isLang: localStorage.getItem("lang") === "uz"})
+        window.location.reload();
 
     };
 

@@ -6,7 +6,7 @@ import ProductGrid from "../../components/Shared/ProductGrid";
 import {connect} from "react-redux";
 import {getProducts} from "../../server/config/web-site/product";
 
-class MostViewedProducts extends Component {
+class Recommend extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -17,7 +17,7 @@ class MostViewedProducts extends Component {
 
   getList = () => {
 
-    getProducts("RATE",0,4).then((res)=>{
+    getProducts("RECOMMEND",0,8).then((res)=>{
       this.setState({products: res.data.content})
     }).catch(err=>{
 
@@ -31,21 +31,21 @@ class MostViewedProducts extends Component {
 
 
   render() {
-    const {topProducts} = this.props.lang.lang;
+    const {recommend} = this.props.lang.lang;
 
     return (
-      <React.Fragment >
-        <Container className={"mt-4"}>
+      <React.Fragment>
+        <Container>
           <Row>
             <Col xs={12}>
               <Link to={{
                 pathname:"/products",
-                search: "?sort=RATE",
+                search: "?sort=RECOMMEND",
                 state: {
                   sort: "RATE"
                 }
               }} >
-                <h5 className="mb-0">{topProducts}</h5>
+                <h5 className="mb-0">{recommend}</h5>
               </Link>
             </Col>
           </Row>
@@ -62,5 +62,5 @@ class MostViewedProducts extends Component {
 }
 
 const mstp = state => state;
-export default connect(mstp,null)( MostViewedProducts );
+export default connect(mstp,null)( Recommend );
 

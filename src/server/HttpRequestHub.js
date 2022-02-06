@@ -1,7 +1,8 @@
-import { axiosInstance } from './host';
+import {axiosInstance, setHeaders} from './host';
 import { message } from "antd";
 
 export const HttpRequestHub = (config = null) => {
+    setHeaders();
     return axiosInstance(config).then((res) => {
         return res;
     }).catch((err) => {

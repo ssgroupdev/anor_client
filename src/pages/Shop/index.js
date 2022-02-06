@@ -8,6 +8,7 @@ import TopCategories from "./TopCategories";
 import PopularProducts from "./PopularProducts";
 import Cta from "./Cta";
 import RecentProducts from "./RecentProducts";
+import Recommend from "./Recommend";
 
 class Index extends Component {
   componentDidMount() {
@@ -40,14 +41,22 @@ class Index extends Component {
         {/* import Collection */}
         {/*<Collection />*/}
 
-        <section className="section mt-2 pt-4">
-          <MostViewedProducts />
+        <section className="section pt-0 mt-0">
+
+          {/*popular*/}
+          <PopularProducts />
 
           <TopCategories />
 
-          <PopularProducts />
+          {/*recommend*/}
+          <Recommend />
 
+          {/*by rate*/}
+          <MostViewedProducts />
+
+          {/*  isNew*/}
           <RecentProducts />
+
         </section>
       </React.Fragment>
     );

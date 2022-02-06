@@ -16,52 +16,37 @@ import prodtctOverlay15 from "../../assets/images/shop/product/s-15.jpg";
 import prodtctOverlay16 from "../../assets/images/shop/product/s-16.jpg";
 import ProductGrid from "../../components/Shared/ProductGrid";
 import {connect} from "react-redux";
+import {getProducts} from "../../server/config/web-site/product";
 
 class RecentProducts extends Component {
   constructor(props) {
     super(props);
     this.state = {
       products: [
-        {
-          id: 1,
-          image: product13,
-          imgOverlay: prodtctOverlay13,
-          name: "Wooden Chair",
-          price: "16.00",
-          oldPrice: "21.00",
-        },
-        {
-          id: 2,
-          image: product14,
-          imgOverlay: prodtctOverlay14,
-          name: "Women Block Heels",
-          price: "21.00",
-          oldPrice: "25.00",
-        },
-        {
-          id: 3,
-          image: product15,
-          imgOverlay: prodtctOverlay15,
-          name: "T-Shirts",
-          price: "5.00",
-          desc: "30% off",
-        },
-        {
-          id: 4,
-          image: product16,
-          imgOverlay: prodtctOverlay16,
-          name: "Clock",
-          price: "18.00",
-          oldPrice: "22.00",
-        },
       ],
     };
   }
+
+  getList = () => {
+
+    getProducts("LATEST",0,4).then((res)=>{
+      this.setState({products: res.data.content})
+    }).catch(err=>{
+
+    })
+
+  }
+
+  componentDidMount() {
+    this.getList();
+  }
+
+
   render() {  const {recentProducts} = this.props.lang.lang;
 
     return (
       <React.Fragment>
-        <Container className="mt-100 mt-60">
+        <Container className="mt-4">
           <Row>
             <Col xs={12}>
               <Link to={{

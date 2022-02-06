@@ -24,7 +24,7 @@ class Section extends Component {
       items: [
         {
           image: bg2,
-          class: "slider-rtl-2",
+          // class: "slider-rtl-2",
           titleLine1: "New Accessories ",
           titleLine2: "Collections",
           desc:
@@ -33,7 +33,7 @@ class Section extends Component {
         },
         {
           image: bg3,
-          class: "slider-rtl-3",
+          // class: "slider-rtl-3",
           titleLine1: "Headphones ",
           titleLine2: "Speaker",
           desc:
@@ -42,7 +42,7 @@ class Section extends Component {
         },
         {
           image: bg1,
-          class: "slider-rtl-1",
+          // class: "slider-rtl-1",
           titleLine1: "Modern Furniture, ",
           titleLine2: "Armchair",
           desc:
@@ -89,7 +89,7 @@ class Section extends Component {
                     <Col lg={7} md={7} className="slider-desc">
                       <div className="title-heading mt-4">
                         <h1 className="display-4 title-white font-weight-bold mb-3">
-                          {item.titleLine1} <br /> {item.titleLine2}
+                          {item.titleLine1} {item.titleLine2}
                         </h1>
                         <p className="para-desc text-muted para-dark">
                           {item.desc}

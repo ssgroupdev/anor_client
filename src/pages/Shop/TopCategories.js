@@ -2,55 +2,36 @@ import React, {Component} from "react";
 import {Container, Row, Col, Card, CardBody} from "reactstrap";
 import {Link} from "react-router-dom";
 
-import fashion from "../../assets/images/shop/categories/fashion.jpg";
-import sports from "../../assets/images/shop/categories/sports.jpg";
-import music from "../../assets/images/shop/categories/music.jpg";
-import furniture from "../../assets/images/shop/categories/furniture.jpg";
-import electronics from "../../assets/images/shop/categories/electronics.jpg";
-import mobile from "../../assets/images/shop/categories/mobile.jpg";
 import {connect} from "react-redux";
+import {getTopCategories} from "../../server/config/web-site/client";
+import {imgUrl} from "../../server/host";
 
 class TopCategories extends Component {
     state = {
         categories: [
-            {
-                img: fashion,
-                name: "Fashion",
-                id: 1
-            },
-            {
-                img: sports,
-                name: "Sport",
-                id: 1
-            },
-            {
-                img: electronics,
-                name: "Elektro",
-                id: 1
-            }, {
-                img: furniture,
-                name: "Furniture",
-                id: 1
-            },
-            {
-                img: mobile,
-                name: "Mobile",
-                id: 1
-            },
-            {
-                img: music,
-                name: "Music",
-                id: 2
-            },
-
         ],
+    }
+
+
+    getList = () => {
+
+        getTopCategories().then((res)=>{
+            this.setState({categories: res.data})
+        }).catch(err=>{
+
+        })
+
+    }
+
+    componentDidMount() {
+        this.getList();
     }
 
     render() {
         const {topCategories} = this.props.lang.lang;
 
         return (
-            <React.Fragment className={"d-flex"}>
+            <React.Fragment className={"d-flex mt-0 pt-0 "}>
                 <Container className="mt-100 mt-60">
                     <Row>
                         <Col xs={12}>
@@ -67,8 +48,8 @@ class TopCategories extends Component {
                                         <CardBody>
                                             <div className="icon rounded-circle shadow-lg d-inline-block h2">
                                                 <img
-                                                    src={value.img}
-                                                    className="avatar avatar-small rounded-circle shadow-md"
+                                                    src={imgUrl+value.imageUrl}
+                                                    className="avatar avatar-small "
                                                     alt=""
                                                 />
                                             </div>

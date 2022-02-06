@@ -5,53 +5,17 @@ import {
     Col,
     Form,
     FormGroup,
-    Input,
-    Card,
-    CardBody, Label, Button,
+    Input, Button,
 } from "reactstrap";
-import {Link, Redirect} from "react-router-dom";
 import Pagination from "rc-pagination"
-//Import Icons
-import FeatherIcon from "feather-icons-react";
 
 //Import components
 import PageBreadcrumb from "../../../components/Shared/PageBreadcrumb";
 
-//Import Images
-import product1 from "../../../assets/images/shop/product/s1.jpg";
-import product2 from "../../../assets/images/shop/product/s2.jpg";
-import product3 from "../../../assets/images/shop/product/s3.jpg";
-import product4 from "../../../assets/images/shop/product/s4.jpg";
-import product5 from "../../../assets/images/shop/product/s5.jpg";
-import product6 from "../../../assets/images/shop/product/s6.jpg";
-import product7 from "../../../assets/images/shop/product/s7.jpg";
-import product8 from "../../../assets/images/shop/product/s8.jpg";
-import product9 from "../../../assets/images/shop/product/s9.jpg";
-import product10 from "../../../assets/images/shop/product/s10.jpg";
-import product11 from "../../../assets/images/shop/product/s11.jpg";
-import product12 from "../../../assets/images/shop/product/s12.jpg";
-import product13 from "../../../assets/images/shop/product/s13.jpg";
-import product14 from "../../../assets/images/shop/product/s14.jpg";
-import product15 from "../../../assets/images/shop/product/s15.jpg";
-
-import prodtctOverlay1 from "../../../assets/images/shop/product/s-1.jpg";
-import prodtctOverlay2 from "../../../assets/images/shop/product/s-2.jpg";
-import prodtctOverlay3 from "../../../assets/images/shop/product/s-3.jpg";
-import prodtctOverlay4 from "../../../assets/images/shop/product/s-4.jpg";
-import prodtctOverlay5 from "../../../assets/images/shop/product/s-5.jpg";
-import prodtctOverlay6 from "../../../assets/images/shop/product/s-6.jpg";
-import prodtctOverlay7 from "../../../assets/images/shop/product/s-7.jpg";
-import prodtctOverlay8 from "../../../assets/images/shop/product/s-8.jpg";
-import prodtctOverlay9 from "../../../assets/images/shop/product/s-9.jpg";
-import prodtctOverlay10 from "../../../assets/images/shop/product/s-10.jpg";
-import prodtctOverlay11 from "../../../assets/images/shop/product/s-11.jpg";
-import prodtctOverlay12 from "../../../assets/images/shop/product/s-12.jpg";
-import prodtctOverlay13 from "../../../assets/images/shop/product/s-13.jpg";
-import prodtctOverlay14 from "../../../assets/images/shop/product/s-14.jpg";
-import prodtctOverlay15 from "../../../assets/images/shop/product/s-15.jpg";
 import ProductGrid from "../../../components/Shared/ProductGrid";
 import {connect} from "react-redux";
 import {pageSize} from "../../../constants/all";
+import {getBrandProducts} from "../../../server/config/web-site/brand/brand";
 
 class ShopProductsBrand extends Component {
     constructor(props) {
@@ -63,184 +27,60 @@ class ShopProductsBrand extends Component {
 
             pathItems: [
                 //id must required
-                {id: 1, name:props.lang.lang.index, link: "/"},
+                {id: 1, name: props.lang.lang.index, link: "/"},
                 {id: 2, name: props.lang.lang.brands, link: "/brands"},
-                {id: 3, name: "Brand"},
             ],
             current: 1,
             total: 0,
-            pageSize: pageSize+2,
-            products: [
-                {
-                    id: 1,
-                    image: product1,
-                    imgOverlay: prodtctOverlay1,
-                    name: "Branded T-Shirt",
-                    price: "16.00",
-                    oldPrice: "21.00",
-                },
-                {
-                    id: 2,
-                    image: product2,
-                    imgOverlay: prodtctOverlay2,
-                    name: "Shopping Bag",
-                    price: "21.00",
-                    oldPrice: "25.00",
-                },
-                {
-                    id: 3,
-                    image: product3,
-                    imgOverlay: prodtctOverlay3,
-                    name: "Elegent Watch",
-                    price: "5.00",
-                    desc: "30% off",
-                },
-                {
-                    id: 4,
-                    image: product4,
-                    imgOverlay: prodtctOverlay4,
-                    name: "Casual Shoes",
-                    price: "18.00",
-                    oldPrice: "22.00",
-                },
-                {
-                    id: 5,
-                    image: product5,
-                    imgOverlay: prodtctOverlay5,
-                    name: "Earphones",
-                    price: "3.00",
-                },
-                {
-                    id: 6,
-                    image: product6,
-                    imgOverlay: prodtctOverlay6,
-                    name: "Elegent Mug",
-                    price: "4.50",
-                    oldPrice: "6.50",
-                },
-                {
-                    id: 7,
-                    image: product7,
-                    imgOverlay: prodtctOverlay7,
-                    name: "Sony Headphones",
-                    price: "9.99",
-                    desc: "20% off",
-                },
-                {
-                    id: 8,
-                    image: product8,
-                    imgOverlay: prodtctOverlay8,
-                    name: "Wooden Stools",
-                    price: "22.00",
-                    oldPrice: "25.00",
-                },
-                {
-                    id: 9,
-                    image: product9,
-                    imgOverlay: prodtctOverlay9,
-                    name: "Coffee Cup / Mug",
-                    price: "16.00",
-                    oldPrice: "21.00",
-                },
-                {
-                    id: 10,
-                    image: product10,
-                    imgOverlay: prodtctOverlay10,
-                    name: "Sunglasses",
-                    price: "5.00",
-                    oldPrice: "25.00",
-                },
-                {
-                    id: 11,
-                    image: product11,
-                    imgOverlay: prodtctOverlay11,
-                    name: "Loafer Shoes",
-                    price: "22.00",
-                    desc: "30% off",
-                },
-                {
-                    id: 12,
-                    image: product12,
-                    imgOverlay: prodtctOverlay12,
-                    name: "T-Shirts",
-                    price: "22.00",
-                    oldPrice: "25.00",
-                },
-                {
-                    id: 13,
-                    image: product13,
-                    imgOverlay: prodtctOverlay13,
-                    name: "Wooden Chair",
-                    price: "16.00",
-                    oldPrice: "21.00",
-                },
-                {
-                    id: 14,
-                    image: product14,
-                    imgOverlay: prodtctOverlay14,
-                    name: "Women Block Heels",
-                    price: "21.00",
-                    oldPrice: "25.00",
-                },
-                {
-                    id: 15,
-                    image: product15,
-                    imgOverlay: prodtctOverlay15,
-                    name: "T-Shirts",
-                    price: "22.00",
-                    desc: "30% off",
-                },
-            ],
+            pageSize: pageSize + 2,
+            products: [],
             sort: props?.props?.location?.state?.sort || props?.props?.location?.search.substr(6) || "LATEST",
-            topProducts: [
-                {
-                    image: product1,
-                    name: "T-Shirt",
-                    oldPrice: "$22.00",
-                    NewPrice: "$18.00 ",
-                },
-                {
-                    image: product3,
-                    name: "Watch",
-                    oldPrice: "$22.00",
-                    NewPrice: "$18.00 ",
-                },
-                {
-                    image: product6,
-                    name: "Coffee Cup",
-                    oldPrice: "$22.00",
-                    NewPrice: "$18.00 ",
-                },
-                {
-                    image: product8,
-                    name: "Wooden Stools",
-                    oldPrice: "$22.00",
-                    NewPrice: "$18.00 ",
-                },
-            ],
+
         };
     }
 
 
     onPaginationChange = (e) => {
         // console.log(e)
-        this.setState({current: e})
+        this.setState({current: e}, () => this.getList())
 
     }
 
     onSortChange = (e) => {
         e.preventDefault();
-        // console.log(e.target.value)
-        this.props?.props?.history?.push({
-            pathname: "/brands/"+this.state.id+"/products",
-            search: `${'?sort=' + e.target.value}`,
-            state: {
-                sort: `${ e.target.value}`
-            }
+        console.log(e.target.value)
+        // this.props?.props?.history?.push({
+        //     pathname: "/brands/" + this.state.id + "/products",
+        //     search: `${'?sort=' + e.target.value}`,
+        //     state: {
+        this.setState({
+            sort: e.target.value
+        }, () => this.getList())
+        // }
+        // })
+
+    }
+
+
+    getList = () => {
+
+        getBrandProducts(this.state.id, this.state.sort, this.state.current - 1, this.state.pageSize).then((res) => {
+            this.setState({
+                    products: res.data.products.content,
+                    name: res.data.name,
+                    pathItems: [...(this.state.pathItems.slice(0, 2)), {
+                        name: res.data.name, id: 3
+                    }]
+                }
+            )
+        }).catch(err => {
+
         })
+
     }
 
     componentDidMount() {
+        this.getList();
         window.addEventListener("scroll", this.scrollNavigation, true);
         // console.log(this)
         console.log(this.props.props.location.search)
@@ -265,7 +105,19 @@ class ShopProductsBrand extends Component {
     render() {
         const {history, location, search, state} = this.props
 
-        const {from, to, filter, sortByPrice, latest, oldest, categories,rate, asc,desc, select} = this.props.lang.lang
+        const {
+            from,
+            to,
+            filter,
+            sortByPrice,
+            latest,
+            oldest,
+            categories,
+            rate,
+            asc,
+            desc,
+            select
+        } = this.props.lang.lang
 
         return (
             <React.Fragment>
@@ -452,7 +304,7 @@ class ShopProductsBrand extends Component {
                                                         className="border rounded"
                                                         name="s"
                                                         id="s"
-                                                        placeholder={from+"..."}
+                                                        placeholder={from + "..."}
                                                     />
                                                 </div>
                                                 <div className={"mt-2"}>
@@ -461,7 +313,7 @@ class ShopProductsBrand extends Component {
                                                         className="border rounded"
                                                         name="s"
                                                         id="s"
-                                                        placeholder={to+"..."}
+                                                        placeholder={to + "..."}
 
                                                     />
                                                 </div>
@@ -784,7 +636,7 @@ class ShopProductsBrand extends Component {
                                 <Row className="align-items-center">
                                     <Col lg={8} md={7}>
                                         <div className="section-title">
-                                            <h5 className="mb-0">{this.state.total}{" "+from+" "}{(this.state.current - 1) * (this.state.pageSize) + 1}–{(this.state.current - 1) * (this.state.pageSize) + this.state.products.length} </h5>
+                                            <h5 className="mb-0">{this.state.total}{" " + from + " "}{(this.state.current - 1) * (this.state.pageSize) + 1}–{(this.state.current - 1) * (this.state.pageSize) + this.state.products.length} </h5>
                                         </div>
                                     </Col>
 
@@ -798,8 +650,8 @@ class ShopProductsBrand extends Component {
                                                         onChange={this.onSortChange}
                                                         defaultValue={this.state.sort}
                                                     >
+
                                                         <option value={"LATEST"}>{latest}</option>
-                                                        <option value={"OLDEST"}>{oldest}</option>
                                                         <option value={"RATE"}>{rate}</option>
                                                         <option value={"ASC"}>{asc}</option>
                                                         <option value={"DESC"}>{desc}</option>
@@ -819,6 +671,7 @@ class ShopProductsBrand extends Component {
 
                                     <Col xs="12" className={"mt-4 pt-2 justify-items-center text-center"}>
                                         <Pagination
+                                            hideOnSinglePage={true}
                                             current={this.state.current}
                                             pageSize={this.state.pageSize}
                                             total={this.state.total}
@@ -834,7 +687,8 @@ class ShopProductsBrand extends Component {
         );
     }
 }
+
 const mstp = state => state;
 
-export default connect(mstp,null)(ShopProductsBrand);
+export default connect(mstp, null)(ShopProductsBrand);
 
