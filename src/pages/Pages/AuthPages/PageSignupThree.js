@@ -35,7 +35,7 @@ class PageSignupThree extends Component {
             this.setState({
                 provinces: res?.data,
                 data: {
-                    provinceId: res?.data[0].id
+                    provinceId: res?.data[0]?.id
                 }
             }, () => this.getRegions())
         })
@@ -46,7 +46,7 @@ class PageSignupThree extends Component {
         console.log(this.state.data.provinceId)
         getRegionsByProvince(this.state.data.provinceId).then(res => {
             this.setState({
-                regionsList: res.data
+                regionsList: res?.data
             })
         }).catch()
     }

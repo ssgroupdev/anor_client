@@ -8,7 +8,7 @@ export let host = "http://localhost";
 export let port = "8081";
 
 export let token = getCookie(userAccessTokenName);
-export let imgUrl = `${host}:${port}/api/file/preview/`;
+export const imgUrl = `${host}:${port}/api/file/preview/`;
 export let langs = localStorage.getItem("lang") != null ? localStorage.getItem("lang") : "uz";
 
 export let headers = {

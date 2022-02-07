@@ -62,6 +62,9 @@ import single05 from "../../../assets/images/shop/product/single-5.jpg";
 import single06 from "../../../assets/images/shop/product/single-6.jpg";
 import {connect} from "react-redux";
 import ReactStars from "react-stars";
+import {getCategoryProducts} from "../../../server/config/web-site/client";
+import {getProductById} from "../../../server/config/web-site/product";
+import {imgUrl} from "../../../server/host";
 
 class ShopProductDetail extends Component {
     constructor(props) {
@@ -76,7 +79,7 @@ class ShopProductDetail extends Component {
                 {
                     id: 1,
                     image: product1,
-                    rate:5,imgOverlay: prodtctOverlay1,
+                    rate: 5, imgOverlay: prodtctOverlay1,
                     name: "Branded T-Shirt",
                     price: "16.00",
                     oldPrice: "21.00",
@@ -84,7 +87,7 @@ class ShopProductDetail extends Component {
                 {
                     id: 2,
                     image: product2,
-                    rate:5,imgOverlay: prodtctOverlay2,
+                    rate: 5, imgOverlay: prodtctOverlay2,
                     name: "Shopping Bag",
                     price: "21.00",
                     oldPrice: "25.00",
@@ -92,7 +95,7 @@ class ShopProductDetail extends Component {
                 {
                     id: 3,
                     image: product3,
-                    rate:5,imgOverlay: prodtctOverlay3,
+                    rate: 5, imgOverlay: prodtctOverlay3,
                     name: "Elegent Watch",
                     price: "5.00",
                     desc: "30% off",
@@ -100,7 +103,7 @@ class ShopProductDetail extends Component {
                 {
                     id: 4,
                     image: product4,
-                    rate:5,imgOverlay: prodtctOverlay4,
+                    rate: 5, imgOverlay: prodtctOverlay4,
                     name: "Casual Shoes",
                     price: "18.00",
                     oldPrice: "22.00",
@@ -108,14 +111,14 @@ class ShopProductDetail extends Component {
                 {
                     id: 5,
                     image: product5,
-                    rate:5,imgOverlay: prodtctOverlay5,
+                    rate: 5, imgOverlay: prodtctOverlay5,
                     name: "Earphones",
                     price: "3.00",
                 },
                 {
                     id: 6,
                     image: product6,
-                    rate:5,imgOverlay: prodtctOverlay6,
+                    rate: 5, imgOverlay: prodtctOverlay6,
                     name: "Elegent Mug",
                     price: "4.50",
                     oldPrice: "6.50",
@@ -123,7 +126,7 @@ class ShopProductDetail extends Component {
                 {
                     id: 7,
                     image: product7,
-                    rate:5,imgOverlay: prodtctOverlay7,
+                    rate: 5, imgOverlay: prodtctOverlay7,
                     name: "Sony Headphones",
                     price: "9.99",
                     desc: "20% off",
@@ -131,36 +134,10 @@ class ShopProductDetail extends Component {
                 {
                     id: 8,
                     image: product8,
-                    rate:5,imgOverlay: prodtctOverlay8,
+                    rate: 5, imgOverlay: prodtctOverlay8,
                     name: "Wooden Stools",
                     price: "22.00",
                     oldPrice: "25.00",
-                },
-            ],
-            topProducts: [
-                {
-                    image: product1,
-                    name: "T-Shirt",
-                    oldPrice: "$22.00",
-                    NewPrice: "$18.00 ",
-                },
-                {
-                    image: product3,
-                    name: "Watch",
-                    oldPrice: "$22.00",
-                    NewPrice: "$18.00 ",
-                },
-                {
-                    image: product6,
-                    name: "Coffee Cup",
-                    oldPrice: "$22.00",
-                    NewPrice: "$18.00 ",
-                },
-                {
-                    image: product8,
-                    name: "Wooden Stools",
-                    oldPrice: "$22.00",
-                    NewPrice: "$18.00 ",
                 },
             ],
             responsive: {
@@ -177,6 +154,7 @@ class ShopProductDetail extends Component {
             nav1: null,
             nav2: null,
             items: 1,
+            id: props.props?.match?.params?.id,
             activeTab: "1",
             name: "Branded T-Shirts",
             desc: "desc",
@@ -189,7 +167,7 @@ class ShopProductDetail extends Component {
                             value: "Oq"
                         },
                     ]
-                },  {
+                }, {
                     name: "Ko'rinish",
                     futures: [
                         {
@@ -198,8 +176,10 @@ class ShopProductDetail extends Component {
                         },
                     ]
                 },
-            ]
-        };
+            ],
+            images: []
+        }
+        ;
         this.addItem.bind(this);
         this.removeItem.bind(this);
         this.toggle = this.toggle.bind(this);
@@ -219,13 +199,39 @@ class ShopProductDetail extends Component {
         }
     };
 
+
+    getList = () => {
+
+        getProductById(this.state.id).then((res) => {
+            console.log(res.data)
+            this.setState({
+                //         products: res.data.products.content,
+                name: res.data.name,
+                desc: res.data.description,
+                cost: res.data.cost,
+                rate: res.data.rate,
+                isSale: res.data.isSale,
+                saleCost: res.data.saleCost,
+                images: res.data.images,
+                futureGroup: res.data.futures
+                //         subCategories: res.data.nestedChild
+            })
+        }).catch(err => {
+
+        })
+
+    }
+
+
     componentDidMount() {
+        this.getList();
         window.addEventListener("scroll", this.scrollNavigation, true);
         this.setState({
             nav1: this.slider1,
             nav2: this.slider2,
         });
     }
+
 
     // Make sure to remove the DOM listener when the component is unmounted.
     componentWillUnmount() {
@@ -243,11 +249,20 @@ class ShopProductDetail extends Component {
     };
 
     render() {
-        const {productOverview, description, addToCart, getShop, count1, relatedPro, send, future} = this.props.lang.lang;
+        const {
+            productOverview,
+            description,
+            addToCart,
+            getShop,
+            count1,
+            relatedPro,
+            send,
+            future
+        } = this.props.lang.lang;
         var settings = {
             autoplay: true,
             infinite: true,
-            autoplaySpeed: 1500,
+            autoplaySpeed: 10000,
             slidesToShow: 1,
             slidesToScroll: 1,
             fade: true,
@@ -258,7 +273,7 @@ class ShopProductDetail extends Component {
         const settings2 = {
             dots: false,
             infinite: true,
-            autoplaySpeed: 2000,
+            autoplaySpeed: 10000,
             autoplay: true,
             slidesToShow: 4,
             slidesToScroll: 2,
@@ -287,7 +302,7 @@ class ShopProductDetail extends Component {
                         slidesToScroll: 1
                     }
                 }
-                ]
+            ]
         };
 
         return (
@@ -322,178 +337,97 @@ class ShopProductDetail extends Component {
                                     asNavFor={this.state.nav2}
                                     ref={(slider) => (this.slider1 = slider)}
                                 >
-                                    <div>
-                                        <img
-                                            src={single01}
-                                            className="img-fluid rounded"
-                                            alt="alt"
-                                        />
-                                    </div>
-                                    <div>
-                                        <img
-                                            src={single02}
-                                            className="img-fluid rounded"
-                                            alt="alt"
-                                        />
-                                    </div>
-                                    <div>
-                                        <img
-                                            src={single03}
-                                            className="img-fluid rounded"
-                                            alt="alt"
-                                        />
-                                    </div>
-                                    <div>
-                                        <img
-                                            src={single04}
-                                            className="img-fluid rounded"
-                                            alt="alt"
-                                        />
-                                    </div>
-                                    <div>
-                                        <img
-                                            src={single05}
-                                            className="img-fluid rounded"
-                                            alt="alt"
-                                        />
-                                    </div>
-                                    <div>
-                                        <img
-                                            src={single06}
-                                            className="img-fluid rounded"
-                                            alt="alt"
-                                        />
-                                    </div>
+                                    {this.state.images.map(value => <div>
+                                            <img
+                                                src={imgUrl + value?.imageUrl}
+                                                className="img-fluid rounded"
+                                                alt="alt"
+                                            />
+                                        </div>
+                                    )}
+
                                 </Slider>
 
                                 {/* Slider thumbnails */}
                                 <Slider
                                     asNavFor={this.state.nav1}
                                     ref={(slider) => (this.slider2 = slider)}
-                                    slidesToShow={3}
+                                    slidesToShow={this.state.images.length > 2 ? 3 : 2}
                                     swipeToSlide={true}
                                     focusOnSelect={true}
                                 >
-                                    <div>
-                                        <img src={single01} className="img-fluid" alt=""/>
-                                    </div>
-                                    <div>
-                                        <img src={single02} className="img-fluid" alt=""/>
-                                    </div>
-                                    <div>
-                                        <img src={single03} className="img-fluid" alt=""/>
-                                    </div>
-                                    <div>
-                                        <img src={single04} className="img-fluid" alt=""/>
-                                    </div>
-                                    <div>
-                                        <img src={single05} className="img-fluid" alt=""/>
-                                    </div>
-                                    <div>
-                                        <img src={single06} className="img-fluid" alt=""/>
-                                    </div>
+                                    {this.state.images.map(value => <div>
+                                        <img src={imgUrl + value?.imageUrl} className="img-fluid" alt=""/>
+                                    </div>)}
+
                                 </Slider>
                             </Col>
 
                             <Col md={7} className="mt-4 mt-sm-0 pt-2 pt-sm-0">
                                 <div className="section-title ml-md-4">
                                     <h4 className="title">{this.state.name}</h4>
-                                    <h5 className="text-muted">
-                                        $21.00 <del className="text-danger ml-2">$25.00</del>{" "}
-                                    </h5>
-                                    <ul className="list-unstyled text-warning h5 mb-0">
-                                        <li className="list-inline-item mr-1">
-                                            <i className="mdi mdi-star"></i>
-                                        </li>
-                                        <li className="list-inline-item mr-1">
-                                            <i className="mdi mdi-star"></i>
-                                        </li>
-                                        <li className="list-inline-item mr-1">
-                                            <i className="mdi mdi-star"></i>
-                                        </li>
-                                        <li className="list-inline-item mr-1">
-                                            <i className="mdi mdi-star"></i>
-                                        </li>
-                                        <li className="list-inline-item">
-                                            <i className="mdi mdi-star"></i>
-                                        </li>
-                                    </ul>
+                                    {this.state.isSale ? <h5 className="text-muted">
+                                        {this.state.saleCost + " "}UZS
+                                        <del className="text-danger ml-2">{this.state.cost}</del>
+                                        {" "}UZS
+                                    </h5> : <h5 className="text-muted">
+                                        {this.state.cost + " "}UZS
+                                    </h5>}
+                                    <ul className="list-unstyled text-warning mb-0">
+                                        <ReactStars
+                                            count={this.state.rate}
+                                            edit={false}
+                                            size={23}
+                                            color1={"#f17425"}
+                                        />
 
-                                    <h5 className="mt-4 py-2">{productOverview}</h5>
-                                    <p className="text-muted">
-                                        {this.state.desc}
-                                    </p>
-
-                                    <ul className="list-unstyled feature-list text-muted">
-                                        <li>
-                                            <i>
-                                                <FeatherIcon
-                                                    icon="check-circle"
-                                                    className="fea icon-sm"
-                                                />
-                                            </i>{" "}
-                                            Digital Marketing Solutions for Tomorrow
-                                        </li>
-                                        <li>
-                                            <i>
-                                                <FeatherIcon
-                                                    icon="check-circle"
-                                                    className="fea icon-sm"
-                                                />
-                                            </i>{" "}
-                                            Our Talented &amp; Experienced Marketing Agency
-                                        </li>
-                                        <li>
-                                            <i>
-                                                <FeatherIcon
-                                                    icon="check-circle"
-                                                    className="fea icon-sm"
-                                                />
-                                            </i>{" "}
-                                            Create your own skin to match your brand
-                                        </li>
                                     </ul>
+                                    {/*<h5 className="mt-4 py-2">{productOverview}</h5>*/}
+                                    {/*<p className="text-muted">*/}
+                                    {/*    {this.state.desc}*/}
+                                    {/*</p>*/}
+
 
                                     <Row className="mt-4 pt-2">
-                                        <Col lg={6} xs={12}>
-                                            <div className="d-flex align-items-center">
-                                                <h6 className="mb-0">Your Size:</h6>
-                                                <ul className="list-unstyled mb-0 ml-3">
-                                                    <li className="list-inline-item">
-                                                        <Link
-                                                            to="#"
-                                                            className="btn btn-icon btn-soft-primary"
-                                                        >
-                                                            S
-                                                        </Link>
-                                                    </li>
-                                                    <li className="list-inline-item ml-1">
-                                                        <Link
-                                                            to="#"
-                                                            className="btn btn-icon btn-soft-primary"
-                                                        >
-                                                            M
-                                                        </Link>
-                                                    </li>
-                                                    <li className="list-inline-item ml-1">
-                                                        <Link
-                                                            to="#"
-                                                            className="btn btn-icon btn-soft-primary"
-                                                        >
-                                                            L
-                                                        </Link>
-                                                    </li>
-                                                    <li className="list-inline-item ml-1">
-                                                        <Link
-                                                            to="#"
-                                                            className="btn btn-icon btn-soft-primary"
-                                                        >
-                                                            XL
-                                                        </Link>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </Col>
+                                        {/*<Col lg={6} xs={12}>*/}
+                                        {/*    <div className="d-flex align-items-center">*/}
+                                        {/*        <h6 className="mb-0">Your Size:</h6>*/}
+                                        {/*        <ul className="list-unstyled mb-0 ml-3">*/}
+                                        {/*            <li className="list-inline-item">*/}
+                                        {/*                <Link*/}
+                                        {/*                    to="#"*/}
+                                        {/*                    className="btn btn-icon btn-soft-primary"*/}
+                                        {/*                >*/}
+                                        {/*                    S*/}
+                                        {/*                </Link>*/}
+                                        {/*            </li>*/}
+                                        {/*            <li className="list-inline-item ml-1">*/}
+                                        {/*                <Link*/}
+                                        {/*                    to="#"*/}
+                                        {/*                    className="btn btn-icon btn-soft-primary"*/}
+                                        {/*                >*/}
+                                        {/*                    M*/}
+                                        {/*                </Link>*/}
+                                        {/*            </li>*/}
+                                        {/*            <li className="list-inline-item ml-1">*/}
+                                        {/*                <Link*/}
+                                        {/*                    to="#"*/}
+                                        {/*                    className="btn btn-icon btn-soft-primary"*/}
+                                        {/*                >*/}
+                                        {/*                    L*/}
+                                        {/*                </Link>*/}
+                                        {/*            </li>*/}
+                                        {/*            <li className="list-inline-item ml-1">*/}
+                                        {/*                <Link*/}
+                                        {/*                    to="#"*/}
+                                        {/*                    className="btn btn-icon btn-soft-primary"*/}
+                                        {/*                >*/}
+                                        {/*                    XL*/}
+                                        {/*                </Link>*/}
+                                        {/*            </li>*/}
+                                        {/*        </ul>*/}
+                                        {/*    </div>*/}
+                                        {/*</Col>*/}
 
                                         <Col lg={6} xs={12} className="mt-4 mt-lg-0">
                                             <div className="d-flex shop-list align-items-center">
@@ -600,25 +534,16 @@ class ShopProductDetail extends Component {
 
                                 <TabContent className="mt-3" activeTab={this.state.activeTab}>
                                     <TabPane className="card border-0 fade show" tabId="1">
-                                        <p className="text-muted mb-0">
-                                            Due to its widespread use as filler text for layouts,
-                                            non-readability is of great importance: human perception
-                                            is tuned to recognize certain patterns and repetitions in
-                                            texts. If the distribution of letters and 'words' is
-                                            random, the reader will not be distracted from making a
-                                            neutral judgement on the visual impact and readability of
-                                            the typefaces (typography), or the distribution of text on
-                                            the page (layout or type area). For this reason, dummy
-                                            text usually consists of a more or less random series of
-                                            words or syllables.
+                                        <p className="text-muted mb-0" dangerouslySetInnerHTML={{__html: this.state.desc}}>
+                                            {/*{this.state.desc}*/}
                                         </p>
                                     </TabPane>
 
                                     <TabPane className="card border-0 fade show" tabId="2">
-                                          {
-                                                this.state.futureGroup.map((futureGr, key) => (
-                                                    <Table>
-                                                    <tbody><h3>{futureGr.name}</h3>
+                                        {
+                                            this.state?.futureGroup?.map((futureGr, key) => (
+                                                <Table key={futureGr.id}>
+                                                    <tbody><h3>{futureGr.futureGroupName}</h3>
                                                     {
                                                         futureGr?.futures?.map((item, index) => (
                                                             <tr key={index}>
@@ -629,9 +554,10 @@ class ShopProductDetail extends Component {
                                                             </tr>
                                                         ))
                                                     }
-                                                    </tbody>  </Table>
-                                                ))
-                                            }
+                                                    </tbody>
+                                                </Table>
+                                            ))
+                                        }
 
                                     </TabPane>
 

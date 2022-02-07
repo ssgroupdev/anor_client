@@ -9,6 +9,13 @@ export const getProducts = (sort="LATEST",page = 0, size = 10) => {
     }
     return HttpRequestHub(config);
 }
+export const getProductById = (id) => {
+    const config = {
+        method: 'GET',
+        url: `/client/product/language/${id}`,
+    }
+    return HttpRequestHub(config);
+}
 export const getMenus = () => {
     const config = {
         method: 'GET',

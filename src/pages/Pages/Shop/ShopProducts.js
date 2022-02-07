@@ -11,8 +11,6 @@ import {
 } from "reactstrap";
 import {Link, Redirect} from "react-router-dom";
 import Pagination from "rc-pagination"
-//Import Icons
-import FeatherIcon from "feather-icons-react";
 
 //Import components
 import PageBreadcrumb from "../../../components/Shared/PageBreadcrumb";
