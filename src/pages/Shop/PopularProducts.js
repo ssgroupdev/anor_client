@@ -28,7 +28,7 @@ class PopularProducts extends Component {
 
     getList = () => {
 
-        getProducts("POPULAR", 0, 4).then((res) => {
+        getProducts("POPULAR","", 0, 4).then((res) => {
             this.setState({products: res.data.content})
         }).catch(err => {
 

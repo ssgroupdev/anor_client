@@ -17,7 +17,7 @@ class Recommend extends Component {
 
   getList = () => {
 
-    getProducts("RECOMMEND",0,8).then((res)=>{
+    getProducts("RECOMMEND","",0,8).then((res)=>{
       this.setState({products: res.data.content})
     }).catch(err=>{
 

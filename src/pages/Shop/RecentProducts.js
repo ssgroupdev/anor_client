@@ -29,7 +29,7 @@ class RecentProducts extends Component {
 
   getList = () => {
 
-    getProducts("LATEST",0,4).then((res)=>{
+    getProducts("LATEST","",0,4).then((res)=>{
       this.setState({products: res.data.content})
     }).catch(err=>{
 

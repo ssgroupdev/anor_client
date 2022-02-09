@@ -2,10 +2,10 @@ import {HttpRequestHub} from '../../HttpRequestHub';
 
 const url = ""
 
-export const getProducts = (sort="LATEST",page = 0, size = 10) => {
+export const getProducts = (sort="LATEST",search=null,page = 0, size = 10) => {
     const config = {
         method: 'GET',
-        url: `/client/product/language/?sort=`+ sort +"&page="+ page + `&size=` + size,
+        url: `/client/product/language/?sort=`+ sort+ "&search="+search +"&page="+ page + `&size=` + size,
     }
     return HttpRequestHub(config);
 }

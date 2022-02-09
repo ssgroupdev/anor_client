@@ -55,6 +55,13 @@ export const getBrand = (page = 0, size = 10) => {
     }
     return HttpRequestHub(config);
 }
+export const getBanners = (page = 0, size = 20) => {
+    const config = {
+        method: 'GET',
+        url: `/client/banner/language/?page=` + page + `&size=` + size,
+    }
+    return HttpRequestHub(config);
+}
 
 export const getBrandById = (id) => {
     const config = {

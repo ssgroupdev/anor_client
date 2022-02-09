@@ -34,32 +34,6 @@ import PageBreadcrumb from "../../../components/Shared/PageBreadcrumb";
 import client1 from "../../../assets/images/client/01.jpg";
 import client2 from "../../../assets/images/client/02.jpg";
 
-//Import Images
-import product1 from "../../../assets/images/shop/product/s1.jpg";
-import product2 from "../../../assets/images/shop/product/s2.jpg";
-import product3 from "../../../assets/images/shop/product/s3.jpg";
-import product4 from "../../../assets/images/shop/product/s4.jpg";
-import product5 from "../../../assets/images/shop/product/s5.jpg";
-import product6 from "../../../assets/images/shop/product/s6.jpg";
-import product7 from "../../../assets/images/shop/product/s7.jpg";
-import product8 from "../../../assets/images/shop/product/s8.jpg";
-
-import prodtctOverlay1 from "../../../assets/images/shop/product/s-1.jpg";
-import prodtctOverlay2 from "../../../assets/images/shop/product/s-2.jpg";
-import prodtctOverlay3 from "../../../assets/images/shop/product/s-3.jpg";
-import prodtctOverlay4 from "../../../assets/images/shop/product/s-4.jpg";
-import prodtctOverlay5 from "../../../assets/images/shop/product/s-5.jpg";
-import prodtctOverlay6 from "../../../assets/images/shop/product/s-6.jpg";
-import prodtctOverlay7 from "../../../assets/images/shop/product/s-7.jpg";
-import prodtctOverlay8 from "../../../assets/images/shop/product/s-8.jpg";
-
-// import slider images
-import single01 from "../../../assets/images/shop/product/single-1.jpg";
-import single02 from "../../../assets/images/shop/product/single-2.jpg";
-import single03 from "../../../assets/images/shop/product/single-3.jpg";
-import single04 from "../../../assets/images/shop/product/single-4.jpg";
-import single05 from "../../../assets/images/shop/product/single-5.jpg";
-import single06 from "../../../assets/images/shop/product/single-6.jpg";
 import {connect} from "react-redux";
 import ReactStars from "react-stars";
 import {getCategoryProducts} from "../../../server/config/web-site/client";
@@ -76,69 +50,6 @@ class ShopProductDetail extends Component {
                 {id: 3, name: props.lang.lang.productDetail},
             ],
             products: [
-                {
-                    id: 1,
-                    image: product1,
-                    rate: 5, imgOverlay: prodtctOverlay1,
-                    name: "Branded T-Shirt",
-                    price: "16.00",
-                    oldPrice: "21.00",
-                },
-                {
-                    id: 2,
-                    image: product2,
-                    rate: 5, imgOverlay: prodtctOverlay2,
-                    name: "Shopping Bag",
-                    price: "21.00",
-                    oldPrice: "25.00",
-                },
-                {
-                    id: 3,
-                    image: product3,
-                    rate: 5, imgOverlay: prodtctOverlay3,
-                    name: "Elegent Watch",
-                    price: "5.00",
-                    desc: "30% off",
-                },
-                {
-                    id: 4,
-                    image: product4,
-                    rate: 5, imgOverlay: prodtctOverlay4,
-                    name: "Casual Shoes",
-                    price: "18.00",
-                    oldPrice: "22.00",
-                },
-                {
-                    id: 5,
-                    image: product5,
-                    rate: 5, imgOverlay: prodtctOverlay5,
-                    name: "Earphones",
-                    price: "3.00",
-                },
-                {
-                    id: 6,
-                    image: product6,
-                    rate: 5, imgOverlay: prodtctOverlay6,
-                    name: "Elegent Mug",
-                    price: "4.50",
-                    oldPrice: "6.50",
-                },
-                {
-                    id: 7,
-                    image: product7,
-                    rate: 5, imgOverlay: prodtctOverlay7,
-                    name: "Sony Headphones",
-                    price: "9.99",
-                    desc: "20% off",
-                },
-                {
-                    id: 8,
-                    image: product8,
-                    rate: 5, imgOverlay: prodtctOverlay8,
-                    name: "Wooden Stools",
-                    price: "22.00",
-                    oldPrice: "25.00",
-                },
             ],
             responsive: {
                 0: {
@@ -156,26 +67,9 @@ class ShopProductDetail extends Component {
             items: 1,
             id: props.props?.match?.params?.id,
             activeTab: "1",
-            name: "Branded T-Shirts",
-            desc: "desc",
+            name: "",
+            desc: "",
             futureGroup: [
-                {
-                    name: "Ko'rinish",
-                    futures: [
-                        {
-                            name: "Rangi",
-                            value: "Oq"
-                        },
-                    ]
-                }, {
-                    name: "Ko'rinish",
-                    futures: [
-                        {
-                            name: "Rangi",
-                            value: "Oq"
-                        },
-                    ]
-                },
             ],
             images: []
         }
@@ -213,7 +107,8 @@ class ShopProductDetail extends Component {
                 isSale: res.data.isSale,
                 saleCost: res.data.saleCost,
                 images: res.data.images,
-                futureGroup: res.data.futures
+                futureGroup: res.data.futureGroups,
+                products: res.data.products
                 //         subCategories: res.data.nestedChild
             })
         }).catch(err => {
@@ -534,7 +429,8 @@ class ShopProductDetail extends Component {
 
                                 <TabContent className="mt-3" activeTab={this.state.activeTab}>
                                     <TabPane className="card border-0 fade show" tabId="1">
-                                        <p className="text-muted mb-0" dangerouslySetInnerHTML={{__html: this.state.desc}}>
+                                        <p className="text-muted mb-0"
+                                           dangerouslySetInnerHTML={{__html: this.state.desc}}>
                                             {/*{this.state.desc}*/}
                                         </p>
                                     </TabPane>
@@ -543,11 +439,11 @@ class ShopProductDetail extends Component {
                                         {
                                             this.state?.futureGroup?.map((futureGr, key) => (
                                                 <Table key={futureGr.id}>
-                                                    <tbody><h3>{futureGr.futureGroupName}</h3>
+                                                    <tbody><h4>{futureGr.name}</h4>
                                                     {
                                                         futureGr?.futures?.map((item, index) => (
                                                             <tr key={index}>
-                                                                <td className={"future-col"}>{item.name}</td>
+                                                                <td className={"future-col"}>{item.futureGroupName}</td>
                                                                 <td className="text-muted future-col">
                                                                     {item.value}
                                                                 </td>
@@ -561,6 +457,9 @@ class ShopProductDetail extends Component {
 
                                     </TabPane>
 
+                                    {/*// this pane for comments
+                                    it will add in the future for comment or rate
+                                    */}
                                     <TabPane className="card border-0 fade show" tabId="3">
                                         <Row>
                                             <Col lg={6}>
@@ -859,33 +758,23 @@ class ShopProductDetail extends Component {
                             </Col>
                         </Row>
                     </Container>
-
-                    <Container className="mt-100 mt-60">
+                    {this.state.products?.length>0 &&
+                        <Container className="mt-100 mt-60">
                         <Row>
                             <Col xs={12}>
                                 <h5 className="mb-0">{relatedPro}</h5>
                             </Col>
 
-                            <Col xs={12} className="mt-4">
+                           <Col xs={12} className="mt-4">
                                 <Slider {...settings2} className="owl-carousel owl-theme">
-                                    {this.state.products.map((product, key) => (
+                                    {this.state.products?.map((product, key) => (
                                         <div key={key} style={{marginLeft: 5, marginRight: 5}}>
                                             <Card className="shop-list border-0 position-relative overflow-hidden m-2">
                                                 <div
                                                     className="shop-image position-relative overflow-hidden rounded shadow">
                                                     <Link to={"/shop-product-detail/" + product.id}>
                                                         <img
-                                                            src={product.image}
-                                                            className="img-fluid"
-                                                            alt="Landrick"
-                                                        />
-                                                    </Link>
-                                                    <Link
-                                                        to={"/shop-product-detail/" + product.id}
-                                                        className="overlay-work"
-                                                    >
-                                                        <img
-                                                            src={product.imgOverlay}
+                                                            src={imgUrl + product.imageUrl}
                                                             className="img-fluid"
                                                             alt="Landrick"
                                                         />
@@ -954,7 +843,7 @@ class ShopProductDetail extends Component {
                                 </Slider>
                             </Col>
                         </Row>
-                    </Container>
+                    </Container>}
                 </section>
             </React.Fragment>
         );

@@ -25,6 +25,7 @@ import {deleteCookie, getCookie} from "../../utils/useCookies";
 import {getUser} from "../../server/config/web-site/user";
 import {userAccessTokenName} from "../../constants/application";
 import {getMenus} from "../../server/config/web-site/client";
+import {getProducts} from "../../server/config/web-site/product";
 
 class Topbar extends Component {
     constructor(props) {
@@ -39,7 +40,8 @@ class Topbar extends Component {
             isScrollNav: true,
             modalLogout: false,
             isLang: localStorage.getItem("lang") === "uz",
-            isMinimize: window.innerWidth < 500
+            isMinimize: window.innerWidth < 500,
+            searchByKey: props.location?.state?.search != null ? props.location?.state?.search : ""
         };
         this.toggleLine = this.toggleLine.bind(this);
         this.openBlock.bind(this);
@@ -57,6 +59,18 @@ class Topbar extends Component {
         window.location.reload();
 
     };
+
+    onSearch = () => {
+        // console.log(this.props.history)
+        this.props.history.push({
+            pathname: "/products",
+            search: "?sort=RECOMMEND",
+            state: {
+                sort: "RATE",
+                search: this.state.searchByKey
+            }
+        })
+    }
 
     toggleWishlistModal = () => {
         this.setState((prevState) => ({
@@ -113,7 +127,7 @@ class Topbar extends Component {
 
     getNavbar = () => {
         getMenus().then(res => {
-            console.log(res);
+            // console.log(res);
             const links = res.data;
             let setLinks = [];
             let objs = {};
@@ -151,6 +165,10 @@ class Topbar extends Component {
     }
 
     componentDidMount() {
+        console.log(this.props)
+        this.setState({
+            searchByKey: this.props.location && this.props.location.state && this.props.location.state?.search != null ? this.props.location?.state?.search : ""
+        })
         this.getNavbar();
         var matchingMenuItem = null;
         var ul = document.getElementById("top-menu");
@@ -250,6 +268,7 @@ class Topbar extends Component {
 
     render() {
         const {search, account, searchDesc, logOut, ok, cancel, logOutDesc} = this.props.lang.lang;
+        const {searchByKey} = this.state;
         return (
             <React.Fragment>
                 {
@@ -263,17 +282,20 @@ class Topbar extends Component {
                                 </Link>
                             </div>
                             <div className="subcribe-form pt-2 d-inline-block">
-                                <Form>
+                                <Form onFinish={this.onSearch} defaultValue={searchByKey}>
                                     <FormGroup className="mb-0">
                                         <input
                                             type="text"
-                                            id="help"
-                                            name="name"
+                                            // id="help"
+                                            name="searchByKey"
                                             className="border bg-white rounded-pill shadow"
                                             required
                                             placeholder={searchDesc}
+                                            defaultValue={searchByKey}
+                                            onChange={(e) => this.setState({searchByKey: e.target.value})}
                                         />
-                                        <Button type="submit" color="primary" className="btn-pills">
+                                        <Button type="button" color="primary" onClick={this.onSearch}
+                                                className="btn-pills">
                                             {search}
                                         </Button>
                                     </FormGroup>
@@ -453,35 +475,57 @@ class Topbar extends Component {
                                 </li>
 
                                 <li className="list-inline-item mb-0" style={{zIndex: "1050000"}}>
-                                    <Dropdown
-                                        color="primary"
-                                        isOpen={this.state.dropdownIsOpen}
-                                        toggle={this.toggleDropdownIsOpen}
-                                    >
-                                        <DropdownToggle
-                                            type="button"
-                                            className="btn btn-icon btn-soft-primary"
+                                    {
+                                        this.state.isLogin ? <Dropdown
+                                            color="primary"
+                                            isOpen={this.state.dropdownIsOpen}
+                                            toggle={this.toggleDropdownIsOpen}
                                         >
-                                            <i className="uil uil-user align-middle icons"></i>
-                                        </DropdownToggle>
-                                        <DropdownMenu
-                                            direction="left"
-                                            className="dd-menu bg-white shadow rounded border-0 mt-3 py-3"
-                                            style={{width: "200px"}}
-                                        >
-                                            <Link className="dropdown-item text-dark" to="/shop-myaccount">
-                                                <i className="uil uil-user align-middle mr-1"></i>{" "}
-                                                {account}
-                                            </Link>
+                                            <DropdownToggle
+                                                type="button"
+                                                className="btn btn-icon btn-soft-primary"
+                                            >
+                                                <i className="uil uil-user align-middle icons"></i>
+                                            </DropdownToggle>
+                                            <DropdownMenu
+                                                direction="left"
+                                                className="dd-menu bg-white shadow rounded border-0 mt-3 py-3 "
+                                                style={{width: "200px", zIndex: "200000000"}}
+                                            >
 
-                                            <div className="dropdown-divider my-3 border-top"></div>
-                                            <div className=" dropdown-item text-dark" onClick={this.toggleLog}>
-                                                <i className="uil uil-sign-out-alt align-middle mr-1"></i>{" "}
-                                                {logOut}
-                                            </div>
 
-                                        </DropdownMenu>
-                                    </Dropdown>
+                                                <Link className="dropdown-item text-dark" to="/shop-myaccount"
+                                                      style={{zIndex: "1050"}}>
+                                                    <i className="uil uil-user align-middle mr-1"/>{" "}
+                                                    {account}
+                                                </Link>
+
+                                                <div className="dropdown-divider my-3 border-top"></div>
+                                                <div className=" dropdown-item text-dark" onClick={this.toggleLog}>
+                                                    <i className="uil uil-sign-out-alt align-middle mr-1"></i>{" "}
+                                                    {logOut}
+                                                </div>
+                                            </DropdownMenu>
+                                        </Dropdown> : <>
+
+                                            <NavLink to={"/login"} activeStyle={{color: "white!important"}}>
+                                                <button
+                                                    type="button"
+                                                    className="btn btn-icon btn-soft-primary"
+                                                >
+                                                    <i className="uil uil-sign-in-alt align-middle icons"/>
+                                                </button>
+                                            </NavLink>
+                                            <NavLink to={"/register"} activeStyle={{color: "white!important"}}>
+
+                                                <button
+                                                    type="button"
+                                                    className="btn btn-icon btn-soft-primary"
+                                                >
+                                                    <i className="uil uil-sign-out-alt align-middle icons"/>
+                                                </button>
+                                            </NavLink>
+                                        </>}
                                 </li>
 
                             </ul>
@@ -506,19 +550,19 @@ class Topbar extends Component {
                                                 {navLink.name}
                                             </Link>
                                             {/* <i className="mdi mdi-chevron-right mr-1"></i> */}
-                                            {navLink.child.length>0&&
+                                            {navLink.child.length > 0 &&
                                                 <div className={"pl-4 h-100"} onClick={(event) => {
-                                                event.preventDefault();
-                                                this.openBlock(navLink.id);
-                                            }}>
-                                                  <span className="menu-arrow "></span>
+                                                    event.preventDefault();
+                                                    this.openBlock(navLink.id);
+                                                }}>
+                                                    <span className="menu-arrow "></span>
 
-                                            </div> }
+                                                </div>}
                                             {navLink.isMegaMenu ? (
                                                 // if menu is mega menu(2 columns grid)
                                                 <ul
                                                     className={
-                                                        navLink.isOpenSubMenu && navLink.child.length>0
+                                                        navLink.isOpenSubMenu && navLink.child.length > 0
                                                             ? "submenu megamenu open"
                                                             : "submenu megamenu"
                                                     }
@@ -553,22 +597,23 @@ class Topbar extends Component {
                                                 // if menu is not mega menu(1grid)
                                                 <ul
                                                     className={
-                                                        navLink.isOpenSubMenu && navLink.child.length>0
+                                                        navLink.isOpenSubMenu && navLink.child.length > 0
                                                             ? "submenu open" : "submenu"
                                                     }
                                                 >
                                                     {navLink.child.map((childArray, childKey) =>
                                                             childArray.nestedChild ? (
                                                                 // sub menu item - Level 2
-                                                                <li className={childArray.nestedChild.length>0&&"has-submenu"} key={childKey}>
+                                                                <li className={childArray.nestedChild.length > 0 && "has-submenu"}
+                                                                    key={childKey}>
                                                                     <Link
                                                                         to={childArray.link}
                                                                         onMouseOver={(event) => {
                                                                             event.preventDefault();
-                                                                            return childArray.nestedChild.length>0?this.openNestedBlock(
+                                                                            return childArray.nestedChild.length > 0 ? this.openNestedBlock(
                                                                                 navLink.id,
                                                                                 childArray.id
-                                                                            ):null;
+                                                                            ) : null;
                                                                         }}
                                                                     >
                                                                         {childArray.name}{" "}
@@ -579,15 +624,15 @@ class Topbar extends Component {
                                     </span>
                                                                         ) : null}
                                                                     </Link>
-                                                                    {childArray.nestedChild.length>0&&
-                                                                    <div className={"pl-4  h-100"} onClick={(event) => {
-                                                                        event.preventDefault();
-                                                                        this.openNestedBlock(navLink.id, childArray.id);
-                                                                    }}>
+                                                                    {childArray.nestedChild.length > 0 &&
+                                                                        <div className={"pl-4  h-100"} onClick={(event) => {
+                                                                            event.preventDefault();
+                                                                            this.openNestedBlock(navLink.id, childArray.id);
+                                                                        }}>
 
-                                                                        <span className="submenu-arrow"></span>
+                                                                            <span className="submenu-arrow"></span>
 
-                                                                    </div>
+                                                                        </div>
                                                                     }
 
                                                                     <ul

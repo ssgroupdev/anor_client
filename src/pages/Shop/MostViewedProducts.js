@@ -17,7 +17,7 @@ class MostViewedProducts extends Component {
 
   getList = () => {
 
-    getProducts("RATE",0,4).then((res)=>{
+    getProducts("RATE","",0,4).then((res)=>{
       this.setState({products: res.data.content})
     }).catch(err=>{
 
