@@ -97,6 +97,7 @@ class ShopProducts extends Component {
             latest,
             oldest,
             categories,
+            products,
             rate,
             asc,
             desc,
@@ -109,7 +110,7 @@ class ShopProducts extends Component {
         return (
             <React.Fragment>
                 {/* breadcrumb */}
-                <PageBreadcrumb key={10000} title="All Products" pathItems={this.state.pathItems}/>
+                <PageBreadcrumb key={10000} title={products} pathItems={this.state.pathItems}/>
                 <div className="position-relative">
                     <div className="shape overflow-hidden text-white">
                         <svg

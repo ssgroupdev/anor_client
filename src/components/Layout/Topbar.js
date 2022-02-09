@@ -109,20 +109,14 @@ class Topbar extends Component {
     };
     getMe = () => {
 
-        getUser().then(res => {
-            this.setState({
-                user: {
-                    ...res.data,
-                    fullName: res.data.firstName + " " + res.data.lastName
-                },
-                isLogin: true
-            })
-        }).catch(err => {
-            this.setState({
-                    isLogin: false
-                }
-            )
+        this.setState({
+            user: {
+                ...this.props?.user?.user,
+                // fullName: res.data.firstName + " " + res.data.lastName
+            },
+            isLogin: this.props?.user?.user!==null
         })
+
     }
 
     getNavbar = () => {

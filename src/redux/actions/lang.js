@@ -1,6 +1,7 @@
 import uz from "./../uz.json"
 import ru from "./../ru.json"
 import {setHeaders} from "../../server/host";
+import {getUser} from "../../server/config/web-site/user";
 
 export const changeLang = (lang="uz") => {
 
@@ -14,5 +15,21 @@ export const changeLang = (lang="uz") => {
     return {
         type: "CHANGE_LANG",
         payload: change
+    }
+}
+
+export const setCurrentUser = () => {
+
+    let payload = null
+
+    getUser().then(res=>{
+        payload = res.data
+    }).catch(err=>{
+
+    })
+
+    return {
+        type: "SET_USER",
+        payload: payload
     }
 }

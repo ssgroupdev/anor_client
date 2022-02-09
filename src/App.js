@@ -17,9 +17,11 @@ import 'rc-pagination/assets/index.css';
 // Include Routes
 import routes from "./routes";
 import {bindActionCreators} from "redux";
-import {changeLang} from "./redux/actions/lang";
+import {changeLang, getCurrentUser, setCurrentUser} from "./redux/actions/lang";
 import {connect} from "react-redux";
 import {ToastContainer} from "react-toastify"
+import {getCookie} from "./utils/useCookies";
+import {token} from "./server/host";
 
 function withLayout(WrappedComponent) {
     // ...and returns another component...
@@ -45,7 +47,9 @@ class App extends Component {
     componentDidMount() {
 
         this.props.changeLang(this.state.isLang ? "uz" : "ru")
-
+        if (token!==null){
+            this.props.setCurrentUser();
+        }
     }
 
 
@@ -95,7 +99,7 @@ class App extends Component {
     }
 }
 
-const mdtp = dispatch => bindActionCreators({changeLang}, dispatch);
+const mdtp = dispatch => bindActionCreators({changeLang, setCurrentUser}, dispatch);
 const mstp = state => state
 export default connect(mstp, mdtp)(withRouter(App));
 

@@ -4,11 +4,27 @@ import {Link} from "react-router-dom";
 import FeatherIcon from "feather-icons-react";
 import ReactStars from 'react-stars'
 import {host, imgUrl, port} from "../../server/host";
-// import {imgUrl} from "../../server/host";
+import {addProductToBaskets} from "../../server/config/web-site/basket";
+import {connect} from "react-redux";
+import {toast} from "react-toastify";
 
 const ProductGrid = (props) => {
+
     const {product} = props;
-    const {key, id, images, imgOverlay, name, desc, cost, saleCost,isSale, rate} = props.product;
+
+    const addProductToBasket = () => {
+
+        const data = {productId: product.id, count: 1}
+
+        addProductToBaskets(data).then(res => {
+            toast.success(props.lang.lang.finish)
+        }).catch(err => {
+        });
+
+    }
+
+    const {key, id, images, imgOverlay, name, desc, cost, saleCost, isSale, rate} = props.product;
+
     return (
         <Col key={key} lg={props.col ? props.col : 3} md={6} xs={12} className="mt-4 pt-2">
             <Card className="shop-list border-0 position-relative overflow-hidden">
@@ -17,7 +33,7 @@ const ProductGrid = (props) => {
                         <img
 
                             width={"100%"}
-                            src={`${host}:${port}/api/file/preview/${product.images&&product.images[0].imageUrl}`}
+                            src={`${host}:${port}/api/file/preview/${product.images && product.images[0].imageUrl}`}
                             className="img-fluid"
                             alt="shop"
                             // height={"200px"}
@@ -35,8 +51,10 @@ const ProductGrid = (props) => {
                             </Link>
                         </li>
                         <li className="mt-2">
-                            <Link
-                                to="shop-cart"
+                            <button
+                                type={"button"}
+                                // to="shop-cart"
+                                onClick={() => addProductToBasket()}
                                 className="btn btn-icon btn-pills btn-soft-warning"
                             >
                                 <i>
@@ -45,7 +63,7 @@ const ProductGrid = (props) => {
                                         className="icons"
                                     />
                                 </i>
-                            </Link>
+                            </button>
                         </li>
                     </ul>
                 </div>
@@ -85,5 +103,5 @@ const ProductGrid = (props) => {
         </Col>
     );
 };
-
-export default ProductGrid;
+const mstp = state => state
+export default connect(mstp,null)(ProductGrid);
