@@ -797,8 +797,8 @@ class ShopProducts extends Component {
                                                         defaultValue={this.state.sort}
                                                     >
                                                         <option value={"LATEST"}>{latest}</option>
-                                                        <option value={"OLDEST"}>{oldest}</option>
-                                                        <option value={"RATE"}>{rate}</option>
+                                                        {/*<option value={"OLDEST"}>{oldest}</option>*/}
+                                                        {/*<option value={"RATE"}>{rate}</option>*/}
                                                         <option value={"ASC"}>{asc}</option>
                                                         <option value={"DESC"}>{desc}</option>
 

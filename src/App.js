@@ -47,8 +47,8 @@ class App extends Component {
     componentDidMount() {
 
         this.props.changeLang(this.state.isLang ? "uz" : "ru")
-        if (token!==null){
-            this.props.setCurrentUser();
+        if (token!==null && this.props?.user?.user===null){
+            this.props.setCurrentUser()
         }
     }
 

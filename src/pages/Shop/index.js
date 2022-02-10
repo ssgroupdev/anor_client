@@ -52,7 +52,7 @@ class Index extends Component {
           <Recommend />
 
           {/*by rate*/}
-          <MostViewedProducts />
+          {/*<MostViewedProducts />*/}
 
           {/*  isNew*/}
           <RecentProducts />

@@ -37,12 +37,13 @@ import {
     updateUserAddress
 } from "../../../server/config/web-site/user";
 import {TOKEN} from "../../../utils/constants";
-import {axiosInstance, imgUrl} from "../../../server/host";
+import {axiosInstance, imgUrl, token} from "../../../server/host";
 import {deleteCookie, getCookie} from "../../../utils/useCookies";
 import {userAccessTokenName} from "../../../constants/application";
 import {getProvince, getRegionsByProvince, register} from "../../../server/config/web-site/client";
 import {toast} from "react-toastify";
 import {createFile} from "../../../server/config/web-site/file";
+import {setCurrentUser} from "../../../redux/actions/lang";
 
 class ShopMyAccount extends Component {
     constructor(props) {
@@ -144,38 +145,10 @@ class ShopMyAccount extends Component {
         }
     };
 
-    getMe = () => {
-
-        this.setState({
-            user: {
-                ...this.props.user?.user,
-                fullName: this.props.user?.user?.firstName + " " + this.props.user?.user?.lastName
-            },
-            address: {
-                ...this.props.user?.user?.address
-            }
-        }, () => {
-            if (this.props.user?.user === null) {
-
-                this.props.props.history.push("/login")
-            }
-        })
-
-    }
-
     componentDidMount() {
 
-        if (getCookie(userAccessTokenName) != null) {
-
-            this.getMe();
-
-        } else {
-
-            this.props.props.history.push("/login")
-
-        }
-
         this.getList();
+
     }
 
     handleValidSubmitAddress = (event, values) => {
@@ -924,5 +897,5 @@ class ShopMyAccount extends Component {
 }
 
 const mstp = state => state;
-export default connect(mstp, null)(ShopMyAccount);
+export default connect(mstp, {setCurrentUser})(ShopMyAccount);
 

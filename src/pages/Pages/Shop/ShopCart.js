@@ -16,6 +16,7 @@ class ShopCart extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            isLogin: false,
             pathItems: [
                 //id must required
                 {id: 1, name: props.lang.lang.index, link: "/"},
@@ -60,7 +61,7 @@ class ShopCart extends Component {
 
     editProductToBasket = (id, itemId, count = 1) => {
 
-        const data = {id: id, productId: itemId, count: (count - 1) > 0 ?(count - 1) : 1}
+        const data = {id: id, productId: itemId, count: (count - 1) > 0 ? (count - 1) : 1}
 
         editBasket(data).then(res => {
             this.calculationTotal();
@@ -98,9 +99,19 @@ class ShopCart extends Component {
 
     };
 
+    getNotLoginCart = () => {
+        this.setState({
+            items: this.props?.basket?.basket
+        })
+    }
+
     componentDidMount() {
+        if (this.props?.user?.user === null) {
+            this.setState({isLogin: true}, this.getNotLoginCart())
+        } else {
+            this.calculationTotal();
+        }
         window.addEventListener("scroll", this.scrollNavigation, true);
-        this.calculationTotal();
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -203,7 +214,7 @@ class ShopCart extends Component {
                                                         <h6 className="mb-0 ml-3">{item.productName}</h6>
                                                     </div>
                                                 </td>
-                                                <td className="text-center">{item.cost}{" " + item.cur}</td>
+                                                <td className="text-center">{item.cost}{" UZS"}</td>
                                                 <td className="text-center">
                                                     <Input
                                                         type="button"
@@ -231,7 +242,7 @@ class ShopCart extends Component {
                                                     />
                                                 </td>
                                                 <td className="text-center font-weight-bold">
-                                                    {item.count * item.cost}{" " + item.cur}
+                                                    {item.count * item.cost}{" UZS" }
                                                 </td>
                                             </tr>
                                         ))}

@@ -21,6 +21,7 @@ import {connect} from "react-redux";
 import {loginUser} from "../../../server/config/authentication";
 import {getCookie, setCookie} from "../../../utils/useCookies";
 import {userAccessTokenName} from "../../../constants/application.js";
+import {setProduct} from "../../../redux/actions/lang";
 
 class PageLoginThree extends Component {
 
@@ -41,15 +42,10 @@ class PageLoginThree extends Component {
     handleValidSubmit = (event, values) => {
         loginUser(values).then(res => {
 
-                setCookie(userAccessTokenName, res.data.token);
-                console.log(getCookie(userAccessTokenName));
-                this.props.history.push("/shop-myaccount")
-                window.location.reload();
-            // } else {
-            //     localStorage.setItem(TOKEN, null);
-            //     this.errorLogin();
-            // }
-        }).catch(err => {
+            setCookie(userAccessTokenName, res.data.token);
+            this.props.history.push("/shop-myaccount")
+            window.location.reload();
+          }).catch(err => {
 
             setCookie(userAccessTokenName, null)
         })
@@ -181,4 +177,4 @@ class PageLoginThree extends Component {
 
 const mstp = state => state
 
-export default connect(mstp, null)(PageLoginThree);
+export default connect(mstp, {setProduct})(PageLoginThree);

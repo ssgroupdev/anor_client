@@ -39,6 +39,8 @@ import ReactStars from "react-stars";
 import {getCategoryProducts} from "../../../server/config/web-site/client";
 import {getProductById} from "../../../server/config/web-site/product";
 import {imgUrl} from "../../../server/host";
+import {addProductToBaskets} from "../../../server/config/web-site/basket";
+import {toast} from "react-toastify";
 
 class ShopProductDetail extends Component {
     constructor(props) {
@@ -100,6 +102,7 @@ class ShopProductDetail extends Component {
             console.log(res.data)
             this.setState({
                 //         products: res.data.products.content,
+                id: res.data.id,
                 name: res.data.name,
                 desc: res.data.description,
                 cost: res.data.cost,
@@ -126,6 +129,17 @@ class ShopProductDetail extends Component {
             nav2: this.slider2,
         });
     }
+    addProductToBasket = (count) => {
+
+        const data = {productId: this.state.id, count: count}
+
+        addProductToBaskets(data).then(res => {
+            toast.success(this.props.lang.lang.finish)
+        }).catch(err => {
+        });
+
+    }
+
 
 
     // Make sure to remove the DOM listener when the component is unmounted.
@@ -268,15 +282,15 @@ class ShopProductDetail extends Component {
                                     </h5> : <h5 className="text-muted">
                                         {this.state.cost + " "}UZS
                                     </h5>}
-                                    <ul className="list-unstyled text-warning mb-0">
-                                        <ReactStars
-                                            count={this.state.rate}
-                                            edit={false}
-                                            size={23}
-                                            color1={"#f17425"}
-                                        />
+                                    {/*<ul className="list-unstyled text-warning mb-0">*/}
+                                    {/*    <ReactStars*/}
+                                    {/*        count={this.state.rate}*/}
+                                    {/*        edit={false}*/}
+                                    {/*        size={23}*/}
+                                    {/*        color1={"#f17425"}*/}
+                                    {/*    />*/}
 
-                                    </ul>
+                                    {/*</ul>*/}
                                     {/*<h5 className="mt-4 py-2">{productOverview}</h5>*/}
                                     {/*<p className="text-muted">*/}
                                     {/*    {this.state.desc}*/}
@@ -361,9 +375,9 @@ class ShopProductDetail extends Component {
                                         <Link to="#" className="btn btn-primary">
                                             {getShop}
                                         </Link>
-                                        <Link to="shop-cart" className="btn btn-soft-primary ml-2">
+                                        <button type={"button"} onClick={() => this.addProductToBasket(this.state.items)} className="btn btn-soft-primary ml-2">
                                             {addToCart}
-                                        </Link>
+                                        </button>
                                     </div>
                                 </div>
                             </Col>

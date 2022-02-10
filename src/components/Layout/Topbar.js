@@ -19,7 +19,7 @@ import shop2 from "../../assets/images/shop/product/s-2.jpg";
 import shop3 from "../../assets/images/shop/product/s-3.jpg";
 import NavbarButtons from "../Shared/NavbarButtons";
 import {bindActionCreators} from "redux";
-import {changeLang} from "../../redux/actions/lang";
+import {changeLang, setCurrentUser} from "../../redux/actions/lang";
 import {connect} from "react-redux";
 import {deleteCookie, getCookie} from "../../utils/useCookies";
 import {getUser} from "../../server/config/web-site/user";
@@ -109,12 +109,19 @@ class Topbar extends Component {
     };
     getMe = () => {
 
-        this.setState({
-            user: {
-                ...this.props?.user?.user,
-                // fullName: res.data.firstName + " " + res.data.lastName
-            },
-            isLogin: this.props?.user?.user!==null
+        getUser().then(res => {
+            this.setState({
+                user: {
+                    ...res.data,
+                    fullName: res.data?.firstName + " " + res.data?.lastName
+                },
+                address: {
+                    ...res.data?.address
+                }
+            }, () => {
+           })
+        }).catch(err => {
+            this.props.history.push("/")
         })
 
     }
@@ -154,12 +161,11 @@ class Topbar extends Component {
                 catLinks: setLinks
             })
         }).catch(err => {
-            // this.props.history.push("/page-error")
+
         })
     }
 
     componentDidMount() {
-        console.log(this.props)
         this.setState({
             searchByKey: this.props.location && this.props.location.state && this.props.location.state?.search != null ? this.props.location?.state?.search : ""
         })
@@ -195,6 +201,7 @@ class Topbar extends Component {
         }
 
         if (getCookie(userAccessTokenName) != null) {
+
             this.getMe();
 
         } else {
@@ -309,7 +316,7 @@ class Topbar extends Component {
                                     </Button>
 
                                 </li>
-                                <li className="list-inline-item mb-0 pr-1">
+                                {this.state.isLogin && <li className="list-inline-item mb-0 pr-1">
                                     <Dropdown
                                         isOpen={this.state.dropdownOpenShop}
                                         toggle={this.toggleDropdownShop}
@@ -324,7 +331,7 @@ class Topbar extends Component {
                                         </Link>
                                     </Dropdown>
                                 </li>
-
+                                }
                                 <li className="list-inline-item mb-0" style={{zIndex: "500"}}>
 
                                     {
@@ -452,7 +459,7 @@ class Topbar extends Component {
 
 
                                 </li>
-                                <li className="list-inline-item mb-0 pr-1">
+                                {this.state.isLogin && <li className="list-inline-item mb-0 pr-1">
                                     <Dropdown
                                         isOpen={this.state.dropdownOpenShop}
                                         toggle={this.toggleDropdownShop}
@@ -466,7 +473,7 @@ class Topbar extends Component {
                                             </DropdownToggle>
                                         </Link>
                                     </Dropdown>
-                                </li>
+                                </li>}
 
                                 <li className="list-inline-item mb-0" style={{zIndex: "1050000"}}>
                                     {
@@ -701,6 +708,6 @@ class Topbar extends Component {
     }
 }
 
-const mdtp = dispatch => bindActionCreators({changeLang}, dispatch);
+const mdtp = dispatch => bindActionCreators({changeLang, setCurrentUser}, dispatch);
 const mstp = state => state;
 export default connect(mstp, mdtp)(withRouter(Topbar));

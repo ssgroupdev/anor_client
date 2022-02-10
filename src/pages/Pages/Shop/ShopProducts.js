@@ -640,7 +640,7 @@ class ShopProducts extends Component {
                                                     >
 
                                                         <option value={"LATEST"}>{latest}</option>
-                                                        <option value={"RATE"}>{rate}</option>
+                                                        {/*<option value={"RATE"}>{rate}</option>*/}
                                                         <option value={"ASC"}>{asc}</option>
                                                         <option value={"DESC"}>{desc}</option>
 
