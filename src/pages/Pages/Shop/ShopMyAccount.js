@@ -148,6 +148,7 @@ class ShopMyAccount extends Component {
     componentDidMount() {
 
         this.getList();
+        this.getMe();
 
     }
 
@@ -169,6 +170,27 @@ class ShopMyAccount extends Component {
             this.error();
         })
     };
+
+    getMe = () => {
+
+        getUser().then(res => {
+            this.setState({
+                user: {
+                    ...res.data,
+                    fullName: res.data?.firstName + " " + res.data?.lastName
+                },
+                address: {
+                    ...res.data?.address
+                }
+            }, () => {
+            })
+        }).catch(err => {
+            deleteCookie(userAccessTokenName)
+            this.props.props.history.push("/")
+        })
+
+    }
+
 
     handleValidSubmitPassword = (event, values) => {
 

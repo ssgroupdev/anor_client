@@ -121,7 +121,11 @@ class Topbar extends Component {
             }, () => {
            })
         }).catch(err => {
-            this.props.history.push("/")
+            deleteCookie(userAccessTokenName)
+            this.setState({
+                isLogin: false
+            })
+            // this.props.history.push("/")
         })
 
     }
