@@ -136,6 +136,7 @@ class ShopProductDetail extends Component {
         addProductToBaskets(data).then(res => {
             toast.success(this.props.lang.lang.finish)
         }).catch(err => {
+
         });
 
     }
