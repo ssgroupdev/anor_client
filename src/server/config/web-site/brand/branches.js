@@ -14,3 +14,10 @@ export const getBranchId = (id) => {
     }
     return HttpRequestHub(config);
 }
+export const getBranchProductByProductId = (id) => {
+    const config = {
+        method: 'GET',
+        url: `/client/branch-product/language/`+ id,
+    }
+    return HttpRequestHub(config);
+}

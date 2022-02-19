@@ -173,6 +173,7 @@ class ShopMyAccount extends Component {
 
     getMe = () => {
 
+        // console.log(getCookie(userAccessTokenName))
         getUser().then(res => {
             this.setState({
                 user: {
@@ -185,6 +186,7 @@ class ShopMyAccount extends Component {
             }, () => {
             })
         }).catch(err => {
+            console.log(getCookie(userAccessTokenName))
             deleteCookie(userAccessTokenName)
             this.props.props.history.push("/")
         })
@@ -239,7 +241,6 @@ class ShopMyAccount extends Component {
     }
 
     getRegions = () => {
-        console.log(this.state.data.provinceId)
         getRegionsByProvince(this.state.data.provinceId).then(res => {
             this.setState({
                 regionsList: res.data

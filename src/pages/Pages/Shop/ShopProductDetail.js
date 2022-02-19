@@ -47,12 +47,10 @@ class ShopProductDetail extends Component {
         super(props);
         this.state = {
             pathItems: [
-                //id must required
                 {id: 1, name: props.lang.lang.index, link: "/"},
                 {id: 3, name: props.lang.lang.productDetail},
             ],
-            products: [
-            ],
+            products: [],
             responsive: {
                 0: {
                     items: 1,
@@ -71,9 +69,9 @@ class ShopProductDetail extends Component {
             activeTab: "1",
             name: "",
             desc: "",
-            futureGroup: [
-            ],
-            images: []
+            futureGroup: [],
+            images: [],
+            branchProductId: new URLSearchParams(props.props.location.search).get("branchProduct")
         }
         ;
         this.addItem.bind(this);
@@ -98,21 +96,19 @@ class ShopProductDetail extends Component {
 
     getList = () => {
 
-        getProductById(this.state.id).then((res) => {
-            console.log(res.data)
+        getProductById(this.state.id, (this.state.branchProductId) !== 'undefined' ? this.state.branchProductId : null).then((res) => {
             this.setState({
-                //         products: res.data.products.content,
                 id: res.data.id,
                 name: res.data.name,
                 desc: res.data.description,
-                cost: res.data.cost,
+                cost: res.data.branch?.price?.price,
+                oldPrice: res.data.branch?.price?.oldPrice,
+                branchName: res.data.branch?.name,
                 rate: res.data.rate,
-                isSale: res.data.isSale,
-                saleCost: res.data.saleCost,
                 images: res.data.images,
                 futureGroup: res.data.futureGroups,
-                products: res.data.products
-                //         subCategories: res.data.nestedChild
+                products: res.data.products,
+                branch: res.data.branch
             })
         }).catch(err => {
 
@@ -127,11 +123,13 @@ class ShopProductDetail extends Component {
         this.setState({
             nav1: this.slider1,
             nav2: this.slider2,
+            branchProductId: new URLSearchParams(this.props?.props?.location?.search).get("branchProduct")
         });
     }
+
     addProductToBasket = (count) => {
 
-        const data = {productId: this.state.id, count: count}
+        const data = {productId: this.state.id, branchProductId: this.state.branchProductId, count: count}
 
         addProductToBaskets(data).then(res => {
             toast.success(this.props.lang.lang.finish)
@@ -141,9 +139,6 @@ class ShopProductDetail extends Component {
 
     }
 
-
-
-    // Make sure to remove the DOM listener when the component is unmounted.
     componentWillUnmount() {
         window.removeEventListener("scroll", this.scrollNavigation, true);
     }
@@ -276,13 +271,15 @@ class ShopProductDetail extends Component {
                             <Col md={7} className="mt-4 mt-sm-0 pt-2 pt-sm-0">
                                 <div className="section-title ml-md-4">
                                     <h4 className="title">{this.state.name}</h4>
-                                    {this.state.isSale ? <h5 className="text-muted">
-                                        {this.state.saleCost + " "}UZS
-                                        <del className="text-danger ml-2">{this.state.cost}</del>
-                                        {" "}UZS
-                                    </h5> : <h5 className="text-muted">
-                                        {this.state.cost + " "}UZS
-                                    </h5>}
+                                    {this.state.branch !== null ? (this.state.oldPrice > this.state.cost ?
+                                            <h5 className="text-muted">
+                                                {this.state.cost + " "}UZS
+                                                <del className="text-danger ml-2"
+                                                     style={{fontSize: "16px"}}>{"  " + this.state.oldPrice}{" "}UZS</del>
+                                            </h5> : <h5 className="text-muted">
+                                                {this.state.cost + " "}UZS
+                                            </h5>) :
+                                        <h5 className="text-danger">{this.props.lang.lang.noResidue}</h5>}
                                     {/*<ul className="list-unstyled text-warning mb-0">*/}
                                     {/*    <ReactStars*/}
                                     {/*        count={this.state.rate}*/}
@@ -293,93 +290,22 @@ class ShopProductDetail extends Component {
 
                                     {/*</ul>*/}
                                     {/*<h5 className="mt-4 py-2">{productOverview}</h5>*/}
-                                    {/*<p className="text-muted">*/}
-                                    {/*    {this.state.desc}*/}
-                                    {/*</p>*/}
+                                    {this.state.branch !== null ? <p className="text-muted text-right">
+                                        {this.props.lang.lang.store + ": " + this.state.branchName}
+                                    </p> : null
+                                    }
 
-
-                                    <Row className="mt-4 pt-2">
-                                        {/*<Col lg={6} xs={12}>*/}
-                                        {/*    <div className="d-flex align-items-center">*/}
-                                        {/*        <h6 className="mb-0">Your Size:</h6>*/}
-                                        {/*        <ul className="list-unstyled mb-0 ml-3">*/}
-                                        {/*            <li className="list-inline-item">*/}
-                                        {/*                <Link*/}
-                                        {/*                    to="#"*/}
-                                        {/*                    className="btn btn-icon btn-soft-primary"*/}
-                                        {/*                >*/}
-                                        {/*                    S*/}
-                                        {/*                </Link>*/}
-                                        {/*            </li>*/}
-                                        {/*            <li className="list-inline-item ml-1">*/}
-                                        {/*                <Link*/}
-                                        {/*                    to="#"*/}
-                                        {/*                    className="btn btn-icon btn-soft-primary"*/}
-                                        {/*                >*/}
-                                        {/*                    M*/}
-                                        {/*                </Link>*/}
-                                        {/*            </li>*/}
-                                        {/*            <li className="list-inline-item ml-1">*/}
-                                        {/*                <Link*/}
-                                        {/*                    to="#"*/}
-                                        {/*                    className="btn btn-icon btn-soft-primary"*/}
-                                        {/*                >*/}
-                                        {/*                    L*/}
-                                        {/*                </Link>*/}
-                                        {/*            </li>*/}
-                                        {/*            <li className="list-inline-item ml-1">*/}
-                                        {/*                <Link*/}
-                                        {/*                    to="#"*/}
-                                        {/*                    className="btn btn-icon btn-soft-primary"*/}
-                                        {/*                >*/}
-                                        {/*                    XL*/}
-                                        {/*                </Link>*/}
-                                        {/*            </li>*/}
-                                        {/*        </ul>*/}
-                                        {/*    </div>*/}
-                                        {/*</Col>*/}
-
-                                        <Col lg={6} xs={12} className="mt-4 mt-lg-0">
-                                            <div className="d-flex shop-list align-items-center">
-                                                <h6 className="mb-0">{count1 + ":"}</h6>
-                                                <div className="ml-3">
-                                                    <Input
-                                                        type="button"
-                                                        value="-"
-                                                        onClick={this.removeItem}
-                                                        className="minus btn btn-icon btn-soft-primary font-weight-bold"
-                                                        readOnly
-                                                    />
-                                                    <Input
-                                                        type="text"
-                                                        step="1"
-                                                        min="1"
-                                                        name="quantity"
-                                                        value={this.state.items}
-                                                        title="Qty"
-                                                        readOnly
-                                                        className="btn btn-icon btn-soft-primary font-weight-bold ml-1 mr-1"
-                                                    />
-                                                    <Input
-                                                        type="button"
-                                                        value="+"
-                                                        onClick={this.addItem}
-                                                        className="plus btn btn-icon btn-soft-primary font-weight-bold"
-                                                        readOnly
-                                                    />
-                                                </div>
-                                            </div>
-                                        </Col>
-                                    </Row>
-
+                                    { this.state.branch !== null ?
                                     <div className="mt-4 pt-2">
                                         <Link to="#" className="btn btn-primary">
                                             {getShop}
                                         </Link>
-                                        <button type={"button"} onClick={() => this.addProductToBasket(this.state.items)} className="btn btn-soft-primary ml-2">
+                                        <button type={"button"}
+                                                onClick={() => this.addProductToBasket(this.state.items)}
+                                                className="btn btn-soft-primary ml-2">
                                             {addToCart}
                                         </button>
-                                    </div>
+                                    </div>:null}
                                 </div>
                             </Col>
                         </Row>
@@ -773,92 +699,93 @@ class ShopProductDetail extends Component {
                             </Col>
                         </Row>
                     </Container>
-                    {this.state.products?.length>0 &&
+                    {this.state.products?.length > 0 &&
                         <Container className="mt-100 mt-60">
-                        <Row>
-                            <Col xs={12}>
-                                <h5 className="mb-0">{relatedPro}</h5>
-                            </Col>
+                            <Row>
+                                <Col xs={12}>
+                                    <h5 className="mb-0">{relatedPro}</h5>
+                                </Col>
 
-                           <Col xs={12} className="mt-4">
-                                <Slider {...settings2} className="owl-carousel owl-theme">
-                                    {this.state.products?.map((product, key) => (
-                                        <div key={key} style={{marginLeft: 5, marginRight: 5}}>
-                                            <Card className="shop-list border-0 position-relative overflow-hidden m-2">
-                                                <div
-                                                    className="shop-image position-relative overflow-hidden rounded shadow">
-                                                    <Link to={"/shop-product-detail/" + product.id}>
-                                                        <img
-                                                            src={imgUrl + product.imageUrl}
-                                                            className="img-fluid"
-                                                            alt="Landrick"
-                                                        />
-                                                    </Link>
-                                                    <ul className="list-unstyled shop-icons">
-
-                                                        <li className="mt-2">
-                                                            <Link
-                                                                to={"/shop-product-detail/" + product.id}
-                                                                className="btn btn-icon btn-pills btn-soft-primary"
-                                                            >
-                                                                <i>
-                                                                    <FeatherIcon icon="eye" className="icons"/>
-                                                                </i>
-                                                            </Link>
-                                                        </li>
-                                                        <li className="mt-2">
-                                                            <Link
-                                                                to="shop-cart"
-                                                                className="btn btn-icon btn-pills btn-soft-warning"
-                                                            >
-                                                                <i>
-                                                                    <FeatherIcon
-                                                                        icon="shopping-cart"
-                                                                        className="icons"
-                                                                    />
-                                                                </i>
-                                                            </Link>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <CardBody className="content pt-4 p-2">
-                                                    <Link
-                                                        to={"/shop-product-detail/" + product.id}
-                                                        className="text-dark product-name h6"
-                                                    >
-                                                        {product.name}
-                                                    </Link>
-                                                    <div className="d-flex justify-content-between mt-1">
-                                                        <h6 className="text-muted small font-italic mb-0 mt-1">
-                                                            ${product.price}{" "}
-                                                            {product.oldPrice ? (
-                                                                <del className="text-danger ml-2">
-                                                                    ${product.oldPrice}
-                                                                </del>
-                                                            ) : null}
-                                                            {product.desc ? (
-                                                                <span className="text-success ml-1">
-                                  {product.desc}
-                                </span>
-                                                            ) : null}
-                                                        </h6>
-                                                        <ul className="list-unstyled text-warning mb-0">
-                                                            <ReactStars
-                                                                count={product.rate}
-                                                                edit={false}
-                                                                size={23}
-                                                                color1={"#f17425"}
+                                <Col xs={12} className="mt-4">
+                                    <Slider {...settings2} className="owl-carousel owl-theme">
+                                        {this.state.products?.map((product, key) => (
+                                            <div key={key} style={{marginLeft: 5, marginRight: 5}}>
+                                                <Card
+                                                    className="shop-list border-0 position-relative overflow-hidden m-2">
+                                                    <div
+                                                        className="shop-image position-relative overflow-hidden rounded shadow">
+                                                        <Link to={"/shop-product-detail/" + product.id}>
+                                                            <img
+                                                                src={imgUrl + product.imageUrl}
+                                                                className="img-fluid"
+                                                                alt="Landrick"
                                                             />
+                                                        </Link>
+                                                        <ul className="list-unstyled shop-icons">
+
+                                                            <li className="mt-2">
+                                                                <Link
+                                                                    to={"/shop-product-detail/" + product.id}
+                                                                    className="btn btn-icon btn-pills btn-soft-primary"
+                                                                >
+                                                                    <i>
+                                                                        <FeatherIcon icon="eye" className="icons"/>
+                                                                    </i>
+                                                                </Link>
+                                                            </li>
+                                                            <li className="mt-2">
+                                                                <Link
+                                                                    to="shop-cart"
+                                                                    className="btn btn-icon btn-pills btn-soft-warning"
+                                                                >
+                                                                    <i>
+                                                                        <FeatherIcon
+                                                                            icon="shopping-cart"
+                                                                            className="icons"
+                                                                        />
+                                                                    </i>
+                                                                </Link>
+                                                            </li>
                                                         </ul>
                                                     </div>
-                                                </CardBody>
-                                            </Card>
-                                        </div>
-                                    ))}
-                                </Slider>
-                            </Col>
-                        </Row>
-                    </Container>}
+                                                    <CardBody className="content pt-4 p-2">
+                                                        <Link
+                                                            to={"/shop-product-detail/" + product.id}
+                                                            className="text-dark product-name h6"
+                                                        >
+                                                            {product.name}
+                                                        </Link>
+                                                        <div className="d-flex justify-content-between mt-1">
+                                                            <h6 className="text-muted small font-italic mb-0 mt-1">
+                                                                ${product.price}{" "}
+                                                                {product.oldPrice ? (
+                                                                    <del className="text-danger ml-2">
+                                                                        ${product.oldPrice}
+                                                                    </del>
+                                                                ) : null}
+                                                                {product.desc ? (
+                                                                    <span className="text-success ml-1">
+                                  {product.desc}
+                                </span>
+                                                                ) : null}
+                                                            </h6>
+                                                            <ul className="list-unstyled text-warning mb-0">
+                                                                <ReactStars
+                                                                    count={product.rate}
+                                                                    edit={false}
+                                                                    size={23}
+                                                                    color1={"#f17425"}
+                                                                />
+                                                            </ul>
+                                                        </div>
+                                                    </CardBody>
+                                                </Card>
+                                            </div>
+                                        ))}
+                                    </Slider>
+                                </Col>
+                            </Row>
+                        </Container>}
                 </section>
             </React.Fragment>
         );

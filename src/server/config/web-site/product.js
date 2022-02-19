@@ -2,17 +2,29 @@ import {HttpRequestHub} from '../../HttpRequestHub';
 
 const url = ""
 
-export const getProducts = (sort="LATEST",search=null,page = 0, size = 10) => {
+export const getProducts = (sort = "LATEST", search = null, page = 0, size = 10) => {
     const config = {
         method: 'GET',
-        url: `/client/product/language/?sort=`+ sort+ "&search="+search +"&page="+ page + `&size=` + size,
+        url: `/client/product/language/?sort=` + sort + "&search=" + search + "&page=" + page + `&size=` + size,
     }
     return HttpRequestHub(config);
 }
-export const getProductById = (id) => {
-    const config = {
-        method: 'GET',
-        url: `/client/product/language/${id}`,
+export const getProductById = (id, branchProductId=null) => {
+    let config = {};
+    if (branchProductId === null) {
+
+        config = {
+            method: 'GET',
+            url: `/client/product/language/${id}`,
+        }
+
+    } else {
+
+        config = {
+            method: 'GET',
+            url: `/client/product/language/${id}?branchProductId=${branchProductId}`,
+        }
+
     }
     return HttpRequestHub(config);
 }
@@ -27,7 +39,7 @@ export const getMenus = () => {
 export const getCategoriesByMenu = (id) => {
     const config = {
         method: 'GET',
-        url: `/client/menu/categories/`+id,
+        url: `/client/menu/categories/` + id,
     }
     return HttpRequestHub(config);
 }
@@ -43,7 +55,7 @@ export const getFAQs = () => {
 export const getNewsById = (id) => {
     const config = {
         method: 'GET',
-        url: `/client/news/language/`+id,
+        url: `/client/news/language/` + id,
     }
     return HttpRequestHub(config);
 }
@@ -59,7 +71,7 @@ export const getBrand = (page = 0, size = 10) => {
 export const getBrandById = (id) => {
     const config = {
         method: 'GET',
-        url: `/client/brand/language/`+id,
+        url: `/client/brand/language/` + id,
     }
     return HttpRequestHub(config);
 }
@@ -119,7 +131,7 @@ export const getAllProvinces = () => {
 export const getRegion = (page = 0, size = 10) => {
     const config = {
         method: 'GET',
-        url: `/client/region/?page=` + page + `&size=` + size*2,
+        url: `/client/region/?page=` + page + `&size=` + size * 2,
     }
     return HttpRequestHub(config);
 }
@@ -127,7 +139,7 @@ export const getRegion = (page = 0, size = 10) => {
 export const getRegionsByProvince = (id) => {
     const config = {
         method: 'GET',
-        url: `/client/region/province/`+id,
+        url: `/client/region/province/` + id,
     }
     return HttpRequestHub(config);
 }

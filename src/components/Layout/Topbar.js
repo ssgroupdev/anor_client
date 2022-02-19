@@ -110,22 +110,22 @@ class Topbar extends Component {
     getMe = () => {
 
         getUser().then(res => {
-            this.setState({
-                user: {
-                    ...res.data,
-                    fullName: res.data?.firstName + " " + res.data?.lastName
-                },
-                address: {
-                    ...res.data?.address
-                }
-            }, () => {
-           })
+            if (res && res.data) {
+                this.setState({
+                    user: {
+                        ...res.data,
+                        fullName: res.data?.firstName + " " + res.data?.lastName
+                    },
+                    address: {
+                        ...res.data?.address
+                    }
+                })
+            }
         }).catch(err => {
             deleteCookie(userAccessTokenName)
             this.setState({
                 isLogin: false
             })
-            // this.props.history.push("/")
         })
 
     }

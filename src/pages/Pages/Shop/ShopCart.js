@@ -22,9 +22,7 @@ class ShopCart extends Component {
                 {id: 1, name: props.lang.lang.index, link: "/"},
                 {id: 3, name: props.lang.lang.cart},
             ],
-            items: [
-                {id: 1, imageUrl: product1, name: "T-Shirt", cost: 255, cur: "UZS", count: 2},
-            ],
+            items: [],
             cur: "UZS",
             "subTotal": 0,
             "taxes": 0,
@@ -50,7 +48,7 @@ class ShopCart extends Component {
 
     addProductToBasket = (itemId, count = 1) => {
 
-        const data = {productId: itemId, count: count}
+        const data = {branchProductId: itemId, count: count}
 
         addProductToBaskets(data).then(res => {
             this.calculationTotal();
@@ -61,7 +59,7 @@ class ShopCart extends Component {
 
     editProductToBasket = (id, itemId, count = 1) => {
 
-        const data = {id: id, productId: itemId, count: (count - 1) > 0 ? (count - 1) : 1}
+        const data = {id: id, branchProductId: itemId, count: (count - 1) > 0 ? (count - 1) : 1}
 
         editBasket(data).then(res => {
             this.calculationTotal();
@@ -82,7 +80,7 @@ class ShopCart extends Component {
             }, () => {
                 let total = 0;
                 this.state.items.map((item) => {
-                    total += item.cost * item.count
+                    total += item?.branchesProduct?.price?.price * item.count
                 })
                 this.setState({subTotal: total});
                 this.setState({total: total})
@@ -134,7 +132,19 @@ class ShopCart extends Component {
 
     render() {
 
-        const {cart, cost, product, count1, total, shopMore, checkout, delivery, subTotal} = this.props.lang.lang;
+        const {
+            cart,
+            cost,
+            price,
+            store,
+            product,
+            count1,
+            total,
+            shopMore,
+            checkout,
+            delivery,
+            subTotal
+        } = this.props.lang.lang;
 
         return (
             <React.Fragment>
@@ -170,11 +180,14 @@ class ShopCart extends Component {
                                             <th className="py-3" style={{minWidth: "300px"}}>
                                                 {product}
                                             </th>
+                                            <th className="py-3" style={{minWidth: "150px"}}>
+                                                {store}
+                                            </th>
                                             <th
                                                 className="text-center py-3"
                                                 style={{minWidth: "160px"}}
                                             >
-                                                {cost}
+                                                {price}
                                             </th>
                                             <th
                                                 className="text-center py-3"
@@ -214,12 +227,15 @@ class ShopCart extends Component {
                                                         <h6 className="mb-0 ml-3">{item.productName}</h6>
                                                     </div>
                                                 </td>
-                                                <td className="text-center">{item.cost}{" UZS"}</td>
+                                                <td>
+                                                    <p className="mb-0 ml-3">{item?.branchesProduct?.name}</p>
+                                                </td>
+                                                <td className="text-center">{item?.branchesProduct?.price?.price}{" UZS"}</td>
                                                 <td className="text-center">
                                                     <Input
                                                         type="button"
                                                         value="-"
-                                                        onClick={() => this.removeItem(item.id, item.productId, item.count)}
+                                                        onClick={() => this.removeItem(item?.id, item.productId, item.count)}
                                                         className="minus btn btn-icon btn-soft-primary font-weight-bold"
                                                         readOnly
                                                     />
@@ -236,13 +252,13 @@ class ShopCart extends Component {
                                                     <Input
                                                         type="button"
                                                         value="+"
-                                                        onClick={() => this.addItem(item.productId)}
+                                                        onClick={() => this.addItem(item?.branchesProduct?.id)}
                                                         readOnly
                                                         className="plus btn btn-icon btn-soft-primary font-weight-bold"
                                                     />
                                                 </td>
                                                 <td className="text-center font-weight-bold">
-                                                    {item.count * item.cost}{" UZS" }
+                                                    {item?.branchesProduct?.price?.price * item.count}{" UZS"}
                                                 </td>
                                             </tr>
                                         ))}

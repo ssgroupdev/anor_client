@@ -2,7 +2,6 @@ import axios from "axios";
 
 import {getCookie} from "../utils/useCookies";
 import {userAccessTokenName} from "../constants/application";
-// import {langCookieName} from "../constants/application";
 
 export let host = "http://localhost";
 export let port = "8081";
@@ -13,14 +12,14 @@ export let langs = localStorage.getItem("lang") != null ? localStorage.getItem("
 
 export let headers = {
     "Content-Type": "application/json",
-    "Authorization": `Bearer ${token}`,
+    "Authorization": `Bearer ` + getCookie(userAccessTokenName),
     // "lang": localStorage.getItem("lang") != null ? localStorage.getItem("lang") : "uz",
     "lang": langs,
     // "Access-Control-Allow-Credentials":'true'
 };
 
 export const setHeaders = () => {
-    headers.lang =  localStorage.getItem("lang") != null ? localStorage.getItem("lang") : "uz";
+    headers.lang = localStorage.getItem("lang") != null ? localStorage.getItem("lang") : "uz";
 }
 
 export let axiosInstance = axios.create({

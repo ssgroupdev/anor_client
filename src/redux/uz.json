@@ -134,6 +134,11 @@
   "recommend": "Tavsiya qilamiz",
   "saw": "Ko'rish",
   "products": "Mahsulotlar",
+  "selectStore": "Do'konni tanlang",
+  "noResidue": "Naxtda yo'q",
+  "pleaseSelect": "Iltimos bironta do'konni tanlang",
+  "notProduct": "Mahsulot do'konlarda yo'q",
+  "notProduct": "Mahsulot do'konlarda yo'q",
 
   "usefullLinks": "Foydali linklar",
   "sections": "Bo'limlar"
