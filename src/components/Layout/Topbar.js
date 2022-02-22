@@ -118,7 +118,13 @@ class Topbar extends Component {
                     },
                     address: {
                         ...res.data?.address
-                    }
+                    },
+                    isLogin: true
+                })
+            } else {
+                deleteCookie(userAccessTokenName)
+                this.setState({
+                    isLogin: false
                 })
             }
         }).catch(err => {

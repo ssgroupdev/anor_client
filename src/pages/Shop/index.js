@@ -2,24 +2,52 @@ import React, { Component } from "react";
 
 //Import Components
 import Section from "./Section";
-import Collection from "./Collection";
 import MostViewedProducts from "./MostViewedProducts";
 import TopCategories from "./TopCategories";
 import PopularProducts from "./PopularProducts";
-import Cta from "./Cta";
 import RecentProducts from "./RecentProducts";
 import Recommend from "./Recommend";
+import {getUser} from "../../server/config/web-site/user";
+import {deleteCookie} from "../../utils/useCookies";
+import {userAccessTokenName} from "../../constants/application";
 
 class Index extends Component {
   componentDidMount() {
+    this.getMe();
     document.body.classList = "";
     window.addEventListener("scroll", this.scrollNavigation, true);
+  }
+  state = {
+    isLogin: false
   }
 
   // Make sure to remove the DOM listener when the component is unmounted.
   componentWillUnmount() {
     window.removeEventListener("scroll", this.scrollNavigation, true);
   }
+
+  getMe = () => {
+
+    getUser().then(res => {
+      if (res && res.data) {
+        this.setState({
+          isLogin: true
+        })
+      } else {
+        deleteCookie(userAccessTokenName)
+        this.setState({
+          isLogin: false
+        })
+      }
+    }).catch(err => {
+      deleteCookie(userAccessTokenName)
+      this.setState({
+        isLogin: false
+      })
+    })
+
+  }
+
 
 
   scrollNavigation = () => {
@@ -44,18 +72,18 @@ class Index extends Component {
         <section className="section pt-0 mt-0">
 
           {/*popular*/}
-          <PopularProducts />
+          <PopularProducts isLogin={this.state?.isLogin} />
 
           <TopCategories />
 
           {/*recommend*/}
-          <Recommend />
+          <Recommend  isLogin={this.state?.isLogin} />
 
           {/*by rate*/}
           {/*<MostViewedProducts />*/}
 
           {/*  isNew*/}
-          <RecentProducts />
+          <RecentProducts  isLogin={this.state?.isLogin} />
 
         </section>
       </React.Fragment>

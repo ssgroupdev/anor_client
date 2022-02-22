@@ -44,7 +44,7 @@ class PageLoginThree extends Component {
 
             setCookie(userAccessTokenName, res.data.token);
             this.props?.history.push("/shop-myaccount")
-            // window.location.reload();
+            window.location.reload();
           }).catch(err => {
             console.log("______ i'm in here ")
             setCookie(userAccessTokenName, null)

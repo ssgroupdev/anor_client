@@ -64,13 +64,7 @@ const ProductGrid = (props) => {
 
     }
     useEffect(() => {
-        if (token !== null) {
-
-            setLogin(true)
-
-        } else {
-            setLogin(false)
-        }
+        setLogin(props?.isLogin)
     })
 
     const {cancel, selectStore, ok, noResidue, error} = props.lang.lang;
@@ -80,7 +74,7 @@ const ProductGrid = (props) => {
     return (<Col key={key} lg={props.col ? props.col : 3} md={6} xs={12} className="mt-4 pt-2">
         <Card className="shop-list border-0 position-relative overflow-hidden">
             <div className="shop-image position-relative overflow-hidden rounded shadow">
-                <Link to={"/shop-product-detail/" + product.id+"?branchProduct="+product.branches?.at(0)?.id}>
+                <Link to={"/shop-product-detail/" + product.id + "?branchProduct=" + product.branches?.at(0)?.id}>
                     <img
                         width={"100%"}
                         src={`${host}:${port}/api/file/preview/${product.images && product.images[0].imageUrl}`}
@@ -135,7 +129,7 @@ const ProductGrid = (props) => {
             </div>
             <CardBody className="content pt-4 p-2">
                 <Link to={"/shop-product-detail/" + product?.id}
-                    className="text-dark product-name h6"
+                      className="text-dark product-name h6"
                 >
                     {product?.name}
                 </Link>

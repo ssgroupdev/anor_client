@@ -174,18 +174,22 @@ class ShopMyAccount extends Component {
     getMe = () => {
 
         // console.log(getCookie(userAccessTokenName))
+
         getUser().then(res => {
-            this.setState({
-                user: {
-                    ...res.data,
-                    fullName: res.data?.firstName + " " + res.data?.lastName
-                },
-                address: {
-                    ...res.data?.address
+                if (res && res.data) {
+                    this.setState({
+                        user: {
+                            ...res.data,
+                            fullName: res.data?.firstName + " " + res.data?.lastName
+                        },
+                        address: {
+                            ...res.data?.address
+                        }
+                    })
                 }
             }, () => {
-            })
-        }).catch(err => {
+            }
+        ).catch(err => {
             console.log(getCookie(userAccessTokenName))
             deleteCookie(userAccessTokenName)
             this.props.props.history.push("/")

@@ -63,7 +63,7 @@ class PopularProducts extends Component {
 
                     <Row>
                         {this.state.products.map((product, key) => (
-                            <ProductGrid product={product}/>
+                            <ProductGrid  isLogin={this.props.isLogin}  product={product}/>
                         ))}
                     </Row>
                 </Container>

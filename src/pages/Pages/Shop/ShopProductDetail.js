@@ -13,6 +13,7 @@ import {
     Table,
     FormGroup,
     Label,
+    ListGroup, ListGroupItem,
 } from "reactstrap";
 import {Link} from "react-router-dom";
 import classnames from "classnames";
@@ -36,7 +37,6 @@ import client2 from "../../../assets/images/client/02.jpg";
 
 import {connect} from "react-redux";
 import ReactStars from "react-stars";
-import {getCategoryProducts} from "../../../server/config/web-site/client";
 import {getProductById} from "../../../server/config/web-site/product";
 import {imgUrl} from "../../../server/host";
 import {addProductToBaskets} from "../../../server/config/web-site/basket";
@@ -162,7 +162,8 @@ class ShopProductDetail extends Component {
             count1,
             relatedPro,
             send,
-            future
+            future,
+            atStore
         } = this.props.lang.lang;
         var settings = {
             autoplay: true,
@@ -295,17 +296,17 @@ class ShopProductDetail extends Component {
                                     </p> : null
                                     }
 
-                                    { this.state.branch !== null ?
-                                    <div className="mt-4 pt-2">
-                                        <Link to="#" className="btn btn-primary">
-                                            {getShop}
-                                        </Link>
-                                        <button type={"button"}
-                                                onClick={() => this.addProductToBasket(this.state.items)}
-                                                className="btn btn-soft-primary ml-2">
-                                            {addToCart}
-                                        </button>
-                                    </div>:null}
+                                    {this.state.branch !== null ?
+                                        <div className="mt-4 pt-2">
+                                            <Link to="#" className="btn btn-primary">
+                                                {getShop}
+                                            </Link>
+                                            <button type={"button"}
+                                                    onClick={() => this.addProductToBasket(this.state.items)}
+                                                    className="btn btn-soft-primary ml-2">
+                                                {addToCart}
+                                            </button>
+                                        </div> : null}
                                 </div>
                             </Col>
                         </Row>
@@ -320,7 +321,7 @@ class ShopProductDetail extends Component {
                                             to="#"
                                             className={classnames(
                                                 {active: this.state.activeTab === "1"},
-                                                "rounded py-2 px-5"
+                                                "rounded py-2 px-5 "
                                             )}
                                             onClick={() => {
                                                 this.toggle("1");
@@ -337,7 +338,7 @@ class ShopProductDetail extends Component {
                                             to="#"
                                             className={classnames(
                                                 {active: this.state.activeTab === "2"},
-                                                "rounded py-2 px-5"
+                                                "rounded py-2 px-5 "
                                             )}
                                             onClick={() => {
                                                 this.toggle("2");
@@ -347,14 +348,32 @@ class ShopProductDetail extends Component {
                                                 <h6 className="mb-0">{future}</h6>
                                             </div>
                                         </NavLink>
-                                    </NavItem>
+                                    </NavItem><NavItem className="m-1">
+                                    {
+                                        this.state.branch&&
+                                        <NavLink
+                                            to="#"
+                                            className={classnames(
+                                                {active: this.state.activeTab === "4"},
+                                                "rounded py-2 px-5 "
+                                            )}
+                                            onClick={() => {
+                                                this.toggle("4");
+                                            }}
+                                        >
+                                            <div className="text-center">
+                                                <h6 className="mb-0">{atStore}</h6>
+                                            </div>
+                                        </NavLink>
+                                    }
+                                </NavItem>
 
                                     {/*<NavItem className="m-1">*/}
                                     {/*  <NavLink*/}
                                     {/*    to="#"*/}
                                     {/*    className={classnames(*/}
                                     {/*      { active: this.state.activeTab === "3" },*/}
-                                    {/*      "rounded py-2 px-5"*/}
+                                    {/*      "rounded py-2 px-5 "*/}
                                     {/*    )}*/}
                                     {/*    onClick={() => {*/}
                                     {/*      this.toggle("3");*/}
@@ -694,6 +713,24 @@ class ShopProductDetail extends Component {
                                                 </form>
                                             </Col>
                                         </Row>
+                                    </TabPane>
+                                    <TabPane className="card border-0 fade show" tabId="4">
+
+                                        <ListGroup>
+                                        {
+                                            this.state.branch?.warehouses?.map(item=>(
+                                            <ListGroupItem key={item.id} className={"d-flex justify-content-between"}>
+                                                <span  style={{fontSize:"20px", fontStyle:"bold"}}>
+                                                    {item.warehouseName}
+                                                </span>
+                                                <span className={"mr-4 text-muted"} style={{fontSize:"18px"}}>
+                                                    {item.quantity>5?"5+":item.quantity}
+                                                </span>
+                                            </ListGroupItem>
+                                            ))
+                                        }
+                                        </ListGroup>
+
                                     </TabPane>
                                 </TabContent>
                             </Col>

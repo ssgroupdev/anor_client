@@ -11,7 +11,7 @@ class MostViewedProducts extends Component {
     super(props);
     this.state = {
       products: [
-      ],
+      ]
     };
   }
 

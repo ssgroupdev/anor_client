@@ -139,10 +139,10 @@ export const getRegionsByProvince = (id) => {
     return HttpRequestHub(config);
 }
 
-export const getCategoryProducts = (id,sort="LATEST",page = 0, size = 10) => {
+export const getCategoryProducts = (id,sort="LATEST",page = 0, size = 10, minPrice=0, maxPrice=0) => {
     const config = {
         method: 'GET',
-        url: `/client/product/category/${id}/?sort=`+ sort +"&page="+ page + `&size=` + size,
+        url: `/client/product/category/${id}/?sort=`+ sort +"&page="+ page + `&size=` + size+"&minPrice="+minPrice+"&maxPrice="+maxPrice,
     }
     return HttpRequestHub(config);
 }

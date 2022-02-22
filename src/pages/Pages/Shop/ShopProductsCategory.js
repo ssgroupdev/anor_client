@@ -32,11 +32,13 @@ class ShopProducts extends Component {
             total: 0,
             pageSize: 15,
             products: [],
-            sort: props?.props?.location?.state?.sort || props?.props?.location?.search.substr(6) || "LATEST",
             topProducts: [],
             isHaveChild: true,
-            subCategories: [
-            ]
+            subCategories: [],
+            sort: new URLSearchParams(props?.props?.location?.search).get("sort") || "LATEST",
+            minPrice: new URLSearchParams(props.props.location.search).get("minPrice"),
+            maxPrice: new URLSearchParams(props.props.location.search).get("maxPrice")
+
         };
     }
 
@@ -50,12 +52,12 @@ class ShopProducts extends Component {
 
     getList = () => {
 
-        getCategoryProducts(this.state.id, this.state.sort, this.state.current - 1, this.state.pageSize).then((res) => {
+        getCategoryProducts(this.state.id, this.state.sort, this.state.current - 1, this.state.pageSize, this.state.minPrice!=null?this.state.minPrice:0, this.state.maxPrice!=null?this.state.maxPrice:0).then((res) => {
             this.setState({
                     products: res.data.products.content,
                     name: res.data.name,
-                subCategories: res.data.nestedChild
-                , totalPage: res.data.products.totalItems
+                    subCategories: res.data.nestedChild
+                    , totalPage: res.data.products.totalItems
                 }, () => {
                     if (res.data.parent !== null) {
                         this.setState({
@@ -73,7 +75,7 @@ class ShopProducts extends Component {
                     } else {
                         this.setState({
                             pathItems: [...(this.state.pathItems.slice(0, 1)),
-                              {
+                                {
                                     name: res.data.name,
                                     id: 3
                                 }]
@@ -90,23 +92,39 @@ class ShopProducts extends Component {
 
     onSortChange = (e) => {
         e.preventDefault();
-        // console.log(e.target.value)
 
+        this.props?.props?.history?.push({
+            pathname: "/category-products/"+this.state.id,
+            search: `${'?sort=' + e.target.value + `&minPrice=${this.state.minPrice}&maxPrice=${this.state.maxPrice}`}`,
+            state: {
+                sort: e.target.value,
+                minPrice: this.state?.minPrice,
+                maxPrice: this.state?.maxPrice,
+
+            }
+        })
         this.setState({
             sort: e.target.value
         }, () => this.getList())
-        // this.props?.props?.history?.push({
-        //     pathname: "/category-products/" +  this.state.id ,
-        //     search: `${'?sort=' + e.target.value}`,
-        //     state: {
-        //         sort: `${e.target.value}`
-        //     }
-        // })
+
+    }
+    onInputChange = () => {
+
+        this.props?.props?.history?.push({
+            pathname: "/category-products/"+this.state.id,
+            search: `${'?sort=' + this.state?.sort + `&minPrice=${this.state.minPrice}&maxPrice=${this.state.maxPrice}`}`,
+            state: {
+                sort: this.state.sort,
+                minPrice: this.state?.minPrice,
+                maxPrice: this.state?.maxPrice,
+            }
+        })
+
     }
     handleCategory = e => {
         this.props?.props?.history?.push({
             pathname: "/category-products/" + e.target.value,
-            search: `${'?sort=' + "LATEST"}`,
+            search: `${'?sort=' + this.state?.sort + `&minPrice=${this.state.minPrice}&maxPrice=${this.state.maxPrice}`}`,
             state: {
                 sort: "LATEST"
             }
@@ -115,15 +133,14 @@ class ShopProducts extends Component {
 
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevState.id!==this.props.props?.match?.params?.id){
+        if (prevState.id !== this.props.props?.match?.params?.id) {
             this.setState({
                 id: this.props.props.match.params.id
-            },()=>{
+            }, () => {
                 this.getList()
             })
         }
     }
-
 
 
     componentDidMount() {
@@ -186,151 +203,6 @@ class ShopProducts extends Component {
                 <section className="section">
                     <Container>
                         <Row>
-                            {/*<Col lg={3} md={4} xs={12}>*/}
-                            {/*    <Card className="border-0 sidebar sticky-bar">*/}
-                            {/*        <CardBody className="p-0">*/}
-                            {/*            <div className="widget">*/}
-                            {/*                <div id="search2" className="widget-search mb-0">*/}
-                            {/*                    <Form*/}
-                            {/*                        role="search"*/}
-                            {/*                        method="get"*/}
-                            {/*                        id="searchform"*/}
-                            {/*                        className="searchform"*/}
-                            {/*                    >*/}
-                            {/*                        <div>*/}
-                            {/*                            <Input*/}
-                            {/*                                type="text"*/}
-                            {/*                                className="border rounded"*/}
-                            {/*                                name="s"*/}
-                            {/*                                id="s"*/}
-                            {/*                                placeholder="Search Keywords..."*/}
-                            {/*                            />*/}
-                            {/*                            <Input*/}
-                            {/*                                type="submit"*/}
-                            {/*                                id="searchsubmit"*/}
-                            {/*                                value="Search"*/}
-                            {/*                            />*/}
-                            {/*                            /!* <FeatherIcon icon="search" /> *!/*/}
-                            {/*                        </div>*/}
-                            {/*                    </Form>*/}
-                            {/*                </div>*/}
-                            {/*            </div>*/}
-
-                            {/*            <div className="widget mt-4 pt-2">*/}
-                            {/*                <h4 className="widget-title">Catagories</h4>*/}
-                            {/*                <ul className="list-unstyled mt-4 mb-0 blog-categories">*/}
-                            {/*                    <li>*/}
-                            {/*                        <Link to="#">Men</Link>*/}
-                            {/*                    </li>*/}
-                            {/*                    <li>*/}
-                            {/*                        <Link to="#">Women</Link>*/}
-                            {/*                    </li>*/}
-                            {/*                    <li>*/}
-                            {/*                        <Link to="#">Electronics</Link>*/}
-                            {/*                    </li>*/}
-                            {/*                    <li>*/}
-                            {/*                        <Link to="#">Jewellery</Link>*/}
-                            {/*                    </li>*/}
-                            {/*                    <li>*/}
-                            {/*                        <Link to="#">Shoes</Link>*/}
-                            {/*                    </li>*/}
-                            {/*                    <li>*/}
-                            {/*                        <Link to="#">Kid’s Wear</Link>*/}
-                            {/*                    </li>*/}
-                            {/*                    <li>*/}
-                            {/*                        <Link to="#">Sports</Link>*/}
-                            {/*                    </li>*/}
-                            {/*                    <li>*/}
-                            {/*                        <Link to="#">Toys</Link>*/}
-                            {/*                    </li>*/}
-                            {/*                    <li>*/}
-                            {/*                        <Link to="#">Gift Corners</Link>*/}
-                            {/*                    </li>*/}
-                            {/*                </ul>*/}
-                            {/*            </div>*/}
-
-                            {/*            <div className="widget mt-4 pt-2">*/}
-                            {/*                <h4 className="widget-title">Color</h4>*/}
-                            {/*                <ul className="list-unstyled mt-4 mb-0">*/}
-                            {/*                    <li className="list-inline-item">*/}
-                            {/*                        <Link*/}
-                            {/*                            to="#"*/}
-                            {/*                            className="px-3 py-1 rounded-pill bg-primary"*/}
-                            {/*                        ></Link>*/}
-                            {/*                    </li>*/}
-                            {/*                    <li className="list-inline-item">*/}
-                            {/*                        <Link*/}
-                            {/*                            to="#"*/}
-                            {/*                            className="px-3 py-1 rounded-pill bg-danger ml-1"*/}
-                            {/*                        ></Link>*/}
-                            {/*                    </li>*/}
-                            {/*                    <li className="list-inline-item">*/}
-                            {/*                        <Link*/}
-                            {/*                            to="#"*/}
-                            {/*                            className="px-3 py-1 rounded-pill bg-success ml-1"*/}
-                            {/*                        ></Link>*/}
-                            {/*                    </li>*/}
-                            {/*                    <li className="list-inline-item">*/}
-                            {/*                        <Link*/}
-                            {/*                            to="#"*/}
-                            {/*                            className="px-3 py-1 rounded-pill bg-info ml-1"*/}
-                            {/*                        ></Link>*/}
-                            {/*                    </li>*/}
-                            {/*                    <li className="list-inline-item">*/}
-                            {/*                        <Link*/}
-                            {/*                            to="#"*/}
-                            {/*                            className="px-3 py-1 rounded-pill bg-secondary ml-1"*/}
-                            {/*                        ></Link>*/}
-                            {/*                    </li>*/}
-                            {/*                    <li className="list-inline-item">*/}
-                            {/*                        <Link*/}
-                            {/*                            to="#"*/}
-                            {/*                            className="px-3 py-1 rounded-pill bg-warning ml-1"*/}
-                            {/*                        ></Link>*/}
-                            {/*                    </li>*/}
-                            {/*                </ul>*/}
-                            {/*            </div>*/}
-
-                            {/*            <div className="widget mt-4 pt-2">*/}
-                            {/*                <h4 className="widget-title">Top Products</h4>*/}
-                            {/*                <ul className="list-unstyled mt-4 mb-0">*/}
-                            {/*                    {this.state.topProducts.map((product, key) => (*/}
-                            {/*                        <li*/}
-                            {/*                            key={key}*/}
-                            {/*                            className={*/}
-                            {/*                                key + 1 === 1*/}
-                            {/*                                    ? "media align-items-center"*/}
-                            {/*                                    : "media align-items-center mt-2"*/}
-                            {/*                            }*/}
-                            {/*                        >*/}
-                            {/*                            <Link*/}
-                            {/*                                to={"/"}>*/}
-                            {/*                                <img*/}
-                            {/*                                    src={product.image}*/}
-                            {/*                                    className="img-fluid avatar avatar-small rounded shadow"*/}
-                            {/*                                    style={{height: "auto"}}*/}
-                            {/*                                    alt="Landrick"*/}
-                            {/*                                />*/}
-                            {/*                            </Link>*/}
-                            {/*                            <div className="content ml-3">*/}
-                            {/*                                <Link to="#" className="text-dark h6">*/}
-                            {/*                                    {product.name}*/}
-                            {/*                                </Link>*/}
-                            {/*                                <h6 className="text-muted small font-italic mb-0 mt-1">*/}
-                            {/*                                    {product.NewPrice}{" "}*/}
-                            {/*                                    <del className="text-danger ml-2">*/}
-                            {/*                                        {product.oldPrice}*/}
-                            {/*                                    </del>*/}
-                            {/*                                    {" "}*/}
-                            {/*                                </h6>*/}
-                            {/*                            </div>*/}
-                            {/*                        </li>*/}
-                            {/*                    ))}*/}
-                            {/*                </ul>*/}
-                            {/*            </div>*/}
-                            {/*        </CardBody>*/}
-                            {/*    </Card>*/}
-                            {/*</Col>*/}
                             <Col lg={3} md={4} xs={12}>
                                 <div className="sidebar sticky-bar p-4 rounded shadow">
                                     <div className="widget mb-4 pb-4 border-bottom">
@@ -349,6 +221,12 @@ class ShopProducts extends Component {
                                                         className="border rounded"
                                                         name="s"
                                                         id="s"
+                                                        defaultValue={this.state.minPrice}
+                                                        onChange={(e) => {
+                                                            this.setState({
+                                                                minPrice: e.target.value
+                                                            }, () => this.onInputChange())
+                                                        }}
                                                         placeholder={from + "..."}
                                                     />
                                                 </div>
@@ -358,7 +236,13 @@ class ShopProducts extends Component {
                                                         className="border rounded"
                                                         name="s"
                                                         id="s"
+                                                        onChange={(e) => {
+                                                            this.setState({
+                                                                maxPrice: e.target.value
+                                                            }, () => this.onInputChange())
+                                                        }}
                                                         placeholder={to + "..."}
+                                                        defaultValue={this.state.maxPrice>0?this.state.maxPrice:null}
 
                                                     />
                                                 </div>
@@ -368,6 +252,8 @@ class ShopProducts extends Component {
                                                         className="border btn btn-primary d-block w-100 rounded"
                                                         name="s"
                                                         id="s"
+                                                        onClick={this.getList}
+
                                                     >{filter}</Button>
                                                 </div>
 
@@ -375,28 +261,29 @@ class ShopProducts extends Component {
                                         </div>
                                     </div>
 
-                                    {this.state.subCategories.length>0 && <div className="widget mb-4 pb-4 border-bottom">
-                                        <h4 className="widget-title">{categories}</h4>
-                                        <FormGroup className="mt-4 mb-0">
-                                            <select
-                                                className="form-control custom-select"
-                                                id="job-catagories"
-                                                onChange={this.handleCategory}
-                                                defaultValue={"def"}
-                                            >
-                                                <option value={"def"}>{select}</option>
-                                                {
-                                                    this.state.subCategories.map((value, index) => (
-                                                        <option value={value.id} key={index}>
-                                                            {value.name}
-                                                        </option>
+                                    {this.state.subCategories.length > 0 &&
+                                        <div className="widget mb-4 pb-4 border-bottom">
+                                            <h4 className="widget-title">{categories}</h4>
+                                            <FormGroup className="mt-4 mb-0">
+                                                <select
+                                                    className="form-control custom-select"
+                                                    id="job-catagories"
+                                                    onChange={this.handleCategory}
+                                                    defaultValue={"def"}
+                                                >
+                                                    <option value={"def"}>{select}</option>
+                                                    {
+                                                        this.state.subCategories.map((value, index) => (
+                                                            <option value={value.id} key={index}>
+                                                                {value.name}
+                                                            </option>
 
-                                                    ))
-                                                }
+                                                        ))
+                                                    }
 
-                                            </select>
-                                        </FormGroup>
-                                    </div>
+                                                </select>
+                                            </FormGroup>
+                                        </div>
                                     }
                                     {/*<div className="widget mb-4 pb-4 border-bottom">*/}
                                     {/*  <h4 className="widget-title">Date Posted</h4>*/}
