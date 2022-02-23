@@ -82,7 +82,7 @@ class ShopProducts extends Component {
         getProducts(new URLSearchParams(this.props.props.location.search).get("sort"), this.props.props.location?.state?.search, 0, pageSize, this.state?.minPrice!==null?this.state?.minPrice:0,  this.state?.maxPrice!==null?this.state?.maxPrice:0).then((res) => {
             this.setState({
                 products: res.data.content,
-                totalPage: res.data.totalItems
+                total: res.data.totalElements
             })
         }).catch(err => {
 

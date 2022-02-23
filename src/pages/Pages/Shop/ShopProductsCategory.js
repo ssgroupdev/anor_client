@@ -56,8 +56,8 @@ class ShopProducts extends Component {
             this.setState({
                     products: res.data.products.content,
                     name: res.data.name,
-                    subCategories: res.data.nestedChild
-                    , totalPage: res.data.products.totalItems
+                    subCategories: res.data.nestedChild,
+                    total: res.data.products.totalElements
                 }, () => {
                     if (res.data.parent !== null) {
                         this.setState({

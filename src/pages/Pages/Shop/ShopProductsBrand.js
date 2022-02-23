@@ -90,7 +90,7 @@ class ShopProductsBrand extends Component {
                     name: res.data.name,
                     pathItems: [...(this.state.pathItems.slice(0, 2)), {
                         name: res.data.name, id: 3
-                    }], totalPage: res.data.products.totalItems
+                    }],total: res.data.products.totalElements
                 }
             )
         }).catch(err => {

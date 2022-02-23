@@ -52,21 +52,22 @@ import prodtctOverlay15 from "../../../assets/images/shop/product/s-15.jpg";
 import ProductGrid from "../../../components/Shared/ProductGrid";
 import {connect} from "react-redux";
 import {getBrandProducts} from "../../../server/config/web-site/brand/brand";
-import {getBranchProductByBranchId} from "../../../server/config/web-site/brand/branches";
+import {getBranchId, getBranchProductByBranchId} from "../../../server/config/web-site/brand/branches";
 
 class ShopProducts extends Component {
     constructor(props) {
         super(props);
         // console.log(this.props)
 
-        this.state = { id: props?.props?.match?.params?.id || 2,
+        this.state = {
+            id: props?.props?.match?.params?.id || null,
 
             pathItems: [
                 //id must required
-                {id: 1, name:props.lang.lang.index, link: "/"},
+                {id: 1, name: props.lang.lang.index, link: "/"},
                 {id: 2, name: props.lang.lang.stores, link: "/stores"},
-                {id: 3, name: props.lang.lang.products},
             ],
+            branch: {},
             current: 1,
             total: 20,
             pageSize: 15,
@@ -77,11 +78,12 @@ class ShopProducts extends Component {
 
         };
     }
+
     onSortChange = (e) => {
         e.preventDefault();
 
         this.props?.props?.history?.push({
-            pathname:"/stores/"+this.state.id+"/products",
+            pathname: "/stores/" + this.state.id + "/products",
             search: `${'?sort=' + e.target.value + `&minPrice=${this.state.minPrice}&maxPrice=${this.state.maxPrice}`}`,
             state: {
                 sort: e.target.value,
@@ -98,7 +100,7 @@ class ShopProducts extends Component {
     onInputChange = () => {
 
         this.props?.props?.history?.push({
-            pathname: "/stores/"+this.state.id+"/products",
+            pathname: "/stores/" + this.state.id + "/products",
             search: `${'?sort=' + this.state?.sort + `&minPrice=${this.state.minPrice}&maxPrice=${this.state.maxPrice}`}`,
             state: {
                 sort: this.state.sort,
@@ -111,18 +113,15 @@ class ShopProducts extends Component {
 
     onPaginationChange = (e) => {
         // console.log(e)
-        this.setState({current: e})
+        this.setState({current: e},()=> this.getList())
 
     }
 
     getList = () => {
-        getBranchProductByBranchId(this.state.id, this.state.sort, this.state.current - 1, this.state.pageSize,this.state.minPrice!=null?this.state.minPrice:0, this.state.maxPrice!=null?this.state.maxPrice:0).then((res) => {
+        getBranchProductByBranchId(this.state.id,  this.state.current - 1, this.state.pageSize,this.state.sort, this.state.minPrice != null ? this.state.minPrice : 0, this.state.maxPrice != null ? this.state.maxPrice : 0).then((res) => {
             this.setState({
-                    products: res.data.products.content,
-                    name: res.data.name,
-                    pathItems: [...(this.state.pathItems.slice(0, 2)), {
-                        name: res.data.name, id: 3
-                    }], totalPage: res.data.products.totalItems
+                    products: res.data.content,
+                    total: res.data.totalElements
                 }
             )
         }).catch(err => {
@@ -131,10 +130,35 @@ class ShopProducts extends Component {
 
     }
 
+    getBranch = () => {
+        this.setState({
+            id: this.props?.props?.match?.params?.id
+        }, () => {
+
+            getBranchId(this.state.id).then(res => {
+                this.setState({
+                        branch: res.data,
+                        pathItems: [...(this.state.pathItems.slice(0, 2)),
+                            {
+                                name: res.data.name,
+                                id: 3
+                            }
+                        ]
+                    }
+                )
+            }).catch(err => {
+
+            })
+        })
+    }
+
     componentDidMount() {
+
+        this.getBranch();
+        this.getList();
         window.addEventListener("scroll", this.scrollNavigation, true);
 
-      }
+    }
 
     // Make sure to remove the DOM listener when the component is unmounted.
     componentWillUnmount() {
@@ -153,12 +177,24 @@ class ShopProducts extends Component {
 
     render() {
         const {history, location, search, state} = this.props
-        const {from, to, filter, sortByPrice, latest, oldest, categories,rate, asc,desc, select} = this.props.lang.lang
+        const {
+            from,
+            to,
+            filter,
+            sortByPrice,
+            latest,
+            oldest,
+            categories,
+            rate,
+            asc,
+            desc,
+            select
+        } = this.props.lang.lang
 
         return (
             <React.Fragment>
                 {/* breadcrumb */}
-                <PageBreadcrumb key={10000} title={"Do'kon maxsuloti"} pathItems={this.state.pathItems}/>
+                <PageBreadcrumb key={10000} title={this.state.branch?.name} pathItems={this.state.pathItems}/>
                 <div className="position-relative">
                     <div className="shape overflow-hidden text-white">
                         <svg
@@ -239,7 +275,7 @@ class ShopProducts extends Component {
                                 <Row className="align-items-center">
                                     <Col lg={8} md={7}>
                                         <div className="section-title">
-                                            <h5 className="mb-0">{this.state.total}{" "+from+" "}{(this.state.current - 1) * (this.state.pageSize) + 1}–{(this.state.current - 1) * (this.state.pageSize) + this.state.products.length} </h5>
+                                            <h5 className="mb-0">{this.state.total}{" " + from + " "}{(this.state.current - 1) * (this.state.pageSize) + 1}–{(this.state.current - 1) * (this.state.pageSize) + this.state.products.length} </h5>
                                         </div>
                                     </Col>
 
@@ -294,5 +330,5 @@ class ShopProducts extends Component {
 
 const mstp = state => state;
 
-export default connect(mstp,null)(ShopProducts);
+export default connect(mstp, null)(ShopProducts);
 
