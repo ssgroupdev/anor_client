@@ -140,6 +140,15 @@
   "notProduct": "Mahsulot do'konlarda yo'q",
   "atStore": "Do'konlarda",
 
+  "processing": "Jarayonda",
+  "cancelled": "Bekor qilindi",
+  "delivered": "Yetkazishda",
+  "finished": "Yakunlangan",
+  "notFound": "Aniqlanmagan",
+  "deliveryDate": "Yetkazib berish sanasi",
+  "deliveryFinish": "Yetkazilgan",
+  "sum": " so'm",
+
   "usefullLinks": "Foydali linklar",
   "sections": "Bo'limlar"
 }

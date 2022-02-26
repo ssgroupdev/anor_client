@@ -22,6 +22,7 @@ import {loginUser} from "../../../server/config/authentication";
 import {getCookie, setCookie} from "../../../utils/useCookies";
 import {userAccessTokenName} from "../../../constants/application.js";
 import {setProduct} from "../../../redux/actions/lang";
+import {setRequestHeader} from "../../../server/host";
 
 class PageLoginThree extends Component {
 
@@ -43,19 +44,21 @@ class PageLoginThree extends Component {
         loginUser(values).then(res => {
 
             setCookie(userAccessTokenName, res.data.token);
+            setRequestHeader(getCookie(userAccessTokenName));
             this.props?.history.push("/shop-myaccount")
-            window.location.reload();
-          }).catch(err => {
-            console.log("______ i'm in here ")
+
+        }).catch(err => {
+
             setCookie(userAccessTokenName, null)
 
-          })
+        })
 
     };
 
     render() {
         const {username, passwordUser} = this.state;
         const {login, register, yourPhone, password, forgotPassword, haveNotAccount} = this.props.lang.lang;
+
         return (
             <React.Fragment>
                 <div className="back-to-home rounded d-none d-sm-block">

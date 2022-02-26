@@ -32,6 +32,7 @@
     "react-masonry-css": "^1.0.14",
     "react-modal-video": "^1.2.6",
     "react-parallax": "^3.1.2",
+    "react-price": "^0.6.1",
     "react-redux": "^7.2.6",
     "react-responsive-carousel": "^3.2.10",
     "react-router-dom": "^5.2.0",

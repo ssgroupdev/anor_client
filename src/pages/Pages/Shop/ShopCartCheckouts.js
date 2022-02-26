@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Container, Row, Col, Table, Input} from "reactstrap";
+import {Container, Row, Col, Table, Input, Button} from "reactstrap";
 import {Link} from "react-router-dom";
 
 //Import components
@@ -11,6 +11,11 @@ import product3 from "../../../assets/images/shop/product/s3.jpg";
 import product6 from "../../../assets/images/shop/product/s6.jpg";
 import product10 from "../../../assets/images/shop/product/s10.jpg";
 import {connect} from "react-redux";
+import {editStatus, getOrder} from "../../../server/config/user/order";
+import {getAllBaskets} from "../../../server/config/web-site/basket";
+import Price from "react-price";
+import {imgUrl} from "../../../server/host";
+import {toast} from "react-toastify";
 
 class ShopCartCheckouts extends Component {
     constructor(props) {
@@ -21,14 +26,12 @@ class ShopCartCheckouts extends Component {
                 {id: 1, name: props.lang.lang.index, link: "/"},
                 {id: 3, name: props.lang.lang.myCheckout},
             ],
-            items: [
-                {id: 1, image: product1, name: "T-Shirt", price: 255, cur: "UZS", count: 2},
-                {id: 2, image: product3, name: "Branded Watch", price: 520, cur: "UZS", count: 1},
-                {id: 3, image: product6, name: "T-Shirt", price: 160, cur: "UZS", count: 4},
-                {id: 4, image: product10, name: "Sunglasses", price: 260, cur: "UZS", count: 2},
-            ],
+            products: [],
             status: "DELIVERED",
             cur: "UZS",
+            order: {},
+            address: {},
+            user: {},
             "subTotal": 0,
             "taxes": 0,
             "total": 0
@@ -87,8 +90,30 @@ class ShopCartCheckouts extends Component {
 
     };
 
+
+    calculationTotal = () => {
+
+    }
+
+
+    getOrder = () => {
+        getOrder(this.props?.props?.match?.params?.id).then(res => {
+            this.setState({
+                products: res.data.products,
+                total: res.data.totalPrice,
+                address: res.data.addressPayload,
+                order: res.data,
+                user: res.data.user
+            }, () => this.calculationTotal())
+        }).catch(err => {
+
+        })
+    }
+
     componentDidMount() {
+        this.getOrder();
         window.addEventListener("scroll", this.scrollNavigation, true);
+
         this.calculationTotal();
     }
 
@@ -113,7 +138,38 @@ class ShopCartCheckouts extends Component {
         }
     };
 
-    render() {const {cart, price, product, count1, total,date, printCheck,status, shopMore, checkout,delivery, subTotal, myCheckout} = this.props.lang.lang;
+    render() {
+        const {
+            cart,
+            price,
+            product,
+            count1,
+            total,
+            date,
+            printCheck,
+            status,
+            shopMore,
+            checkout,
+            delivery,
+            subTotal,
+            myCheckout, sum,
+            processing, cancelled, delivered, notFound, deliveryDate, deliveryFinish, finished
+        } = this.props.lang.lang;
+        const {order} = this.state
+        const {
+            provinceId,
+            regionId,
+            provinceName,
+            regionName,
+            floor,
+            porch,
+            household,
+            numberHome,
+            street,
+            postIndex
+        } = this.state.address
+        const {user} = this.state
+        const {lang} = this.props.lang
 
         return (
             <React.Fragment>
@@ -145,24 +201,24 @@ class ShopCartCheckouts extends Component {
                                     <Table className="table-center table-padding mb-0">
                                         <thead>
                                         <tr>
-                                            <th className="py-3" style={{ minWidth: "300px" }}>
+                                            <th className="py-3" style={{minWidth: "300px"}}>
                                                 {product}
                                             </th>
                                             <th
                                                 className="text-center py-3"
-                                                style={{ minWidth: "160px" }}
+                                                style={{minWidth: "160px"}}
                                             >
                                                 {price}
                                             </th>
                                             <th
                                                 className="text-center py-3"
-                                                style={{ minWidth: "160px" }}
+                                                style={{minWidth: "160px"}}
                                             >
                                                 {count1}
                                             </th>
                                             <th
                                                 className="text-center py-3"
-                                                style={{ minWidth: "160px" }}
+                                                style={{minWidth: "160px"}}
                                             >
                                                 {total}
                                             </th>
@@ -170,20 +226,25 @@ class ShopCartCheckouts extends Component {
                                         </thead>
 
                                         <tbody>
-                                        {this.state.items.map((item, key) => (
+                                        {this.state.products.map((item, key) => (
                                             <tr key={key}>
                                                 <td>
                                                     <div className="d-flex align-items-center">
                                                         <img
-                                                            src={item.image}
+                                                            src={imgUrl + item.product?.images[0].imageUrl}
                                                             className="img-fluid avatar avatar-small rounded shadow"
                                                             style={{height: "auto"}}
                                                             alt=""
                                                         />
-                                                        <h6 className="mb-0 ml-3">{item.name}</h6>
+                                                        <Link
+                                                            to={"/shop-product-detail/" + item.productId + "?branchProduct=" + item.branchId}>
+                                                            <h6 className="mb-0 ml-3">{item.product.name}</h6>
+                                                        </Link>
                                                     </div>
                                                 </td>
-                                                <td className="text-center">{item.price}{" " + item.cur}</td>
+                                                <td className="text-center">
+                                                    <Price cost={item.price} currency={sum}/>
+                                                </td>
                                                 <td className="text-center">
 
                                                     <Input
@@ -198,7 +259,7 @@ class ShopCartCheckouts extends Component {
                                                     />
                                                 </td>
                                                 <td className="text-center font-weight-bold">
-                                                    {item.count * item.price}{" " + item.cur}
+                                                    {item.count * item.price + sum}
                                                 </td>
                                             </tr>
                                         ))}
@@ -208,41 +269,103 @@ class ShopCartCheckouts extends Component {
                             </Col>
                         </Row>
                         <Row>
+                            <Col sm={6} className="mt-4 pt-2">
+                                <p className="h6 text-muted">
+                                    {provinceName && (provinceName + " " + lang.province + " \n")}
+                                    {regionName && (regionName + " " + lang.regions + ", ")}
+                                    {street && ("\n " + street + " " + lang.street)}
+                                </p>
+                                {numberHome &&
+                                    <p className="h6 text-muted">{lang.numberOfHome + ": " + numberHome}</p>}
+                                {porch &&
+                                    <p className="h6 text-muted">{lang.porch + ": " + porch}</p>}
+                                {floor &&
+                                    <p className="h6 text-muted">{lang.floor + ": " + floor}</p>}
+                                {household &&
+                                    <p className="h6 text-muted">{lang.household + ": " + household}</p>}
+                                {postIndex &&
+                                    <p className="h6 text-muted">{lang.post + ": " + postIndex}</p>}
+                                {user.username &&
+                                    <p className="h6 text-muted mb-0">{lang.phone + ": " + user.username}</p>}
+                                {this.state.address?.phoneTwo &&
+                                    <p className="h6 text-muted mb-0">{lang.phoneTwo + ": " + this.state.address?.phoneTwo}</p>}
+                            </Col>
                             <Col lg={6} md={9} className="ml-auto mt-4 pt-2">
                                 <div className="table-responsive bg-white rounded shadow">
                                     <Table className="table-center table-padding mb-0">
                                         <tbody>
                                         <tr>
                                             <td className="h6">{status}</td>
-                                            <td className="text-center font-weight-bold">{this.state.status}</td>
+                                            <td className="text-center font-weight-bold">
+                                                {
+                                                    order.status === "DELIVERY" ?
+                                                        <span className="text-success">{delivered}</span> : (
+                                                            order.status === "FINISHED" ?
+                                                                <span className="text-success">{finished}</span> : (
+                                                                    order.status === "CANCELLED" ?
+                                                                        <span className="text-error">{cancelled}</span> : (
+                                                                            <span className="text-secondary">{processing}</span>
+                                                                        )
+                                                                )
+                                                        )
+                                                }
+
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td className="h6">{subTotal}</td>
-                                            <td className="text-center font-weight-bold">{this.state.subTotal} {" "+this.state.cur}</td>
+                                            <td className="text-center font-weight-bold">{order.total ? order.total : 0}{sum}</td>
                                         </tr>
-                                        <tr>
-                                            <td className="h6">{delivery}</td>
-                                            <td className="text-center font-weight-bold">{this.state.taxes}{" "+this.state.cur}</td>
-                                        </tr>
+                                        {/*<tr>*/}
+                                        {/*    <td className="h6">{delivery}</td>*/}
+                                        {/*    <td className="text-center font-weight-bold">{this.state.taxes}{" " + this.state.cur}</td>*/}
+                                        {/*</tr>*/}
                                         <tr className="bg-light">
                                             <td className="h6">{total}</td>
-                                            <td className="text-center font-weight-bold">{this.state.total}{" "+this.state.cur}</td>
+                                            <td className="text-center font-weight-bold">{order.total ? order.total : 0}{sum}</td>
                                         </tr>
                                         </tbody>
                                     </Table>
                                 </div>
                                 <div className="mt-4 pt-2 text-right ">
-                                    <Row className={"d-flex  justify-content-around"}>
-                                        <Col md={5} col={12} className={"text-left"}>
-                                            <div>
-                                                {date}
-                                                <span>some.date</span>
-                                            </div>
-                                        </Col>
-                                        <Col md={7} col={12}>
-                                            <Link to="shop-checkouts" className="btn btn-primary">
-                                                {printCheck}
-                                            </Link>
+                                    <Col md={6} col={12} className={"text-left"}>
+                                        <div>
+                                            {date}
+                                            <span>{new Date(order.createdAt).toLocaleString().slice(0, 17)}</span>
+                                        </div>
+                                    </Col>
+                                    <Row className={"d-flex  justify-content-around mt-2"}>
+                                        <Col md={2}></Col>
+                                        <Col md={10} col={12}>
+                                            <Row>
+                                                <Col>
+                                                    {
+                                                        order.status === "PROCESSING" ?
+                                                            <Button type={"danger"} className={"btn btn-danger"}
+                                                                    onClick={() => {
+                                                                        editStatus(order.id, "CANCELLED").then(res=>{
+                                                                            this.setState({
+                                                                                order: {
+                                                                                    ...this.state.order,
+                                                                                    status: "CANCELLED"
+                                                                                }
+                                                                            }, ()=> toast.success(lang.finish))
+                                                                        }).catch(err=>{
+
+                                                                        })
+                                                                    }
+                                                                    }>
+                                                                {lang.cancel}
+                                                            </Button> : null
+                                                    }
+
+                                                </Col>
+                                                <Col>
+                                                    <Link to="shop-checkouts" className="btn btn-primary">
+                                                        {printCheck}
+                                                    </Link>
+                                                </Col>
+                                            </Row>
                                         </Col>
                                     </Row>
                                 </div>

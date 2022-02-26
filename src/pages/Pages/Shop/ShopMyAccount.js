@@ -44,11 +44,18 @@ import {getProvince, getRegionsByProvince, register} from "../../../server/confi
 import {toast} from "react-toastify";
 import {createFile} from "../../../server/config/web-site/file";
 import {setCurrentUser} from "../../../redux/actions/lang";
+import {getAllOrdersByUser} from "../../../server/config/user/order";
+import {pageSize} from "../../../constants/all";
+import {getOrders} from "../../../server/config/order";
 
 class ShopMyAccount extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            current: 1,
+            size: pageSize,
+            total: 0,
+            orders: [],
             activeTab: "2",
             provinces: [],
             regionsList: [],
@@ -146,10 +153,8 @@ class ShopMyAccount extends Component {
     };
 
     componentDidMount() {
-
-        this.getList();
         this.getMe();
-
+        this.getList();
     }
 
     handleValidSubmitAddress = (event, values) => {
@@ -163,7 +168,8 @@ class ShopMyAccount extends Component {
             porch: values.porch,
             floor: values.floor,
             numberHome: values.numberHome,
-            postIndex: values.post
+            postIndex: values.post,
+            phoneTwo: values.phoneTwo
         }
 
         updateUserAddress(sendData).then(res => () => toast.success(this.props.lang.lang.finish)).catch(err => {
@@ -172,8 +178,6 @@ class ShopMyAccount extends Component {
     };
 
     getMe = () => {
-
-        // console.log(getCookie(userAccessTokenName))
 
         getUser().then(res => {
                 if (res && res.data) {
@@ -186,15 +190,35 @@ class ShopMyAccount extends Component {
                             ...res.data?.address
                         }
                     })
+                } else {
+
+                    console.log(getCookie(userAccessTokenName))
+                    deleteCookie(userAccessTokenName)
+                    this.props.props.history.push("/")
+
                 }
-            }, () => {
             }
         ).catch(err => {
+
             console.log(getCookie(userAccessTokenName))
             deleteCookie(userAccessTokenName)
             this.props.props.history.push("/")
-        })
 
+        })
+        this.getUserOrders();
+
+    }
+    getUserOrders = () => {
+
+        getAllOrdersByUser(this.state.current - 1, this.state.size).then(res => {
+            this.setState({
+                orders: res.data.content,
+                total: res.data.totalItems,
+                current: res.data.number
+            })
+        }).catch(err => {
+
+        })
     }
 
 
@@ -242,6 +266,7 @@ class ShopMyAccount extends Component {
             }, () => this.getRegions())
         })
 
+
     }
 
     getRegions = () => {
@@ -264,6 +289,7 @@ class ShopMyAccount extends Component {
 
     render() {
         const {words, user, provinces, regionsList} = this.state
+        const {processing, cancelled, delivered, notFound,price,sum,deliveryDate, deliveryFinish, finished} = this.props.lang.lang
         const {
             provinceId,
             regionId,
@@ -399,55 +425,44 @@ class ShopMyAccount extends Component {
                                                     <th scope="col">{words.table.number}</th>
                                                     <th scope="col">{words.table.date}</th>
                                                     <th scope="col">{words.table.status}</th>
-                                                    <th scope="col">{words.table.total}</th>
+                                                    <th scope="col">{price}</th>
+                                                    <th scope="col">{deliveryDate}</th>
                                                     <th scope="col">{words.table.action}</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                <tr>
-                                                    <th scope="row">7107</th>
-                                                    <td>1st November 2020</td>
-                                                    <td className="text-success">Delivered</td>
-                                                    <td>
-                                                        $ 320{" "}
-                                                        <span className="text-muted">for 2items</span>
-                                                    </td>
-                                                    <td>
-                                                        <Link to="/my-checkouts/1" className="text-primary">
-                                                            {} <i className="uil uil-arrow-right"></i>
-                                                        </Link>
-                                                    </td>
-                                                </tr>
+                                                {
+                                                    this.state.orders.map((value, key) => (<tr>
+                                                            <th scope="row">{++key}</th>
+                                                            <td>{new Date(value.createdAt).toLocaleString().slice(0, 17)}</td>
+                                                            {
+                                                                value.status === "DELIVERY" ?
+                                                                    <td className="text-success">{delivered}</td> : (
+                                                                        value.status === "FINISHED" ?
+                                                                            <td className="text-success">{finished}</td> : (
+                                                                                value.status === "CANCELLED" ?
+                                                                                    <td className="text-error">{cancelled}</td> : (
+                                                                                        <td className="text-secondary">{processing}</td>
+                                                                                    )
+                                                                            )
+                                                                    )
+                                                            }
 
-                                                <tr>
-                                                    <th scope="row">8007</th>
-                                                    <td>4th November 2020</td>
-                                                    <td className="text-muted">Processing</td>
-                                                    <td>
-                                                        $ 800{" "}
-                                                        <span className="text-muted">for 1item</span>
-                                                    </td>
-                                                    <td>
-                                                        <Link to="/my-checkouts/1" className="text-primary">
-                                                            {words.view} <i className="uil uil-arrow-right"></i>
-                                                        </Link>
-                                                    </td>
-                                                </tr>
-
-                                                <tr>
-                                                    <th scope="row">8008</th>
-                                                    <td>4th November 2020</td>
-                                                    <td className="text-danger">Canceled</td>
-                                                    <td>
-                                                        $ 800{" "}
-                                                        <span className="text-muted">for 1item</span>
-                                                    </td>
-                                                    <td>
-                                                        <Link to="/my-checkouts/1" className="text-primary">
-                                                            {words.view} <i className="uil uil-arrow-right"></i>
-                                                        </Link>
-                                                    </td>
-                                                </tr>
+                                                            <td>
+                                                                {value.totalPrice + " "+ sum}
+                                                           </td>
+                                                            <td>
+                                                                {value.status==="FINISHED"?deliveryFinish:(value.status==="PROCESSING"?notFound:new Date(value.deliveryDate).toLocaleString().slice(0,17))}
+                                                           </td>
+                                                            <td>
+                                                                <Link to={"/my-checkouts/" + value.id}
+                                                                      className="text-primary">
+                                                                    {words.view} <i className="uil uil-arrow-right"></i>
+                                                                </Link>
+                                                            </td>
+                                                        </tr>)
+                                                    )
+                                                }
 
                                                 </tbody>
                                             </Table>
@@ -485,8 +500,8 @@ class ShopMyAccount extends Component {
                                                         <p className="h6 text-muted">{words.post + ": " + postIndex}</p>}
                                                     {user.username &&
                                                         <p className="h6 text-muted mb-0">{words.phone + ": " + user.username}</p>}
-                                                    {user.phoneTwo &&
-                                                        <p className="h6 text-muted mb-0">{words.phoneTwo + ": " + user.phoneTwo}</p>}
+                                                    {this.state?.address?.phoneTwo &&
+                                                        <p className="h6 text-muted mb-0">{words.phoneTwo + ": " + this.state?.address?.phoneTwo}</p>}
                                                 </div>
                                             </Col>
 
@@ -703,7 +718,7 @@ class ShopMyAccount extends Component {
                                                             errorMessage="Invalid PhoneNumber"
                                                             placeholder={words.yourPhone}
                                                             name="phoneTwo"
-                                                            value={user.phoneTwo}
+                                                            value={this.state?.address?.phoneTwo}
                                                         />
                                                     </FormGroup>
                                                 </Col>

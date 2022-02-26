@@ -11,6 +11,8 @@ import {connect} from "react-redux";
 import {addProductToBaskets, deleteBasket, editBasket, getAllBaskets} from "../../../server/config/web-site/basket";
 import {imgUrl} from "../../../server/host";
 import {toast} from "react-toastify";
+import {bindActionCreators} from "redux";
+import {setBasketsItem} from "../../../redux/actions/lang";
 
 class ShopCart extends Component {
     constructor(props) {
@@ -36,12 +38,12 @@ class ShopCart extends Component {
 
     removeCartItem = (itemId) => {
 
-
         deleteBasket(itemId).then(res => {
 
             this.calculationTotal();
 
         }).catch(err => {
+
         })
 
     };
@@ -57,6 +59,19 @@ class ShopCart extends Component {
 
     }
 
+    onLocateToOrder = () => {
+
+        const list = this.state.items.map(item => item.id)
+        let prices = 0;
+        this.state.items.map((item) => {
+            prices += item?.branchesProduct?.price?.price * item.count
+        })
+
+        this.props.setBasketsItem(list, prices);
+        this.props?.props?.history.push("/shop-checkouts")
+
+    }
+
     editProductToBasket = (id, itemId, count = 1) => {
 
         const data = {id: id, branchProductId: itemId, count: (count - 1) > 0 ? (count - 1) : 1}
@@ -67,6 +82,7 @@ class ShopCart extends Component {
         });
 
     }
+
 
     addItem = (itemId) => {
         this.addProductToBasket(itemId);
@@ -282,10 +298,10 @@ class ShopCart extends Component {
                                             <td className="h6">{subTotal}</td>
                                             <td className="text-center font-weight-bold">{this.state.subTotal} {" " + this.state.cur}</td>
                                         </tr>
-                                        <tr>
-                                            <td className="h6">{delivery}</td>
-                                            <td className="text-center font-weight-bold">{this.state.taxes}{" " + this.state.cur}</td>
-                                        </tr>
+                                        {/*<tr>*/}
+                                        {/*    <td className="h6">{delivery}</td>*/}
+                                        {/*    <td className="text-center font-weight-bold">{this.state.taxes}{" " + this.state.cur}</td>*/}
+                                        {/*</tr>*/}
                                         <tr className="bg-light">
                                             <td className="h6">{total}</td>
                                             <td className="text-center font-weight-bold">{this.state.total}{" " + this.state.cur}</td>
@@ -294,9 +310,9 @@ class ShopCart extends Component {
                                     </Table>
                                 </div>
                                 <div className="mt-4 pt-2 text-right">
-                                    <Link to="shop-checkouts" className="btn btn-primary">
+                                    <button type={"button"} onClick={this.onLocateToOrder} className="btn btn-primary">
                                         {checkout}
-                                    </Link>
+                                    </button>
                                 </div>
                             </Col>
                         </Row>
@@ -308,6 +324,7 @@ class ShopCart extends Component {
 }
 
 const mstp = state => state
+const mdtp = dispatch => bindActionCreators({setBasketsItem}, dispatch)
 
-export default connect(mstp, null)(ShopCart);
+export default connect(mstp, mdtp)(ShopCart);
 

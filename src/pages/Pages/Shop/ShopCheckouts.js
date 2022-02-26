@@ -1,372 +1,580 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import {
-  Container,
-  Row,
-  Col,
-  Table,
-  Input,
-  FormGroup,
-  Form,
-  Label,
-  CustomInput,
+    Container,
+    Row,
+    Col,
+    Table,
+    Input,
+    FormGroup,
+    Form,
+    Label,
+    CustomInput, Button,
 } from "reactstrap";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 
 //Import components
 import PageBreadcrumb from "../../../components/Shared/PageBreadcrumb";
 import {connect} from "react-redux";
+import {getUser} from "../../../server/config/web-site/user";
+import {deleteCookie, getCookie} from "../../../utils/useCookies";
+import {userAccessTokenName} from "../../../constants/application";
+import {AvField, AvForm} from "availity-reactstrap-validation";
+import FeatherIcon from "feather-icons-react";
+import {getProvince, getRegionsByProvince} from "../../../server/config/web-site/client";
+import {bindActionCreators} from "redux";
+import {setBasketsItem} from "../../../redux/actions/lang";
+import {addOrder} from "../../../server/config/user/order";
+import {toast} from "react-toastify";
 
 class ShopCheckouts extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      pathItems: [
-        //id must required
-        { id: 1, name: props.lang.lang.index, link: "/" },
-        { id: 2, name:  props.lang.lang.cart, link: "/shop-cart" },
-        { id: 3, name: props.lang.lang.getShop},
-      ],
-    };
-  }
+    constructor(props) {
+        super(props);
+        this.state = {
+            pathItems: [
+                //id must required
+                {id: 1, name: props.lang.lang.index, link: "/"},
+                {id: 2, name: props.lang.lang.cart, link: "/shop-cart"},
+                {id: 3, name: props.lang.lang.getShop},
+            ],
+            user: {},
+            address: {}
 
-  componentDidMount() {
-    window.addEventListener("scroll", this.scrollNavigation, true);
-  }
-
-  // Make sure to remove the DOM listener when the component is unmounted.
-  componentWillUnmount() {
-    window.removeEventListener("scroll", this.scrollNavigation, true);
-  }
-
-  scrollNavigation = () => {
-    var doc = document.documentElement;
-    var top = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
-    if (top > 80) {
-      document.getElementById("topnav").classList.add("nav-sticky");
-    } else {
-      document.getElementById("topnav").classList.remove("nav-sticky");
+        };
     }
-  };
-  render() {
-    const {getShop, shipping, firstName, lastName, street, regions, province, buildingName, numberOfHome, yourPhone, comments, commentYourOrder,
-              payment, total, subTotal, delivery} = this.props.lang.lang
-    return (
-      <React.Fragment>
-        {/* breadcrumb */}
-        <PageBreadcrumb title={getShop} pathItems={this.state.pathItems} />
-        <div className="position-relative">
-          <div className="shape overflow-hidden text-white">
-            <svg
-              viewBox="0 0 2880 48"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M0 48H1437.5H2880V0H2160C1442.5 52 720 0 720 0H0V48Z"
-                fill="currentColor"
-              ></path>
-            </svg>
-          </div>
-        </div>
 
-        <section className="section">
-          <Container>
-            <Row>
-              <Col lg={7} md={6}>
-                <div className="rounded shadow-lg p-4">
-                  <h5 className="mb-0">{shipping}</h5>
+    getList = () => {
+        getProvince().then(res => {
+            this.setState({
+                provinces: res?.data,
+                data: {
+                    provinceId: res?.data[0].id
+                }
+            }, () => this.getRegions())
+        })
 
-                  <Form className="mt-4">
-                    <Row>
-                      <Col xs={12}>
-                        <FormGroup className="position-relative">
-                          <Label>
-                            {firstName}<span className="text-danger">*</span>
-                          </Label>
-                          <Input
-                            name="name"
-                            id="firstname"
-                            type="text"
-                            className="form-control"
-                            placeholder={firstName}
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col xs={12}>
-                        <FormGroup className="position-relative">
-                          <Label>
-                            {lastName}<span className="text-danger">*</span>
-                          </Label>
-                          <Input
-                            name="name"
-                            id="lastname"
-                            type="text"
-                            className="form-control"
-                            placeholder={lastName}
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col xs={12}>
-                        <FormGroup className="position-relative">
-                          <Label>
-                            {buildingName}
-                          </Label>
-                          <Input
-                            name="name"
-                            id="companyname"
-                            type="text"
-                            className="form-control"
-                            placeholder={buildingName}
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col xs={12}>
-                        <FormGroup className="position-relative">
-                          <Label>
-                            {street}
-                            <span className="text-danger">*</span>
-                          </Label>
-                          <Input
-                            type="text"
-                            name="address1"
-                            id="address1"
-                            className="form-control"
-                            placeholder={street}
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col xs={12}>
-                        <FormGroup className="position-relative">
-                          <Label>
-                            {numberOfHome}
-                          </Label>
-                          <Input
-                            type="text"
-                            name="address2"
-                            id="address2"
-                            className="form-control"
-                            placeholder={numberOfHome}
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col md={6}>
-                        <FormGroup className="position-relative">
-                          <Label>
-                            {province} <span className="text-danger">*</span>
-                          </Label>
-                          <Input
-                            type="text"
-                            name="city"
-                            id="city"
-                            className="form-control"
-                            placeholder= {province}
-                          />
-                        </FormGroup>
-                      </Col>
-                      {/*<Col md={6}>*/}
-                      {/*  <FormGroup className="position-relative">*/}
-                      {/*    <Label>*/}
-                      {/*      Postal Code <span className="text-danger">*</span>*/}
-                      {/*    </Label>*/}
-                      {/*    <Input*/}
-                      {/*      type="text"*/}
-                      {/*      name="postcode"*/}
-                      {/*      id="postcode"*/}
-                      {/*      className="form-control"*/}
-                      {/*      placeholder="Zip :"*/}
-                      {/*    />*/}
-                      {/*  </FormGroup>*/}
-                      {/*</Col>*/}
-                      <Col md={6}>
-                        <FormGroup className="position-relative">
-                          <Label>
-                            {regions} <span className="text-danger">*</span>
-                          </Label>
-                          <Input
-                            type="text"
-                            name="state"
-                            id="state"
-                            className="form-control"
-                            placeholder= {regions}
-                          />
-                        </FormGroup>
-                      </Col>
-                      {/*<Col md={6}>*/}
-                      {/*  <FormGroup className="position-relative">*/}
-                      {/*    <Label>*/}
-                      {/*      Country <span className="text-danger">*</span>*/}
-                      {/*    </Label>*/}
-                      {/*    <select className="form-control custom-select">*/}
-                      {/*      <option defaultValue="">India</option>*/}
-                      {/*      <option value="AF">Afghanistan</option>*/}
-                      {/*      <option value="AX">&Aring;land Islands</option>*/}
-                      {/*      <option value="AL">Albania</option>*/}
-                      {/*      <option value="DZ">Algeria</option>*/}
-                      {/*      <option value="AS">American Samoa</option>*/}
-                      {/*      <option value="AD">Andorra</option>*/}
-                      {/*      <option value="AO">Angola</option>*/}
-                      {/*      <option value="AI">Anguilla</option>*/}
-                      {/*      <option value="AQ">Antarctica</option>*/}
-                      {/*    </select>*/}
-                      {/*  </FormGroup>*/}
-                      {/*</Col>*/}
-                      <Col xs={12}>
-                        <FormGroup className="position-relative">
-                          <Label>
-                            {yourPhone} <span className="text-danger">*</span>
-                          </Label>
-                          <Input
-                            type="text"
-                            name="phone"
-                            id="phone"
-                            className="form-control"
-                            placeholder={yourPhone}
-                          />
-                        </FormGroup>
-                      </Col>
-                      {/*<Col xs={12}>*/}
-                      {/*  <FormGroup className="position-relative">*/}
-                      {/*    <Label>*/}
-                      {/*      Your Email <span className="text-danger">*</span>*/}
-                      {/*    </Label>*/}
-                      {/*    <Input*/}
-                      {/*      name="email"*/}
-                      {/*      id="email"*/}
-                      {/*      type="email"*/}
-                      {/*      className="form-control"*/}
-                      {/*      placeholder="Your email :"*/}
-                      {/*    />*/}
-                      {/*  </FormGroup>*/}
-                      {/*</Col>*/}
-                    </Row>
-                  </Form>
-                </div>
+    }
+    onProvinceChange = (e, v) => {
+        this.setState({
+            data: {
+                provinceId: v
+            }
+        }, () => this.getRegions())
+    }
 
-                <div className="rounded shadow-lg p-4">
-                  {/*<div className="form-check form-check-inline">*/}
-                  {/*  <FormGroup>*/}
-                  {/*    <CustomInput*/}
-                  {/*      type="checkbox"*/}
-                  {/*      label="Ship to a different address ?"*/}
-                  {/*      id="addnewaddress"*/}
-                  {/*    />*/}
-                  {/*  </FormGroup>*/}
-                  {/*</div>*/}
 
-                  <FormGroup className="position-relative">
-                    <Label>{commentYourOrder}</Label>
-                    <textarea
-                      name="comments"
-                      id="comments"
-                      rows="4"
-                      className="form-control"
-                      placeholder={commentYourOrder}
-                    ></textarea>
-                  </FormGroup>
-                </div>
-              </Col>
+    getRegions = () => {
+        getRegionsByProvince(this.state.data.provinceId).then(res => {
+            this.setState({
+                regionsList: res.data
+            })
+        }).catch()
+    }
 
-              <Col lg={5} md={6} className=" mt-4 mt-sm-0 pt-2 pt-sm-0">
-                <div className="rounded shadow-lg p-4">
-                  {/*<div className="d-flex mb-4 justify-content-between">*/}
-                  {/*  <h5>4 Items</h5>*/}
-                  {/*  <Link to="shop-cart" className="text-muted h6">*/}
-                  {/*    Show Details*/}
-                  {/*  </Link>*/}
-                  {/*</div>*/}
-                  <div className="table-responsive">
-                    <Table className="table-center table-padding mb-0">
-                      <tbody>
-                        <tr>
-                          <td className="h6 border-0">{subTotal}</td>
-                          <td className="text-center font-weight-bold border-0">
-                            $ 2409
-                          </td>
-                        </tr>
-                        <tr>
-                          <td className="h6">{delivery}</td>
-                          <td className="text-center font-weight-bold">
-                            $ 0.00
-                          </td>
-                        </tr>
-                        <tr className="bg-light">
-                          <td className="h5 font-weight-bold">{total}</td>
-                          <td className="text-center text-primary h4 font-weight-bold">
-                            $ 2409
-                          </td>
-                        </tr>
-                      </tbody>
-                    </Table>
+    getMe = () => {
 
-                    <ul className="list-unstyled mt-4 mb-0">
-                      <li>
-                        <FormGroup className="mb-0">
-                          <CustomInput
-                            inline={true}
-                            type="radio"
-                            label="Bank Transfer"
-                            id="banktransfer"
-                            defaultChecked
-                            name="customRadio"
-                          />
-                        </FormGroup>
-                      </li>
+        getUser().then(res => {
+                if (res && res.data) {
+                    this.setState({
+                        user: {
+                            ...res.data
+                        },
+                        address: {
+                            ...res.data?.address
+                        }
+                    })
+                } else {
 
-                      <li className="mt-3">
-                        <FormGroup className="mb-0">
-                          <CustomInput
-                            type="radio"
-                            id="chaquepayment"
-                            inline={true}
-                            label="Cheque Payment"
-                            name="customRadio"
-                          />
-                        </FormGroup>
-                      </li>
+                    console.log(getCookie(userAccessTokenName))
+                    deleteCookie(userAccessTokenName)
+                    this.props.props.history.push("/")
 
-                      <li className="mt-3">
-                        <FormGroup className="mb-0">
-                          <CustomInput
-                            type="radio"
-                            id="cashpayment"
-                            name="customRadio"
-                            inline={true}
-                            label="Cash on Delivery"
-                          />
-                        </FormGroup>
-                      </li>
+                }
+            }
+        ).catch(err => {
 
-                      <li className="mt-3">
-                        <FormGroup className="mb-0">
-                          <CustomInput
-                            type="radio"
-                            id="paypal"
-                            name="customRadio"
-                            label="Paypal"
-                            inline={true}
-                          />
-                        </FormGroup>
-                      </li>
-                    </ul>
+            console.log(getCookie(userAccessTokenName))
+            deleteCookie(userAccessTokenName)
+            this.props.props.history.push("/")
 
-                    <div className="mt-4 pt-2">
-                      <Link
-                        to="shop-checkouts"
-                        className="btn btn-block btn-primary"
-                      >
-                        {payment}
-                      </Link>
+        })
+
+    }
+
+    componentDidMount() {
+        if (Object.keys(this.props?.basketOrder).length === 0 || !(this.props?.basketOrder?.products?.list?.length >= 0)) {
+            this.props?.props?.history?.push("/shop-cart")
+        }
+        this.getMe();
+        this.getList();
+        window.addEventListener("scroll", this.scrollNavigation, true);
+    }
+
+    // Make sure to remove the DOM listener when the component is unmounted.
+    componentWillUnmount() {
+        window.removeEventListener("scroll", this.scrollNavigation, true);
+    }
+
+    scrollNavigation = () => {
+        var doc = document.documentElement;
+        var top = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
+        if (top > 80) {
+            document.getElementById("topnav").classList.add("nav-sticky");
+        } else {
+            document.getElementById("topnav").classList.remove("nav-sticky");
+        }
+    };
+
+    onSubmit = (e, v) => {
+        console.log(e, v)
+        const data = {
+            "addressPayload": {
+                "regionId": v.regionId,
+                "phoneTwo": v.phoneTwo,
+                "street": v.street,
+                "household": v.household,
+                "floor": v.floor,
+                "numberHome": v.numberHome,
+                "porch": v.porch,
+                "postIndex": v.postIndex
+            },
+            "basketIds": this.props?.basketOrder?.products?.list,
+            "info": v.info
+        }
+
+        addOrder(data).then(res => {
+            if (res&&res.data){
+                toast.success(this.props.lang.lang.finish)
+                this.props.props.history.push("/shop-myaccount")
+            } else {
+                toast.error(this.props.lang.lang.error)
+            }
+        }).catch(err => {
+            toast.error(this.props.lang.lang.error)
+        })
+
+    }
+
+    render() {
+        const {
+            getShop,
+            shipping,
+            firstName,
+            lastName,
+            street,
+            regions,
+            province,
+            buildingName,
+            household,
+            porch,
+            floor,
+            phone,
+            phoneTwo,
+            post,
+            numberOfHome,
+            yourPhone,
+            comments,
+            commentYourOrder,
+            payment,
+            total,
+            subTotal,
+            delivery
+        } = this.props.lang.lang
+        const {user, address, provinces, regionsList} = this.state
+        return (
+            <React.Fragment>
+                {/* breadcrumb */}
+                <PageBreadcrumb title={getShop} pathItems={this.state.pathItems}/>
+                <div className="position-relative">
+                    <div className="shape overflow-hidden text-white">
+                        <svg
+                            viewBox="0 0 2880 48"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path
+                                d="M0 48H1437.5H2880V0H2160C1442.5 52 720 0 720 0H0V48Z"
+                                fill="currentColor"
+                            ></path>
+                        </svg>
                     </div>
-                  </div>
                 </div>
-              </Col>
-            </Row>
-          </Container>
-        </section>
-      </React.Fragment>
-    );
-  }
+
+                <section className="section">
+                    <Container>
+                        <AvForm className="login-form mx-3"
+                                onValidSubmit={this.onSubmit}
+                                model={this.state.address}>
+
+                            <Row>
+                                <Col lg={7} md={6}>
+                                    <div className="rounded shadow-lg p-4">
+                                        <h5 className="mb-0">{shipping}</h5>
+
+                                        {/*<Form>*/}
+                                        <Row>
+                                            <Col xs={6}>
+                                                <FormGroup className="position-relative"
+                                                           disabled={true}>
+                                                    <Label>
+                                                        {firstName}<span className="text-danger">*</span>
+                                                    </Label>
+                                                    <Input
+                                                        name="name"
+                                                        id="firstName"
+                                                        type="text"
+                                                        className="form-control"
+                                                        placeholder={firstName}
+                                                        value={user?.firstName}
+                                                        disabled
+                                                    />
+                                                </FormGroup>
+                                            </Col>
+                                            <Col xs={6}>
+                                                <FormGroup className="position-relative"
+                                                           disabled={true}>
+                                                    <Label>
+                                                        {lastName}<span className="text-danger">*</span>
+                                                    </Label>
+                                                    <Input
+                                                        name="name"
+                                                        id="lastName"
+                                                        type="text"
+                                                        className="form-control"
+                                                        value={user?.lastName}
+                                                        placeholder={lastName}
+                                                        disabled={true}
+                                                    />
+                                                </FormGroup>
+                                            </Col>
+                                            <Col md={6}>
+                                                <FormGroup className="position-relative">
+                                                    <Label>
+                                                        {yourPhone}
+                                                        {/*<span className="text-danger">*</span>*/}
+                                                    </Label>
+                                                    <div className="position-relative">
+                                                        <i>
+                                                            <FeatherIcon
+                                                                icon="phone"
+                                                                className="fea icon-sm icons"
+                                                            />
+                                                        </i>
+                                                    </div>
+                                                    <AvField
+                                                        type="number"
+                                                        className="form-control pl-5"
+                                                        errorMessage="Invalid PhoneNumber"
+                                                        placeholder={yourPhone}
+                                                        name="phone"
+                                                        disabled
+
+                                                        value={user?.username}
+                                                    />
+
+                                                </FormGroup>
+                                            </Col>
+
+                                            <Col md={6}>
+                                                <FormGroup className="position-relative">
+                                                    <Label>
+                                                        {phoneTwo}
+                                                        {/*<span className="text-danger">*</span>*/}
+                                                    </Label>
+                                                    <div className="position-relative">
+                                                        <i>
+                                                            <FeatherIcon
+                                                                icon="phone"
+                                                                className="fea icon-sm icons"
+                                                            />
+                                                        </i>
+                                                    </div>
+                                                    <AvField
+                                                        type="number"
+                                                        className="form-control pl-5"
+                                                        errorMessage="Invalid PhoneNumber"
+                                                        placeholder={yourPhone}
+                                                        name="phoneTwo"
+                                                        value={user?.phone}
+                                                    />
+
+                                                </FormGroup>
+                                            </Col>
+
+
+                                            <Col md={6}>
+                                                <FormGroup className="position-relative">
+
+                                                    <AvField type="select" name="provinceId"
+                                                             label={province}
+                                                        // helpMessage="This is an example. Deal with it!"
+                                                             required
+                                                             onChange={this.onProvinceChange}
+                                                             defaultValue={address?.provinceId}
+                                                    >
+
+                                                        {
+                                                            provinces?.map(item => (
+                                                                <option value={item.id}>{item.name}</option>
+                                                            ))
+                                                        }
+                                                    </AvField>
+                                                </FormGroup>
+                                            </Col>
+                                            <Col md={6}>
+                                                <FormGroup className="position-relative">
+                                                    <AvField type="select" name="regionId" label={regions}
+                                                        // helpMessage="This is an example. Deal with it!"
+                                                             required
+                                                             defaultValue={address?.regionId}
+                                                    >
+                                                        {
+                                                            regionsList?.map(item => (
+                                                                <option value={item.id}>{item.name}</option>
+                                                            ))
+                                                        }
+                                                    </AvField>
+                                                </FormGroup>
+                                            </Col>
+                                            <Col md={6}>
+                                                <FormGroup className="position-relative">
+                                                    <Label>
+                                                        {street} <span className="text-danger">*</span>
+                                                    </Label>
+                                                    <div className="position-relative">
+                                                        <i>
+                                                            <FeatherIcon
+                                                                icon="git-merge"
+                                                                className="fea icon-sm icons"
+                                                            />
+                                                        </i>
+                                                    </div>
+                                                    <AvField
+                                                        type="text"
+                                                        className="form-control pl-5"
+                                                        errorMessage="Invalid Street"
+                                                        validate={{
+                                                            required: {value: true}
+                                                        }}
+                                                        value={address?.street}
+                                                        placeholder={street}
+                                                        name="street"
+                                                    />
+                                                </FormGroup>
+                                            </Col>
+                                            <Col md={6}>
+                                                <FormGroup className="position-relative">
+                                                    <Label>
+                                                        {numberOfHome}{" "}
+                                                        {/*<span className="text-danger">*</span>*/}
+                                                    </Label>
+                                                    <div className="position-relative">
+                                                        <i>
+                                                            <FeatherIcon
+                                                                icon="inbox"
+                                                                className="fea icon-sm icons"
+                                                            />
+                                                        </i>
+                                                    </div>
+                                                    <AvField
+                                                        type="text"
+                                                        className="form-control pl-5"
+                                                        errorMessage={"Enter " + numberOfHome}
+                                                        value={address?.numberHome}
+                                                        name="numberHome"
+                                                        placeholder={numberOfHome}
+                                                    />
+                                                </FormGroup>
+                                            </Col>
+                                            <Col md={6}>
+                                                <FormGroup className="position-relative">
+                                                    <Label>
+                                                        {porch}{" "}
+                                                        {/*<span className="text-danger">*</span>*/}
+                                                    </Label>
+                                                    <div className="position-relative">
+                                                        <i>
+                                                            <FeatherIcon
+                                                                icon="inbox"
+                                                                className="fea icon-sm icons"
+                                                            />
+                                                        </i>
+                                                    </div>
+                                                    <AvField
+                                                        type="text"
+                                                        className="form-control pl-5"
+                                                        errorMessage={"Enter " + porch}
+                                                        value={address?.porch}
+                                                        name="porch"
+                                                        placeholder={porch}
+                                                    />
+                                                </FormGroup>
+                                            </Col>
+                                            <Col md={6}>
+                                                <FormGroup className="position-relative">
+                                                    <Label>
+                                                        {floor}{" "}
+                                                        {/*<span className="text-danger">*</span>*/}
+                                                    </Label>
+                                                    <div className="position-relative">
+                                                        <i>
+                                                            <FeatherIcon
+                                                                icon="inbox"
+                                                                className="fea icon-sm icons"
+                                                            />
+                                                        </i>
+                                                    </div>
+                                                    <AvField
+                                                        type="text"
+                                                        value={address?.floor}
+                                                        className="form-control pl-5"
+                                                        errorMessage={"Enter " + floor}
+                                                        name="floor"
+                                                        placeholder={floor}
+                                                    />
+                                                </FormGroup>
+                                            </Col>
+                                            <Col md={6}>
+                                                <FormGroup className="position-relative">
+                                                    <Label>
+                                                        {household} <span className="text-danger">*</span>
+                                                    </Label>
+                                                    <div className="position-relative">
+                                                        <i>
+                                                            <FeatherIcon
+                                                                icon="home"
+                                                                className="fea icon-sm icons"
+                                                            />
+                                                        </i>
+                                                    </div>
+                                                    <AvField
+                                                        value={address?.household}
+                                                        type="text"
+                                                        className="form-control pl-5"
+                                                        errorMessage={"Enter " + household}
+                                                        validate={{required: {value: true}}}
+                                                        name={"household"}
+                                                        placeholder={household}
+                                                    />
+                                                </FormGroup>
+                                            </Col>
+                                            <Col md={6}>
+                                                <FormGroup className="position-relative">
+                                                    <Label>
+                                                        {post}{" "}
+                                                        <span className="text-danger">*</span>
+                                                    </Label>
+                                                    <div className="position-relative">
+                                                        <i>
+                                                            <FeatherIcon
+                                                                icon="inbox"
+                                                                className="fea icon-sm icons"
+                                                            />
+                                                        </i>
+                                                    </div>
+                                                    <AvField
+                                                        type="number"
+                                                        className="form-control pl-5"
+                                                        errorMessage={"Enter " + post}
+                                                        validate={{
+                                                            required: {value: true},
+                                                        }}
+                                                        value={address?.postIndex}
+                                                        name="postIndex"
+                                                        placeholder={post}
+                                                    />
+                                                </FormGroup>
+                                            </Col>
+
+                                        </Row>
+                                        {/*</Form>*/}
+                                    </div>
+
+                                    <div className="rounded shadow-lg p-4">
+
+                                        <FormGroup className="position-relative">
+                                            <Label>{commentYourOrder}</Label>
+                                            <AvField
+                                                name="info"
+                                                type="textarea"
+                                                rows="4"
+                                                className="form-control"
+                                                placeholder={commentYourOrder}
+                                                // value={address?.postIndex}
+                                            />
+                                        </FormGroup>
+                                    </div>
+                                </Col>
+
+                                <Col lg={5} md={6} className=" mt-4 mt-sm-0 pt-2 pt-sm-0">
+                                    <div className="rounded shadow-lg p-4">
+                                        {/*<div className="d-flex mb-4 justify-content-between">*/}
+                                        {/*  <h5>4 Items</h5>*/}
+                                        {/*  <Link to="shop-cart" className="text-muted h6">*/}
+                                        {/*    Show Details*/}
+                                        {/*  </Link>*/}
+                                        {/*</div>*/}
+                                        <div className="table-responsive">
+                                            <Table className="table-center table-padding mb-0">
+                                                <tbody>
+                                                <tr>
+                                                    <td className="h6 border-0">{subTotal}</td>
+                                                    <td className="text-center font-weight-bold border-0">
+                                                        {this.props?.basketOrder?.products?.price}
+                                                    </td>
+                                                </tr>
+                                                {/*<tr>*/}
+                                                {/*    <td className="h6">{delivery}</td>*/}
+                                                {/*    <td className="text-center font-weight-bold">*/}
+                                                {/*        $ 0.00*/}
+                                                {/*    </td>*/}
+                                                {/*</tr>*/}
+                                                <tr className="bg-light">
+                                                    <td className="h5 font-weight-bold">{total}</td>
+                                                    <td className="text-center text-primary h4 font-weight-bold">
+                                                        {this.props?.basketOrder?.products?.price}
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </Table>
+
+                                            <ul className="list-unstyled mt-4 mb-0">
+                                                <li>
+                                                    <FormGroup className="mb-0">
+                                                        <CustomInput
+                                                            inline={true}
+                                                            type="radio"
+                                                            label="Bank Transfer"
+                                                            id="banktransfer"
+                                                            defaultChecked
+                                                            name="customRadio"
+                                                        />
+                                                    </FormGroup>
+                                                </li>
+
+                                            </ul>
+
+                                            <div className="mt-4 pt-2">
+                                                <Button
+                                                    // type={"button"}
+                                                    // onClick={this.onSubmit}
+                                                    className="btn btn-block btn-primary"
+                                                >
+                                                    {payment}
+                                                </Button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </Col>
+                            </Row>
+                        </AvForm>
+
+                    </Container>
+                </section>
+            </React.Fragment>
+        );
+    }
 }
 
 const mstp = state => state
-export default connect(mstp,null)(ShopCheckouts);
+const mdtp = dispatch => bindActionCreators({setBasketsItem}, dispatch)
+export default connect(mstp, mdtp)(ShopCheckouts);

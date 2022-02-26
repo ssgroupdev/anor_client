@@ -13,9 +13,7 @@ export let langs = localStorage.getItem("lang") != null ? localStorage.getItem("
 export let headers = {
     "Content-Type": "application/json",
     "Authorization": `Bearer ` + getCookie(userAccessTokenName),
-    // "lang": localStorage.getItem("lang") != null ? localStorage.getItem("lang") : "uz",
-    "lang": langs,
-    // "Access-Control-Allow-Credentials":'true'
+    "lang": langs
 };
 
 export const setHeaders = () => {

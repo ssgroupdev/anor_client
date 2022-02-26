@@ -69,6 +69,21 @@ export const setProduct = (list, productId, count) => {
     }
 }
 
+export const setBasketsItem = (list, price) => {
+    //
+    // localStorage.setItem("basket", JSON.stringify(list))
+
+    const data = {
+        list,
+        price
+    }
+
+    return {
+        type: "SET_PRODUCT_FOR_ORDER",
+        payload: data
+    }
+}
+
 export const deleteProduct = (list, productId) => {
 
     let items = [];
