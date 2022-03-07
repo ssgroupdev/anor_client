@@ -12,11 +12,7 @@ import {deleteCookie} from "../../utils/useCookies";
 import {userAccessTokenName} from "../../constants/application";
 
 class Index extends Component {
-  componentDidMount() {
-    this.getMe();
-    document.body.classList = "";
-    window.addEventListener("scroll", this.scrollNavigation, true);
-  }
+
   state = {
     isLogin: false
   }
@@ -26,6 +22,11 @@ class Index extends Component {
     window.removeEventListener("scroll", this.scrollNavigation, true);
   }
 
+  componentDidMount() {
+    this.getMe();
+    document.body.classList = "";
+    window.addEventListener("scroll", this.scrollNavigation, true);
+  }
   getMe = () => {
 
     getUser().then(res => {

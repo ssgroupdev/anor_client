@@ -17,42 +17,12 @@ import FeatherIcon from "feather-icons-react";
 //Import components
 import PageBreadcrumb from "../../../components/Shared/PageBreadcrumb";
 
-//Import Images
-import product1 from "../../../assets/images/shop/product/s1.jpg";
-import product2 from "../../../assets/images/shop/product/s2.jpg";
-import product3 from "../../../assets/images/shop/product/s3.jpg";
-import product4 from "../../../assets/images/shop/product/s4.jpg";
-import product5 from "../../../assets/images/shop/product/s5.jpg";
-import product6 from "../../../assets/images/shop/product/s6.jpg";
-import product7 from "../../../assets/images/shop/product/s7.jpg";
-import product8 from "../../../assets/images/shop/product/s8.jpg";
-import product9 from "../../../assets/images/shop/product/s9.jpg";
-import product10 from "../../../assets/images/shop/product/s10.jpg";
-import product11 from "../../../assets/images/shop/product/s11.jpg";
-import product12 from "../../../assets/images/shop/product/s12.jpg";
-import product13 from "../../../assets/images/shop/product/s13.jpg";
-import product14 from "../../../assets/images/shop/product/s14.jpg";
-import product15 from "../../../assets/images/shop/product/s15.jpg";
-
-import prodtctOverlay1 from "../../../assets/images/shop/product/s-1.jpg";
-import prodtctOverlay2 from "../../../assets/images/shop/product/s-2.jpg";
-import prodtctOverlay3 from "../../../assets/images/shop/product/s-3.jpg";
-import prodtctOverlay4 from "../../../assets/images/shop/product/s-4.jpg";
-import prodtctOverlay5 from "../../../assets/images/shop/product/s-5.jpg";
-import prodtctOverlay6 from "../../../assets/images/shop/product/s-6.jpg";
-import prodtctOverlay7 from "../../../assets/images/shop/product/s-7.jpg";
-import prodtctOverlay8 from "../../../assets/images/shop/product/s-8.jpg";
-import prodtctOverlay9 from "../../../assets/images/shop/product/s-9.jpg";
-import prodtctOverlay10 from "../../../assets/images/shop/product/s-10.jpg";
-import prodtctOverlay11 from "../../../assets/images/shop/product/s-11.jpg";
-import prodtctOverlay12 from "../../../assets/images/shop/product/s-12.jpg";
-import prodtctOverlay13 from "../../../assets/images/shop/product/s-13.jpg";
-import prodtctOverlay14 from "../../../assets/images/shop/product/s-14.jpg";
-import prodtctOverlay15 from "../../../assets/images/shop/product/s-15.jpg";
 import ProductGrid from "../../../components/Shared/ProductGrid";
 import {connect} from "react-redux";
-import {getBrandProducts} from "../../../server/config/web-site/brand/brand";
 import {getBranchId, getBranchProductByBranchId} from "../../../server/config/web-site/brand/branches";
+import {getUser} from "../../../server/config/web-site/user";
+import {deleteCookie} from "../../../utils/useCookies";
+import {userAccessTokenName} from "../../../constants/application";
 
 class ShopProducts extends Component {
     constructor(props) {
@@ -153,6 +123,7 @@ class ShopProducts extends Component {
     }
 
     componentDidMount() {
+        this.getMe();
 
         this.getBranch();
         this.getList();
@@ -163,6 +134,28 @@ class ShopProducts extends Component {
     // Make sure to remove the DOM listener when the component is unmounted.
     componentWillUnmount() {
         window.removeEventListener("scroll", this.scrollNavigation, true);
+    }
+
+    getMe = () => {
+
+        getUser().then(res => {
+            if (res && res.data) {
+                this.setState({
+                    isLogin: true
+                })
+            } else {
+                deleteCookie(userAccessTokenName)
+                this.setState({
+                    isLogin: false
+                })
+            }
+        }).catch(err => {
+            deleteCookie(userAccessTokenName)
+            this.setState({
+                isLogin: false
+            })
+        })
+
     }
 
     scrollNavigation = () => {
@@ -306,7 +299,7 @@ class ShopProducts extends Component {
 
                                 <Row>
                                     {this.state.products.map((product, key) => (
-                                        <ProductGrid product={product} col={4}/>
+                                        <ProductGrid  isLogin={this.state.isLogin} product={product} col={4}/>
                                     ))}
 
                                     <Col xs="12" className={"mt-4 pt-2 justify-items-center text-center"}>

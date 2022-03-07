@@ -16,8 +16,6 @@ import FeatherIcon from "feather-icons-react";
 //Import Images
 import imgbg from "../../../assets/images/account/bg.png";
 import profile from "../../../assets/images/client/05.jpg";
-import blog1 from "../../../assets/images/blog/01.jpg";
-import blog2 from "../../../assets/images/blog/02.jpg";
 import exp1 from "../../../assets/images/job/Circleci.svg";
 import exp2 from "../../../assets/images/job/Codepen.svg";
 import exp3 from "../../../assets/images/job/Gitlab.svg";
@@ -50,22 +48,6 @@ class PageProfile extends Component {
     ],
     experiences: [
       {
-        id: 1,
-        image: exp1,
-        designation: "Senior Web Developer",
-        duration: "3 Years",
-        companyName: "Gitlab",
-        location: "London, UK",
-      },
-      {
-        id: 2,
-        image: exp2,
-        designation: "Web Designer",
-        duration: "2 Years",
-        companyName: "CircleCi",
-        location: "Washington D.C, USA",
-      },
-      {
         id: 3,
         image: exp3,
         designation: "UI Designer",
@@ -82,48 +64,7 @@ class PageProfile extends Component {
         title: "Profile",
         link: "/page-profile",
       },
-      {
-        id: 2,
-        icon: "uil uil-users-alt",
-        className: "accounts rounded d-block shadow text-center py-3",
-        title: "Members",
-        link: "/page-members",
-      },
-      {
-        id: 3,
-        icon: "uil uil-file",
-        className: "accounts rounded d-block shadow text-center py-3",
-        title: "Works",
-        link: "/page-works",
-      },
-      {
-        id: 4,
-        icon: "uil uil-envelope-star",
-        className: "accounts rounded d-block shadow text-center py-3",
-        title: "Messages",
-        link: "/page-messages",
-      },
-      {
-        id: 5,
-        icon: "uil uil-transaction",
-        className: "accounts rounded d-block shadow text-center py-3",
-        title: "Payments",
-        link: "/page-payments",
-      },
-      {
-        id: 6,
-        icon: "uil uil-setting",
-        className: "accounts rounded d-block shadow text-center py-3",
-        title: "Settings",
-        link: "/page-profile-edit",
-      },
-      {
-        id: 7,
-        icon: "uil uil-sign-out-alt",
-        className: "accounts rounded d-block shadow text-center py-3",
-        title: "Logout",
-        link: "/auth-login-three",
-      },
+
     ],
   };
 

@@ -12,7 +12,6 @@ import cameraImg from "../../assets/images/icon/camera.svg";
 import speedometer from "../../assets/images/icon/speedometer.svg";
 import lowBattery from "../../assets/images/icon/low-battery.svg";
 import game from "../../assets/images/icon/game.svg";
-import cameraSingle from "../../assets/images/single/camera.png";
 
 class Feature extends Component {
   constructor(props) {
@@ -40,9 +39,6 @@ class Feature extends Component {
 
           <Container className="mt-100 mt-60">
             <Row className="align-items-center">
-              <Col lg={6} md={6}>
-                <img src={cameraSingle} className="img-fluid" alt="" />
-              </Col>
 
               <Col lg={6} md={6} className="mt-4 mt-sm-0 pt-2 pt-sm-0">
                 <div className="section-title ml-lg-3">

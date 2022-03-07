@@ -16,16 +16,6 @@ import { Link } from "react-router-dom";
 //Import components
 import PageBreadcrumb from "../../../components/Shared/PageBreadcrumb";
 
-// import images
-import blog01 from "../../../assets/images/blog/01.jpg";
-import blog02 from "../../../assets/images/blog/02.jpg";
-import blog03 from "../../../assets/images/blog/03.jpg";
-import blog04 from "../../../assets/images/blog/04.jpg";
-import blog05 from "../../../assets/images/blog/05.jpg";
-import blog06 from "../../../assets/images/blog/06.jpg";
-import blog07 from "../../../assets/images/blog/07.jpg";
-import blog08 from "../../../assets/images/blog/08.jpg";
-
 class PageBlog extends Component {
   constructor(props) {
     super(props);
@@ -38,78 +28,6 @@ class PageBlog extends Component {
         { id: 4, name: "Blog Grid" },
       ],
       blogs: [
-        {
-          id: 1,
-          image: blog01,
-          title: "Design your apps in your own way",
-          like: "33",
-          comment: "08",
-          autor: "Calvin Carlo",
-          date: "13th August, 2019",
-        },
-        {
-          id: 2,
-          image: blog02,
-          title: "How apps is changing the IT world",
-          like: "33",
-          comment: "08",
-          autor: "Calvin Carlo",
-          date: "13th August, 2019",
-        },
-        {
-          id: 3,
-          image: blog03,
-          title: "Smartest Applications for Business",
-          like: "33",
-          comment: "08",
-          autor: "Calvin Carlo",
-          date: "13th August, 2019",
-        },
-        {
-          id: 4,
-          image: blog04,
-          title: "Design your apps in your own way",
-          like: "33",
-          comment: "08",
-          autor: "Calvin Carlo",
-          date: "13th August, 2019",
-        },
-        {
-          id: 5,
-          image: blog05,
-          title: "How apps is changing the IT world",
-          like: "33",
-          comment: "08",
-          autor: "Calvin Carlo",
-          date: "13th August, 2019",
-        },
-        {
-          id: 6,
-          image: blog06,
-          title: "Smartest Applications for Business",
-          like: "33",
-          comment: "08",
-          autor: "Calvin Carlo",
-          date: "13th August, 2019",
-        },
-        {
-          id: 7,
-          image: blog07,
-          title: "Design your apps in your own way",
-          like: "33",
-          comment: "08",
-          autor: "Calvin Carlo",
-          date: "13th August, 2019",
-        },
-        {
-          id: 8,
-          image: blog08,
-          title: "How apps is changing the IT world",
-          like: "33",
-          comment: "08",
-          autor: "Calvin Carlo",
-          date: "13th August, 2019",
-        },
       ],
     };
   }

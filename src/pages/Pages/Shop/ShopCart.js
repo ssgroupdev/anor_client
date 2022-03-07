@@ -6,13 +6,14 @@ import {Link} from "react-router-dom";
 import PageBreadcrumb from "../../../components/Shared/PageBreadcrumb";
 
 //Import Images
-import product1 from "../../../assets/images/shop/product/s1.jpg";
 import {connect} from "react-redux";
 import {addProductToBaskets, deleteBasket, editBasket, getAllBaskets} from "../../../server/config/web-site/basket";
 import {imgUrl} from "../../../server/host";
 import {toast} from "react-toastify";
 import {bindActionCreators} from "redux";
 import {setBasketsItem} from "../../../redux/actions/lang";
+import Price from "react-price";
+import ReactPrice from "react-price";
 
 class ShopCart extends Component {
     constructor(props) {
@@ -186,103 +187,205 @@ class ShopCart extends Component {
 
                 <section className="section">
                     <Container>
-                        <Row>
-                            <Col xs={12}>
-                                <div className="table-responsive bg-white shadow">
-                                    <Table className="table-center table-padding mb-0">
-                                        <thead>
-                                        <tr>
-                                            <th className="py-3" style={{minWidth: "20px"}}></th>
-                                            <th className="py-3" style={{minWidth: "300px"}}>
-                                                {product}
-                                            </th>
-                                            <th className="py-3" style={{minWidth: "150px"}}>
-                                                {store}
-                                            </th>
-                                            <th
-                                                className="text-center py-3"
-                                                style={{minWidth: "160px"}}
-                                            >
-                                                {price}
-                                            </th>
-                                            <th
-                                                className="text-center py-3"
-                                                style={{minWidth: "160px"}}
-                                            >
-                                                {count1}
-                                            </th>
-                                            <th
-                                                className="text-center py-3"
-                                                style={{minWidth: "160px"}}
-                                            >
-                                                {total}
-                                            </th>
-                                        </tr>
-                                        </thead>
-
-                                        <tbody>
-                                        {this.state.items.map((item, key) => (
-                                            <tr key={key}>
-                                                <td className="h6">
-                                                    <Link
-                                                        to="#"
-                                                        onClick={() => this.removeCartItem(item.id)}
-                                                        className="text-danger"
-                                                    >
-                                                        X
-                                                    </Link>
-                                                </td>
-                                                <td>
-                                                    <div className="d-flex align-items-center">
-                                                        <img
-                                                            src={imgUrl + item.imageUrl}
-                                                            className="img-fluid avatar avatar-small rounded shadow"
-                                                            style={{height: "auto"}}
-                                                            alt=""
-                                                        />
-                                                        <h6 className="mb-0 ml-3">{item.productName}</h6>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <p className="mb-0 ml-3">{item?.branchesProduct?.name}</p>
-                                                </td>
-                                                <td className="text-center">{item?.branchesProduct?.price?.price}{" UZS"}</td>
-                                                <td className="text-center">
-                                                    <Input
-                                                        type="button"
-                                                        value="-"
-                                                        onClick={() => this.removeItem(item?.id, item.productId, item.count)}
-                                                        className="minus btn btn-icon btn-soft-primary font-weight-bold"
-                                                        readOnly
-                                                    />
-                                                    <Input
-                                                        type="text"
-                                                        step="1"
-                                                        min="1"
-                                                        name="quantity"
-                                                        value={item.count}
-                                                        title={count1}
-                                                        readOnly
-                                                        className="btn btn-icon btn-soft-primary font-weight-bold mr-1 ml-1"
-                                                    />
-                                                    <Input
-                                                        type="button"
-                                                        value="+"
-                                                        onClick={() => this.addItem(item?.branchesProduct?.id)}
-                                                        readOnly
-                                                        className="plus btn btn-icon btn-soft-primary font-weight-bold"
-                                                    />
-                                                </td>
-                                                <td className="text-center font-weight-bold">
-                                                    {item?.branchesProduct?.price?.price * item.count}{" UZS"}
-                                                </td>
+                        {window.innerWidth > 880 &&
+                            <Row>
+                                <Col xs={12}>
+                                    <div className="table-responsive bg-white shadow">
+                                        <Table className="table-center table-padding mb-0">
+                                            <thead>
+                                            <tr>
+                                                <th className="py-3" style={{minWidth: "20px"}}></th>
+                                                <th className="py-3" style={{minWidth: "300px"}}>
+                                                    {product}
+                                                </th>
+                                                <th className="py-3" style={{minWidth: "150px"}}>
+                                                    {store}
+                                                </th>
+                                                <th
+                                                    className="text-center py-3"
+                                                    style={{minWidth: "160px"}}
+                                                >
+                                                    {price}
+                                                </th>
+                                                <th
+                                                    className="text-center py-3"
+                                                    style={{minWidth: "160px"}}
+                                                >
+                                                    {count1}
+                                                </th>
+                                                <th
+                                                    className="text-center py-3"
+                                                    style={{minWidth: "160px"}}
+                                                >
+                                                    {total}
+                                                </th>
                                             </tr>
-                                        ))}
-                                        </tbody>
-                                    </Table>
-                                </div>
-                            </Col>
-                        </Row>
+                                            </thead>
+
+                                            <tbody>
+                                            {this.state.items.map((item, key) => (
+                                                <tr key={key}>
+                                                    <td className="h6">
+                                                        <Link
+                                                            to="#"
+                                                            onClick={() => this.removeCartItem(item.id)}
+                                                            className="text-danger"
+                                                        >
+                                                            X
+                                                        </Link>
+                                                    </td>
+                                                    <td>
+                                                        <div className="d-flex align-items-center">
+                                                            <img
+                                                                src={imgUrl + item.imageUrl}
+                                                                className="img-fluid avatar avatar-small rounded shadow"
+                                                                style={{height: "auto"}}
+                                                                alt=""
+                                                            />
+                                                            <h6 className="mb-0 ml-3">{item.productName}</h6>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <p className="mb-0 ml-3">{item?.branchesProduct?.name}</p>
+                                                    </td>
+                                                    <td className="text-center">{item?.branchesProduct?.price?.price}{" UZS"}</td>
+                                                    <td className="text-center">
+                                                        <Input
+                                                            type="button"
+                                                            value="-"
+                                                            onClick={() => this.removeItem(item?.id, item.productId, item.count)}
+                                                            className="minus btn btn-icon btn-soft-primary font-weight-bold"
+                                                            readOnly
+                                                        />
+                                                        <Input
+                                                            type="text"
+                                                            step="1"
+                                                            min="1"
+                                                            name="quantity"
+                                                            value={item.count}
+                                                            title={count1}
+                                                            readOnly
+                                                            className="btn btn-icon btn-soft-primary font-weight-bold mr-1 ml-1"
+                                                        />
+                                                        <Input
+                                                            type="button"
+                                                            value="+"
+                                                            onClick={() => this.addItem(item?.branchesProduct?.id)}
+                                                            readOnly
+                                                            className="plus btn btn-icon btn-soft-primary font-weight-bold"
+                                                        />
+                                                    </td>
+                                                    <td className="text-center font-weight-bold">
+                                                        {item?.branchesProduct?.price?.price * item.count}{" UZS"}
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                            </tbody>
+                                        </Table>
+                                    </div>
+                                </Col>
+                            </Row>
+                        }
+                        {
+                            window.innerWidth <= 880 && <Row>
+                                <Col sm={12} xs={12} lg={6} md={12}>
+                                    {this.state.items.map((item, key) => (
+                                        <Row key={key} className={"mx-1"}>
+                                            <Col xs={2}>
+                                                <div className="align-items-center">
+                                                    <img
+                                                        src={imgUrl + item.imageUrl}
+                                                        className="img-fluid avatar avatar-small rounded shadow"
+                                                        style={{height: "auto"}}
+                                                        alt=""
+                                                    />
+                                                </div>
+                                            </Col>
+                                            <Col xs={10}>
+                                                <Row>
+                                                    <Col xs={12} className={"p-2"}>
+                                                        <Row>
+                                                            <Col xs={11}>
+                                                                <p className="mb-0"
+                                                                   style={{fontSize: "16px"}}>{item.productName}</p>
+                                                            </Col>
+                                                            <Col xs={1}>
+                                                                <td className="h6">
+                                                                    <Link
+                                                                        to="#"
+                                                                        onClick={() => this.removeCartItem(item.id)}
+                                                                        className="text-danger"
+                                                                    >
+                                                                        X
+                                                                    </Link>
+                                                                </td>
+                                                            </Col>
+                                                        </Row>
+                                                    </Col>
+                                                    <Col xs={12} className={"p-2"}>
+                                                        <Row>
+                                                            <Col xs={5}>
+                                                                <p className="mb-0">{item?.branchesProduct?.name}</p>
+                                                            </Col>
+                                                            <Col xs={1}></Col>
+                                                            <Col xs={6} className={"align-items-end justify-content-end text-right"}>
+                                                                <Price cost={item?.branchesProduct?.price?.price}
+                                                                       currency={this.props.lang.lang.sum}/>
+
+                                                            </Col>
+                                                            <Col xs={7} className={"mt-2"}>
+                                                                <Input
+                                                                    style={{fontSize: "16px"}}
+                                                                    type="button"
+                                                                    value="-"
+
+                                                                    onClick={() => this.removeItem(item?.id, item.productId, item.count)}
+                                                                    className="minus btn btn-icon btn-soft-primary font-weight-bold"
+                                                                    readOnly
+                                                                />
+                                                                <Input
+                                                                    style={{fontSize: "16px"}}
+                                                                    type="text"
+                                                                    step="1"
+                                                                    min="1"
+                                                                    name="quantity"
+                                                                    value={item.count}
+                                                                    title={count1}
+                                                                    readOnly
+                                                                    className="btn btn-icon btn-soft-primary font-weight-bold mr-1 ml-1"
+                                                                />
+                                                                <Input
+                                                                    style={{fontSize: "16px"}}
+                                                                    type="button"
+                                                                    value="+"
+                                                                    onClick={() => this.addItem(item?.branchesProduct?.id)}
+                                                                    readOnly
+                                                                    className="plus btn btn-icon btn-soft-primary font-weight-bold"
+                                                                    width={"10px"}
+                                                                />
+                                                            </Col>
+                                                            <Col xs={5}
+                                                                 className={"align-items-center justify-content-center mt-3 text-right"}
+                                                                 style={{fontSize: "16px"}}>
+                                                                <ReactPrice
+                                                                    cost={Number.parseFloat(item?.branchesProduct?.price?.price * item.count)}
+                                                                    className="text-center font-weight-bold"
+                                                                    currency={this.props.lang.lang.sum}
+
+                                                                >
+                                                                </ReactPrice>
+
+                                                            </Col>
+                                                        </Row>
+                                                    </Col>
+                                                </Row>
+
+
+                                            </Col>
+                                        </Row>
+                                    ))}
+                                </Col></Row>
+                        }
                         <Row>
                             <Col lg={8} md={6} className="mt-4 pt-2">
                                 <Link to="/products" className="btn btn-primary">
@@ -310,7 +413,8 @@ class ShopCart extends Component {
                                     </Table>
                                 </div>
                                 <div className="mt-4 pt-2 text-right">
-                                    <button type={"button"} onClick={this.onLocateToOrder} className="btn btn-primary">
+                                    <button type={"button"} onClick={this.onLocateToOrder}
+                                            className="btn btn-primary">
                                         {checkout}
                                     </button>
                                 </div>

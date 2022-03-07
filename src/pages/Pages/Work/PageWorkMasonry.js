@@ -12,26 +12,12 @@ import PageBreadcrumb from "../../../components/Shared/PageBreadcrumb";
 //Import Icons
 import FeatherIcon from 'feather-icons-react';
 
-//Import Images
-import work13 from "../../../assets/images/work/13.jpg";
-import work21 from "../../../assets/images/work/21.jpg";
-import work14 from "../../../assets/images/work/14.jpg";
-import work22 from "../../../assets/images/work/22.jpg";
-import work16 from "../../../assets/images/work/16.jpg";
-import work23 from "../../../assets/images/work/23.jpg";
-import work15 from "../../../assets/images/work/15.jpg";
-import work17 from "../../../assets/images/work/17.jpg";
-import work24 from "../../../assets/images/work/24.jpg";
-import work18 from "../../../assets/images/work/18.jpg";
-import work19 from "../../../assets/images/work/19.jpg";
 import {connect} from "react-redux";
-import {pageSize} from "../../../constants/all";
 import {getBrand, getNews} from "../../../server/config/web-site/client";
 import Pagination from "rc-pagination";
 import {imgUrl} from "../../../server/host";
 
 const images = [
-    work13, work21, work14, work22, work16, work23, work15, work17, work24, work18, work19
 ];
 
 let brakePoints = [350, 500, 750];
@@ -50,7 +36,6 @@ class PageWorkMasonry extends Component {
             pageSize: 50,
 
             works: [
-                {id:2,image: work13, name: "Iphone mockup", subtitle: "Branding", category: "Branding"},
                 ],
             photoIndex: 0,
             isOpen: false,

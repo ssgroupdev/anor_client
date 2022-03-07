@@ -14,15 +14,6 @@ import { Link } from "react-router-dom";
 //Import components
 import PageBreadcrumb from "../../../components/Shared/PageBreadcrumb";
 
-// import images
-import blog13 from "../../../assets/images/work/13.jpg";
-import blog14 from "../../../assets/images/work/14.jpg";
-import blog15 from "../../../assets/images/work/15.jpg";
-import blog16 from "../../../assets/images/work/16.jpg";
-import blog17 from "../../../assets/images/work/17.jpg";
-import blog18 from "../../../assets/images/work/18.jpg";
-import blog19 from "../../../assets/images/work/19.jpg";
-
 class PageBlogList extends Component {
   constructor(props) {
     super(props);
@@ -35,83 +26,6 @@ class PageBlogList extends Component {
         { id: 4, name: "Blog List" },
       ],
       blogs: [
-        {
-          id: 1,
-          image: blog14,
-          title: "Design your apps in your own way",
-          desc:
-            "Due to its widespread use as filler text for layouts, non-readability",
-          like: "33",
-          comment: "08",
-          autor: "Calvin Carlo",
-          date: "13th August, 2019",
-        },
-        {
-          id: 2,
-          image: blog15,
-          title: "Design your apps in your own way",
-          desc:
-            "Due to its widespread use as filler text for layouts, non-readability",
-          like: "33",
-          comment: "08",
-          autor: "Calvin Carlo",
-          date: "13th August, 2019",
-        },
-        {
-          id: 3,
-          image: blog16,
-          title: "Design your apps in your own way",
-          desc:
-            "Due to its widespread use as filler text for layouts, non-readability",
-          like: "33",
-          comment: "08",
-          autor: "Calvin Carlo",
-          date: "13th August, 2019",
-        },
-        {
-          id: 4,
-          image: blog17,
-          title: "Design your apps in your own way",
-          desc:
-            "Due to its widespread use as filler text for layouts, non-readability",
-          like: "33",
-          comment: "08",
-          autor: "Calvin Carlo",
-          date: "13th August, 2019",
-        },
-        {
-          id: 5,
-          image: blog18,
-          title: "Design your apps in your own way",
-          desc:
-            "Due to its widespread use as filler text for layouts, non-readability",
-          like: "33",
-          comment: "08",
-          autor: "Calvin Carlo",
-          date: "13th August, 2019",
-        },
-        {
-          id: 6,
-          image: blog19,
-          title: "Design your apps in your own way",
-          desc:
-            "Due to its widespread use as filler text for layouts, non-readability",
-          like: "33",
-          comment: "08",
-          autor: "Calvin Carlo",
-          date: "13th August, 2019",
-        },
-        {
-          id: 7,
-          image: blog13,
-          title: "Design your apps in your own way",
-          desc:
-            "Due to its widespread use as filler text for layouts, non-readability",
-          like: "33",
-          comment: "08",
-          autor: "Calvin Carlo",
-          date: "13th August, 2019",
-        },
       ],
     };
   }

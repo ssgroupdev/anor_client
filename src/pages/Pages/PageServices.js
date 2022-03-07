@@ -18,12 +18,6 @@ import img5 from "../../assets/images/client/05.jpg";
 import img6 from "../../assets/images/client/06.jpg";
 
 
-import work1 from "../../assets/images/work/1.jpg";
-import work2 from "../../assets/images/work/2.jpg";
-import work3 from "../../assets/images/work/3.jpg";
-import work4 from "../../assets/images/work/4.jpg";
-
-
 class PageServices extends Component {
 
     constructor(props) {
@@ -52,10 +46,6 @@ class PageServices extends Component {
                 { id : 6, icon : 'uil uil-clock h1 text-primary', title : "Real Time Zone", description : "It seems that only fragments of the original text remain in the Lorem Ipsum texts used fragments today." },
             ],
             works : [
-                { imgUrl : work1, title : "Shifting Perspective", subtitle : "Studio", author : "Calvin Carlo", date : "13th August, 2019" },
-                { imgUrl : work2, title : "Colors Magazine", subtitle : "Web Design", author : "Calvin Carlo", date : "13th August, 2019" },
-                { imgUrl : work3, title : "Spa Cosmetics", subtitle : "Developing", author : "Calvin Carlo", date : "13th August, 2019" },
-                { imgUrl : work4, title : "Riser Coffee", subtitle : "Branding", author : "Calvin Carlo", date : "13th August, 2019" },
             ]
         }
     }

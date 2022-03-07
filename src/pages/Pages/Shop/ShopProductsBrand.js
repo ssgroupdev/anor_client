@@ -16,6 +16,9 @@ import ProductGrid from "../../../components/Shared/ProductGrid";
 import {connect} from "react-redux";
 import {pageSize} from "../../../constants/all";
 import {getBrandProducts} from "../../../server/config/web-site/brand/brand";
+import {getUser} from "../../../server/config/web-site/user";
+import {deleteCookie} from "../../../utils/useCookies";
+import {userAccessTokenName} from "../../../constants/application";
 
 class ShopProductsBrand extends Component {
     constructor(props) {
@@ -41,7 +44,27 @@ class ShopProductsBrand extends Component {
         };
     }
 
+    getMe = () => {
 
+        getUser().then(res => {
+            if (res && res.data) {
+                this.setState({
+                    isLogin: true
+                })
+            } else {
+                deleteCookie(userAccessTokenName)
+                this.setState({
+                    isLogin: false
+                })
+            }
+        }).catch(err => {
+            deleteCookie(userAccessTokenName)
+            this.setState({
+                isLogin: false
+            })
+        })
+
+    }
     onSortChange = (e) => {
         e.preventDefault();
 
@@ -100,6 +123,7 @@ class ShopProductsBrand extends Component {
     }
 
     componentDidMount() {
+        this.getMe();
         this.getList();
         window.addEventListener("scroll", this.scrollNavigation, true);
     }
@@ -252,7 +276,7 @@ class ShopProductsBrand extends Component {
 
                                 <Row>
                                     {this.state.products.map((product, key) => (
-                                        <ProductGrid product={product} col={4}/>
+                                        <ProductGrid isLogin={this.state.isLogin} product={product} col={4}/>
                                     ))}
 
                                     <Col xs="12" className={"mt-4 pt-2 justify-items-center text-center"}>

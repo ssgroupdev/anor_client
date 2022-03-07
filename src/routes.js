@@ -184,9 +184,6 @@ const HelpCenterSupportRequest = React.lazy(() =>
 const ShopProducts = React.lazy(() =>
   import("./pages/Pages/Shop/ShopProducts")
 );
-const ShopProductsLists = React.lazy(() =>
-  import("./pages/Pages/Shop/ShopProductList")
-);
 const ShopProductDetail = React.lazy(() =>
   import("./pages/Pages/Shop/ShopProductDetail")
 );const Categories = React.lazy(() =>

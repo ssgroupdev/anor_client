@@ -16,6 +16,9 @@ import ProductGrid from "../../../components/Shared/ProductGrid";
 import {getProducts} from "../../../server/config/web-site/product";
 import {connect} from "react-redux";
 import {pageSize} from "../../../constants/all";
+import {getUser} from "../../../server/config/web-site/user";
+import {deleteCookie} from "../../../utils/useCookies";
+import {userAccessTokenName} from "../../../constants/application";
 
 class ShopProducts extends Component {
     constructor(props) {
@@ -79,7 +82,7 @@ class ShopProducts extends Component {
         this.setState({
             sort: new URLSearchParams(this.props.props.location.search).get("sort")
         })
-        getProducts(new URLSearchParams(this.props.props.location.search).get("sort"), this.props.props.location?.state?.search, 0, pageSize, this.state?.minPrice!==null?this.state?.minPrice:0,  this.state?.maxPrice!==null?this.state?.maxPrice:0).then((res) => {
+        getProducts(new URLSearchParams(this.props.props.location.search).get("sort"), new URLSearchParams(this.props.props.location.search).get("searchByKey"), 0, pageSize, this.state?.minPrice!==null?this.state?.minPrice:0,  this.state?.maxPrice!==null?this.state?.maxPrice:0).then((res) => {
             this.setState({
                 products: res.data.content,
                 total: res.data.totalElements
@@ -92,11 +95,32 @@ class ShopProducts extends Component {
 
 
     componentDidMount() {
+        this.getMe();
 
         this.getList();
         window.addEventListener("scroll", this.scrollNavigation, true);
     }
+    getMe = () => {
 
+        getUser().then(res => {
+            if (res && res.data) {
+                this.setState({
+                    isLogin: true
+                })
+            } else {
+                deleteCookie(userAccessTokenName)
+                this.setState({
+                    isLogin: false
+                })
+            }
+        }).catch(err => {
+            deleteCookie(userAccessTokenName)
+            this.setState({
+                isLogin: false
+            })
+        })
+
+    }
     // Make sure to remove the DOM listener when the component is unmounted.
     componentWillUnmount() {
         window.removeEventListener("scroll", this.scrollNavigation, true);
@@ -249,7 +273,7 @@ class ShopProducts extends Component {
 
                                 <Row>
                                     {this.state.products.map((product, key) => (
-                                        <ProductGrid product={product} col={4}/>
+                                        <ProductGrid isLogin={this.state.isLogin} product={product} col={4}/>
                                     ))}
 
                                     <Col xs="12" className={"mt-4 pt-2 justify-items-center text-center"}>

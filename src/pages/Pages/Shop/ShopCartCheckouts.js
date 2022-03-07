@@ -4,15 +4,8 @@ import {Link} from "react-router-dom";
 
 //Import components
 import PageBreadcrumb from "../../../components/Shared/PageBreadcrumb";
-
-//Import Images
-import product1 from "../../../assets/images/shop/product/s1.jpg";
-import product3 from "../../../assets/images/shop/product/s3.jpg";
-import product6 from "../../../assets/images/shop/product/s6.jpg";
-import product10 from "../../../assets/images/shop/product/s10.jpg";
 import {connect} from "react-redux";
 import {editStatus, getOrder} from "../../../server/config/user/order";
-import {getAllBaskets} from "../../../server/config/web-site/basket";
 import Price from "react-price";
 import {imgUrl} from "../../../server/host";
 import {toast} from "react-toastify";

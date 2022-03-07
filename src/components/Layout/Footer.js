@@ -4,14 +4,9 @@ import {Container, Row, Col, Form, Input, Label} from "reactstrap";
 
 //Import Icons
 import FeatherIcon from "feather-icons-react";
-
-// import images
-import americanEx from "../../assets/images/payments/american-ex.png";
 import discover from "../../assets/images/payments/discover.png";
 import masterCard from "../../assets/images/payments/master-card.png";
 import paypal from "../../assets/images/payments/paypal.png";
-import visa from "../../assets/images/payments/visa.png";
-// import { FiChevronLeft } from "react-icons/fi";
 
 //Import Images
 import logolight from "../../assets/images/logo-light.png";
@@ -44,8 +39,6 @@ class Footer extends Component {
             paymentTypes: [
                 {
                     img: masterCard
-                }, {
-                    img: americanEx
                 }, {
                     img: discover
                 }, {

@@ -13,10 +13,6 @@ import {
 
 //Import images
 import logodark from "../../assets/images/logo-dark.png";
-import logolight from "../../assets/images/logo-light.png";
-import shop1 from "../../assets/images/shop/product/s-1.jpg";
-import shop2 from "../../assets/images/shop/product/s-2.jpg";
-import shop3 from "../../assets/images/shop/product/s-3.jpg";
 import NavbarButtons from "../Shared/NavbarButtons";
 import {bindActionCreators} from "redux";
 import {changeLang, setCurrentUser} from "../../redux/actions/lang";
@@ -25,7 +21,6 @@ import {deleteCookie, getCookie} from "../../utils/useCookies";
 import {getUser} from "../../server/config/web-site/user";
 import {userAccessTokenName} from "../../constants/application";
 import {getMenus} from "../../server/config/web-site/client";
-import {getProducts} from "../../server/config/web-site/product";
 
 class Topbar extends Component {
     constructor(props) {
@@ -62,16 +57,19 @@ class Topbar extends Component {
 
     onSearch = () => {
         // console.log(this.props.history)
+
         this.props.history.push({
             pathname: "/products",
-            search: "?sort=RECOMMEND",
+            search: "?sort=RECOMMEND&searchByKey=" + this.state.searchByKey,
             state: {
                 sort: "RATE",
                 search: this.state.searchByKey
             }
         })
+        if (window.location.href.includes("/products")) {
+        window.location.reload()
+        }
     }
-
     toggleWishlistModal = () => {
         this.setState((prevState) => ({
             wishlistModal: !prevState.wishlistModal,
@@ -293,7 +291,7 @@ class Topbar extends Component {
                                 </Link>
                             </div>
                             <div className="subcribe-form pt-2 d-inline-block">
-                                <Form onFinish={this.onSearch} defaultValue={searchByKey}>
+                                <Form onSubmit={this.onSearch} defaultValue={searchByKey}>
                                     <FormGroup className="mb-0">
                                         <input
                                             type="text"

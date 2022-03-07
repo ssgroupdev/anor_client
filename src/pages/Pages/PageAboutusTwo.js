@@ -27,10 +27,7 @@ import paypal from "../../assets/images/client/paypal.svg";
 import shopify from "../../assets/images/client/shopify.svg";
 import spotify from "../../assets/images/client/spotify.svg";
 import WorkProcess from "../../components/Shared/WorkProcess";
-import work1 from "../../assets/images/work/7.jpg";
-import work2 from "../../assets/images/work/8.jpg";
-import work3 from "../../assets/images/work/9.jpg";
-import work4 from "../../assets/images/work/12.jpg";
+
 import ExperienceTeam from "../CorporateBusiness/ExperienceTeam";
 
 export default class PageAboutusTwo extends Component {

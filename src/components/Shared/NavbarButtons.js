@@ -18,9 +18,6 @@ import { Link } from "react-router-dom";
 //Import Icons
 import FeatherIcon from "feather-icons-react";
 
-// import images
-import online from "../../assets/images/course/online/ab02.jpg";
-
 export default class NavbarButtons extends Component {
   constructor(props) {
     super(props);

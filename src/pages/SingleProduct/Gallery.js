@@ -25,14 +25,6 @@ import "../../../node_modules/slick-carousel/slick/slick.css";
 import "../../../node_modules/slick-carousel/slick/slick-theme.css";
 
 // import images
-import single01 from "../../assets/images/single/01.jpg";
-import single02 from "../../assets/images/single/02.jpg";
-import single03 from "../../assets/images/single/03.jpg";
-import single04 from "../../assets/images/single/04.jpg";
-import single05 from "../../assets/images/single/05.jpg";
-import single06 from "../../assets/images/single/06.jpg";
-import single07 from "../../assets/images/single/07.jpg";
-
 class Gallery extends Component {
   constructor(props) {
     super(props);
@@ -74,94 +66,7 @@ class Gallery extends Component {
           <Container>
             <Row className="align-items-center">
               <Col md="6">
-                {/* main slider */}
-                <Slider
-                  {...settings}
-                  asNavFor={this.state.nav2}
-                  ref={(slider) => (this.slider1 = slider)}
-                >
-                  <div>
-                    <img
-                      src={single01}
-                      className="img-fluid rounded"
-                      alt="alt"
-                    />
-                  </div>
-                  <div>
-                    <img
-                      src={single02}
-                      className="img-fluid rounded"
-                      alt="alt"
-                    />
-                  </div>
-                  <div>
-                    <img
-                      src={single03}
-                      className="img-fluid rounded"
-                      alt="alt"
-                    />
-                  </div>
-                  <div>
-                    <img
-                      src={single04}
-                      className="img-fluid rounded"
-                      alt="alt"
-                    />
-                  </div>
-                  <div>
-                    <img
-                      src={single05}
-                      className="img-fluid rounded"
-                      alt="alt"
-                    />
-                  </div>
-                  <div>
-                    <img
-                      src={single06}
-                      className="img-fluid rounded"
-                      alt="alt"
-                    />
-                  </div>
-                  <div>
-                    <img
-                      src={single07}
-                      className="img-fluid rounded"
-                      alt="alt"
-                    />
-                  </div>
-                </Slider>
-
-                {/* Slider thumbnails */}
-                <Slider
-                  asNavFor={this.state.nav1}
-                  ref={(slider) => (this.slider2 = slider)}
-                  slidesToShow={3}
-                  swipeToSlide={true}
-                  focusOnSelect={true}
-                >
-                  <div>
-                    <img src={single01} className="img-fluid" alt="" />
-                  </div>
-                  <div>
-                    <img src={single02} className="img-fluid" alt="" />
-                  </div>
-                  <div>
-                    <img src={single03} className="img-fluid" alt="" />
-                  </div>
-                  <div>
-                    <img src={single04} className="img-fluid" alt="" />
-                  </div>
-                  <div>
-                    <img src={single05} className="img-fluid" alt="" />
-                  </div>
-                  <div>
-                    <img src={single06} className="img-fluid" alt="" />
-                  </div>
-                  <div>
-                    <img src={single07} className="img-fluid" alt="" />
-                  </div>
-                </Slider>
-              </Col>
+                </Col>
 
               <Col md="6" className="mt-4 mt-sm-0 pt-2 pt-sm-0">
                 <div className="section-title ml-md-4">

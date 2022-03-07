@@ -10,7 +10,7 @@ import {
     TabPane,
     Form,
     FormGroup,
-    Label, Button,
+    Label, Button, Input,
 } from "reactstrap";
 import {AvForm, AvField, AvInput} from "availity-reactstrap-validation";
 import {Link} from "react-router-dom";
@@ -27,7 +27,7 @@ import "slick-carousel/slick/slick-theme.css";
 import PageBreadcrumb from "../../../components/Shared/PageBreadcrumb";
 
 //Import Images
-import client from "../../../assets/images/client/05.jpg";
+import client from "../../../assets/images/user.png";
 import {connect} from "react-redux";
 import {
     getAddressByUser,
@@ -137,6 +137,8 @@ class ShopMyAccount extends Component {
         }
     }
 
+    // form = React.createRef();
+
     // Make sure to remove the DOM listener when the component is unmounted.
     componentWillUnmount() {
         window.removeEventListener("scroll", this.scrollNavigation, true);
@@ -172,7 +174,11 @@ class ShopMyAccount extends Component {
             phoneTwo: values.phoneTwo
         }
 
-        updateUserAddress(sendData).then(res => () => toast.success(this.props.lang.lang.finish)).catch(err => {
+        updateUserAddress(sendData).then(res => {
+
+            toast.success(this.props.lang.lang.finish)
+            window.location.reload();
+        }).catch(err => {
             this.error();
         })
     };
@@ -189,10 +195,13 @@ class ShopMyAccount extends Component {
                         address: {
                             ...res.data?.address
                         }
+                    }, () => {
+
+                        // this.form.current.resetFields();
+
                     })
                 } else {
 
-                    console.log(getCookie(userAccessTokenName))
                     deleteCookie(userAccessTokenName)
                     this.props.props.history.push("/")
 
@@ -200,7 +209,6 @@ class ShopMyAccount extends Component {
             }
         ).catch(err => {
 
-            console.log(getCookie(userAccessTokenName))
             deleteCookie(userAccessTokenName)
             this.props.props.history.push("/")
 
@@ -237,23 +245,45 @@ class ShopMyAccount extends Component {
 
         const test = new FormData();
         test.append("file", this.state.file)
+        // console.log(test.file)
+        // console.log(this.state.file)
+        if ((typeof this.state.file !== 'undefined') && this.state.file !== null) {
+            createFile(test).then((res) => {
+                if (res) {
 
-        createFile(test).then((res) => {
-            if (res) {
+                    const sendData = {
+                        username: values.username,
+                        firstName: values.firstName,
+                        lastName: values.lastName,
+                        avatarUrl: res.data
+                    }
 
-                const sendData = {
-                    username: values.username,
-                    firstName: values.firstName,
-                    lastName: values.lastName,
-                    avatarUrl: res.data
+                    updateUser(sendData).then(res => {
+                        toast.success(this.props.lang.lang.finish)
+
+                        window.location.reload()
+                    }).catch(err => {
+                        this.error();
+                    })
                 }
+            }).catch(err => () => toast.success(this.props.lang.lang.error))
+        } else {
 
-                updateUser(sendData).then(res => () => toast.success(this.props.lang.lang.finish)).catch(err => {
-                    this.error();
-                })
+            const sendData = {
+                username: values.username,
+                firstName: values.firstName,
+                lastName: values.lastName,
             }
-        }).catch(err => () => toast.success(this.props.lang.lang.error))
 
+            updateUser(sendData).then(res => {
+                toast.success(this.props.lang.lang.finish)
+
+                window.location.reload()
+            }).catch(err => {
+                this.error();
+            })
+
+        }
     };
 
     getList = () => {
@@ -261,7 +291,7 @@ class ShopMyAccount extends Component {
             this.setState({
                 provinces: res?.data,
                 data: {
-                    provinceId: res?.data[0].id
+                    provinceId: this.state.address.provinceId
                 }
             }, () => this.getRegions())
         })
@@ -276,10 +306,27 @@ class ShopMyAccount extends Component {
             })
         }).catch()
     }
-    onProvinceChange = (e, v) => {
+    onProvinceChange = (e) => {
         this.setState({
+            address: {
+                ...this.state.address,
+                provinceId: e.target.value
+            },
             data: {
-                provinceId: v
+                ...this.state.data,
+                provinceId: e.target.value
+            }
+        }, () => this.getRegions())
+    }
+    onRegionChange = (e) => {
+        this.setState({
+            address: {
+                ...this.state.address,
+                regionId: e.target.value
+            },
+            data: {
+                ...this.state.data,
+                regionId: e.target.value
             }
         }, () => this.getRegions())
     }
@@ -289,7 +336,17 @@ class ShopMyAccount extends Component {
 
     render() {
         const {words, user, provinces, regionsList} = this.state
-        const {processing, cancelled, delivered, notFound,price,sum,deliveryDate, deliveryFinish, finished} = this.props.lang.lang
+        const {
+            processing,
+            cancelled,
+            delivered,
+            notFound,
+            price,
+            sum,
+            deliveryDate,
+            deliveryFinish,
+            finished
+        } = this.props.lang.lang
         const {
             provinceId,
             regionId,
@@ -449,11 +506,11 @@ class ShopMyAccount extends Component {
                                                             }
 
                                                             <td>
-                                                                {value.totalPrice + " "+ sum}
-                                                           </td>
+                                                                {value.totalPrice + " " + sum}
+                                                            </td>
                                                             <td>
-                                                                {value.status==="FINISHED"?deliveryFinish:(value.status==="PROCESSING"?notFound:new Date(value.deliveryDate).toLocaleString().slice(0,17))}
-                                                           </td>
+                                                                {value.status === "FINISHED" ? deliveryFinish : (value.status === "PROCESSING" ? notFound : new Date(value.deliveryDate).toLocaleString().slice(0, 17))}
+                                                            </td>
                                                             <td>
                                                                 <Link to={"/my-checkouts/" + value.id}
                                                                       className="text-primary">
@@ -508,46 +565,62 @@ class ShopMyAccount extends Component {
 
                                         </Row>
                                         <h5 className="mt-4">{words.changeAddress}:</h5>
-
+                                        {/*{*/}
                                         <AvForm className="login-form mt-4"
                                                 onValidSubmit={this.handleValidSubmitAddress}
-                                                model={this.state.address}>
-                                            {/*<Form>*/}
+                                        >
                                             <Row>
 
                                                 <Col md={6}>
-                                                    <FormGroup className="position-relative">
 
-                                                        <AvField type="select" name="provinceId"
-                                                                 label={words.province}
-                                                            // helpMessage="This is an example. Deal with it!"
-                                                                 required
-                                                                 onChange={this.onProvinceChange}
-                                                                 defaultValue={provinceId}
-                                                        >
+                                                    <Label
+                                                        for="exampleSelect"
+                                                        // sm={2}
+                                                        className={"text-bold"}
+                                                        style={{fontWeight: "bold"}}
+                                                    >
+                                                        {words.province}
+                                                    </Label>
+                                                    <Input
+                                                        required
+                                                        id="exampleSelect"
+                                                        name="provinceId"
+                                                        type="select"
+                                                        value={this.state.address.provinceId}
+                                                        defaultValue={this.state.address.provinceId}
+                                                        onChange={this.onProvinceChange}
 
-                                                            {
-                                                                provinces?.map(item => (
-                                                                    <option value={item.id}>{item.name}</option>
-                                                                ))
-                                                            }
-                                                        </AvField>
-                                                    </FormGroup>
+                                                    >
+                                                        {
+                                                            provinces?.map(item => (
+                                                                <option value={item.id}>{item.name}</option>
+                                                            ))
+                                                        }
+                                                    </Input>
                                                 </Col>
                                                 <Col md={6}>
-                                                    <FormGroup className="position-relative">
-                                                        <AvField type="select" name="regionId" label={words.regions}
-                                                            // helpMessage="This is an example. Deal with it!"
-                                                                 required
-                                                                 defaultValue={regionId}
-                                                        >
-                                                            {
-                                                                regionsList?.map(item => (
-                                                                    <option value={item.id}>{item.name}</option>
-                                                                ))
-                                                            }
-                                                        </AvField>
-                                                    </FormGroup>
+                                                    <Label
+                                                        for="exampleSelect1"
+                                                        className={"text-bold"}
+                                                        style={{fontWeight: "bold"}}
+                                                    >
+                                                        {words.regions}
+                                                    </Label>
+                                                    <Input
+                                                        required
+                                                        id="exampleSelect1"
+                                                        name="regionId"
+                                                        type="select"
+                                                        value={this.state.address.regionId}
+                                                        defaultValue={this.state.address.regionId}
+                                                        onChange={this.onRegionChange}
+                                                    >
+                                                        {
+                                                            regionsList?.map(item => (
+                                                                <option value={item.id}>{item.name}</option>
+                                                            ))
+                                                        }
+                                                    </Input>
                                                 </Col>
                                                 <Col md={6}>
                                                     <FormGroup className="position-relative">
@@ -934,7 +1007,8 @@ class ShopMyAccount extends Component {
                     </Container>
                 </section>
             </React.Fragment>
-        );
+        )
+            ;
     }
 }
 

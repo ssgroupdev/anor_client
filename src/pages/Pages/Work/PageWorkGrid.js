@@ -9,22 +9,7 @@ import 'react-image-lightbox/style.css';
 //Import components
 import PageBreadcrumb from "../../../components/Shared/PageBreadcrumb";
 
-//Import Images
-import work1 from "../../../assets/images/work/1.jpg";
-import work2 from "../../../assets/images/work/2.jpg";
-import work3 from "../../../assets/images/work/3.jpg";
-import work4 from "../../../assets/images/work/4.jpg";
-import work5 from "../../../assets/images/work/5.jpg";
-import work6 from "../../../assets/images/work/6.jpg";
-import work7 from "../../../assets/images/work/7.jpg";
-import work8 from "../../../assets/images/work/8.jpg";
-import work9 from "../../../assets/images/work/9.jpg";
-import work10 from "../../../assets/images/work/10.jpg";
-import work11 from "../../../assets/images/work/11.jpg";
-import work12 from "../../../assets/images/work/12.jpg";
-
 const images = [
-    work1, work2, work3, work4, work5, work6, work7, work8, work9, work10, work11, work12
 ];
 
 class PageWorkGrid extends Component {
@@ -38,20 +23,7 @@ class PageWorkGrid extends Component {
                 { id : 3, name : "Work", link : "#" },
                 { id : 4, name : "Grid" },
             ],
-            works : [
-                { image : work1, title : "Iphone mockup", subtitle : "Branding", category : "Branding" },
-                { image : work2, title : "Mockup Collection", subtitle : "Mockup", category : "Designing" },
-                { image : work3, title : "Abstract images", subtitle : "Abstract", category : "Photography" },
-                { image : work4, title : "Yellow bg with Books", subtitle : "Company V-card", category : "Development" },
-                { image : work5, title : "Company V-card", subtitle : "V-card", category : "Branding" },
-                { image : work6, title : "Mockup box with paints", subtitle : "Photography", category : "Branding" },
-                { image : work7, title : "Coffee cup", subtitle : "Cups", category : "Designing" },
-                { image : work8, title : "Pen and article", subtitle : "Article", category : "Development" },
-                { image : work9, title : "White mockup box", subtitle : "Color", category : "Photography" },
-                { image : work10, title : "Logo Vectors", subtitle : "Logos", category : "Photography" },
-                { image : work11, title : "Black and white T-shirt", subtitle : "Clothes", category : "Branding" },
-                { image : work12, title : "Yellow bg with cellphone", subtitle : "Cellphone", category : "Branding" },
-            ],
+            works : [],
             photoIndex: 0,
             isOpen: false,
         }

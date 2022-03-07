@@ -24,13 +24,6 @@ import PageBreadcrumb from "../../../components/Shared/PageBreadcrumb";
 import PageSearchSidebar from "../../../components/Shared/PageSearchSidebar";
 import CommentsBox from "../../../components/Shared/CommentsBox";
 
-// import images
-import blog01 from "../../../assets/images/blog/01.jpg";
-import blog03 from "../../../assets/images/blog/03.jpg";
-import blog04 from "../../../assets/images/blog/04.jpg";
-import blog07 from "../../../assets/images/blog/07.jpg";
-import blog08 from "../../../assets/images/blog/08.jpg";
-
 // Client Images
 import client1 from "../../../assets/images/client/01.jpg";
 import client2 from "../../../assets/images/client/02.jpg";
@@ -49,44 +42,6 @@ class PageBlogDetail extends Component {
         { id: 4, name: "Blog Detail" },
       ],
       comments: [
-        {
-          id: 1,
-          image: client1,
-          name: "Lorenzo Peterson",
-          date: "15th August, 2019",
-          time: "01:25 pm",
-          desc:
-            "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour",
-        },
-        {
-          id: 2,
-          image: client2,
-          name: "Tammy Camacho",
-          date: "16th August, 2019",
-          time: "02:05 pm",
-          desc:
-            "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour",
-        },
-        {
-          id: 3,
-          image: client3,
-          name: "Tammy Camacho",
-          date: "17th August, 2019",
-          time: "04:03 pm",
-          desc:
-            "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour",
-          replies: [
-            {
-              id: 1,
-              image: client4,
-              name: "Calvin Camacho",
-              date: "18th August, 2019",
-              time: "05:55 pm",
-              desc:
-                "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour",
-            },
-          ],
-        },
       ],
       blogs: [
         {

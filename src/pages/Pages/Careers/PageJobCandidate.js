@@ -27,12 +27,6 @@ import Circleci from "../../../assets/images/job/Circleci.svg";
 import Codepen from "../../../assets/images/job/Codepen.svg";
 
 //Import Images
-import work1 from "../../../assets/images/work/1.jpg";
-import work2 from "../../../assets/images/work/2.jpg";
-import work3 from "../../../assets/images/work/3.jpg";
-import work4 from "../../../assets/images/work/4.jpg";
-
-//Import Images
 import logolight from "../../../assets/images/logo-light.png";
 import logodark from "../../../assets/images/logo-dark.png";
 
@@ -61,30 +55,6 @@ class PageJobCandidate extends Component {
         },
       ],
       projects: [
-        {
-          image: work1,
-          title: "Iphone mockup",
-          subtitle: "Branding",
-          category: "Branding",
-        },
-        {
-          image: work2,
-          title: "Mockup Collection",
-          subtitle: "Mockup",
-          category: "Designing",
-        },
-        {
-          image: work3,
-          title: "Abstract images",
-          subtitle: "Abstract",
-          category: "Photography",
-        },
-        {
-          image: work4,
-          title: "Yellow bg with Books",
-          subtitle: "Company V-card",
-          category: "Development",
-        },
       ],
       modal: false,
       photoIndex: 0,

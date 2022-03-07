@@ -8,19 +8,6 @@ import FeatherIcon from "feather-icons-react";
 //Import Images
 import imgbg from "../../../assets/images/account/bg.png";
 import profile from "../../../assets/images/client/05.jpg";
-import work1 from "../../../assets/images/work/1.jpg";
-import work2 from "../../../assets/images/work/2.jpg";
-import work3 from "../../../assets/images/work/3.jpg";
-import work4 from "../../../assets/images/work/4.jpg";
-import work5 from "../../../assets/images/work/5.jpg";
-import work6 from "../../../assets/images/work/6.jpg";
-import work7 from "../../../assets/images/work/7.jpg";
-import work8 from "../../../assets/images/work/8.jpg";
-import work9 from "../../../assets/images/work/9.jpg";
-import work10 from "../../../assets/images/work/10.jpg";
-import work11 from "../../../assets/images/work/10.jpg";
-import work12 from "../../../assets/images/work/10.jpg";
-
 //Import Images
 import logolight from "../../../assets/images/logo-light.png";
 import logodark from "../../../assets/images/logo-dark.png";
@@ -28,122 +15,8 @@ import logodark from "../../../assets/images/logo-dark.png";
 class PageWorks extends Component {
   state = {
     members: [
-      {
-        id: 1,
-        img: work1,
-        title: "Iphone mockup",
-        subtitle: "Branding",
-      },
-      {
-        id: 2,
-        img: work2,
-        title: "Mockup Collection",
-        subtitle: "Mockup",
-      },
-      {
-        id: 3,
-        img: work3,
-        title: "Abstract images",
-        subtitle: "Abstract",
-      },
-      {
-        id: 4,
-        img: work4,
-        title: "Yellow bg with Books",
-        subtitle: "Books",
-      },
-      {
-        id: 5,
-        img: work5,
-        title: "Company V-card",
-        subtitle: "V-card",
-      },
-      {
-        id: 6,
-        img: work6,
-        title: "Mockup box with paints",
-        subtitle: "Photography",
-      },
-      {
-        id: 7,
-        img: work7,
-        title: "Coffee cup",
-        subtitle: "Cups",
-      },
-      {
-        id: 8,
-        img: work8,
-        title: "Pen and article",
-        subtitle: "Article",
-      },
-      {
-        id: 9,
-        img: work9,
-        title: "White mockup box",
-        subtitle: "Color",
-      },
-      {
-        id: 10,
-        img: work10,
-        title: "Logo Vectors",
-        subtitle: "Logos",
-      },
-      {
-        id: 11,
-        img: work11,
-        title: "Black and white T-shirt",
-        subtitle: "Clothes",
-      },
-      {
-        id: 12,
-        img: work12,
-        title: "Yellow bg with cellphone",
-        subtitle: "Cellphone",
-      },
     ],
     widgets: [
-      {
-        id: 1,
-        icon: "uil uil-dashboard",
-        className: "accounts  rounded d-block shadow text-center py-3",
-        title: "Profile",
-        link: "/page-profile",
-      },
-      {
-        id: 2,
-        icon: "uil uil-users-alt",
-        className: "accounts rounded d-block shadow text-center py-3",
-        title: "Members",
-        link: "/page-members",
-      },
-      {
-        id: 3,
-        icon: "uil uil-file",
-        className: "accounts active rounded d-block shadow text-center py-3",
-        title: "Works",
-        link: "/page-works",
-      },
-      {
-        id: 4,
-        icon: "uil uil-envelope-star",
-        className: "accounts rounded d-block shadow text-center py-3",
-        title: "Messages",
-        link: "/page-messages",
-      },
-      {
-        id: 5,
-        icon: "uil uil-transaction",
-        className: "accounts rounded d-block shadow text-center py-3",
-        title: "Payments",
-        link: "/page-payments",
-      },
-      {
-        id: 6,
-        icon: "uil uil-setting",
-        className: "accounts rounded d-block shadow text-center py-3",
-        title: "Settings",
-        link: "/page-profile-edit",
-      },
       {
         id: 7,
         icon: "uil uil-sign-out-alt",
