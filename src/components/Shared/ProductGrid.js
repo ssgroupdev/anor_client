@@ -138,11 +138,11 @@ const ProductGrid = (props) => {
                     product.branches !== null && product.branches.length > 0 ? <>
                         <div className="d-flex justify-content-between mt-1">
                             <h6 className="text-muted small font-italic mb-0 mt-1">
-                                {product.branches[0]?.price?.oldPrice === null ? (product.branches[0]?.price?.price + " UZS ") : (
-                                    <>   {product.branches[0]?.price?.oldPrice > product.branches[0]?.price?.price ? product.branches[0]?.price?.price : product.branches[0]?.price?.oldPrice}{" "}UZS{" "}
+                                {product.branches[0]?.price?.oldPrice === null ? (product.branches[0]?.price?.price + +props.lang.lang.sum) : (
+                                    <>   {product.branches[0]?.price?.oldPrice > product.branches[0]?.price?.price ? product.branches[0]?.price?.price : product.branches[0]?.price?.price+props.lang.lang.sum}
                                         {product.branches[0]?.price?.oldPrice > product.branches[0]?.price?.price ? (
                                             <del className="text-danger ml-2">
-                                                {product.branches[0]?.price?.oldPrice}{" "}UZS{" "}
+                                                {product.branches[0]?.price?.oldPrice+props.lang.lang.sum}
                                             </del>) : null}</>)}
                             </h6>
                             {/*<ul className="list-unstyled text-warning mb-0">*/}
@@ -184,12 +184,13 @@ const ProductGrid = (props) => {
                                             </Col>
                                             <Col sm={"7"} className={"text-right"}>
                                                 <h6 className="text-muted small font-italic mb-0 mt-1">
-                                                    {value?.price?.oldPrice === null ? (value?.price?.price + " UZS ") : (
-                                                        <>   {value?.price?.oldPrice > value.price?.price ? value?.price?.price : value?.price?.oldPrice}{" "}UZS{" "}
+                                                    {value?.price?.oldPrice === null ? (value?.price?.price + +props.lang.lang.sum) : (
+                                                        <>   {value?.price?.oldPrice > value.price?.price ? value?.price?.price : value?.price?.price+props.lang.lang.sum}
                                                             {value?.price?.oldPrice > value?.price?.price ? (
                                                                 <del className="text-danger ml-2">
-                                                                    {value?.price?.oldPrice}{" "}UZS{" "}
+                                                                    {value?.price?.oldPrice+props.lang.lang.sum}
                                                                 </del>) : null}</>)}
+
                                                 </h6>
                                             </Col>
                                         </Row>

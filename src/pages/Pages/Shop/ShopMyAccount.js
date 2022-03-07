@@ -163,8 +163,8 @@ class ShopMyAccount extends Component {
 
         const sendData = {
             id: this.state.address.id,
-            regionId: values.regionId,
-            provinceId: values.provinceId,
+            regionId: this.state.address.regionId,
+            provinceId: this.state.address.provinceId,
             street: values.street,
             household: values.household,
             porch: values.porch,
@@ -300,7 +300,7 @@ class ShopMyAccount extends Component {
     }
 
     getRegions = () => {
-        getRegionsByProvince(this.state.data.provinceId).then(res => {
+        getRegionsByProvince(this.state.data&&this.state.data.provinceId&&this.state.data.provinceId).then(res => {
             this.setState({
                 regionsList: res.data
             })
@@ -572,6 +572,8 @@ class ShopMyAccount extends Component {
                                             <Row>
 
                                                 <Col md={6}>
+                                                    <FormGroup className="position-relative"
+                                                               disabled={true}>
 
                                                     <Label
                                                         for="exampleSelect"
@@ -597,8 +599,11 @@ class ShopMyAccount extends Component {
                                                             ))
                                                         }
                                                     </Input>
+                                                    </FormGroup>
                                                 </Col>
                                                 <Col md={6}>
+                                                    <FormGroup className="position-relative"
+                                                               disabled={true}>
                                                     <Label
                                                         for="exampleSelect1"
                                                         className={"text-bold"}
@@ -621,6 +626,7 @@ class ShopMyAccount extends Component {
                                                             ))
                                                         }
                                                     </Input>
+                                                    </FormGroup>
                                                 </Col>
                                                 <Col md={6}>
                                                     <FormGroup className="position-relative">

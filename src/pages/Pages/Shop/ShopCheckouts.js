@@ -47,23 +47,39 @@ class ShopCheckouts extends Component {
             this.setState({
                 provinces: res?.data,
                 data: {
-                    provinceId: res?.data[0].id
+                    provinceId: this.state.address.provinceId
                 }
             }, () => this.getRegions())
         })
 
     }
-    onProvinceChange = (e, v) => {
+    onProvinceChange = (e) => {
         this.setState({
+            address: {
+                ...this.state.address,
+                provinceId: e.target.value
+            },
             data: {
-                provinceId: v
+                ...this.state.data,
+                provinceId: e.target.value
+            }
+        }, () => this.getRegions())
+    }
+    onRegionChange = (e) => {
+        this.setState({
+            address: {
+                ...this.state.address,
+                regionId: e.target.value
+            },
+            data: {
+                ...this.state.data,
+                regionId: e.target.value
             }
         }, () => this.getRegions())
     }
 
-
     getRegions = () => {
-        getRegionsByProvince(this.state.data.provinceId).then(res => {
+        getRegionsByProvince(this.state.data && this.state.data.provinceId && this.state.data.provinceId).then(res => {
             this.setState({
                 regionsList: res.data
             })
@@ -128,7 +144,7 @@ class ShopCheckouts extends Component {
         console.log(e, v)
         const data = {
             "addressPayload": {
-                "regionId": v.regionId,
+                "regionId": this.state.address.regionId,
                 "phoneTwo": v.phoneTwo,
                 "street": v.street,
                 "household": v.household,
@@ -142,7 +158,7 @@ class ShopCheckouts extends Component {
         }
 
         addOrder(data).then(res => {
-            if (res&&res.data){
+            if (res && res.data) {
                 toast.success(this.props.lang.lang.finish)
                 this.props.props.history.push("/shop-myaccount")
             } else {
@@ -303,36 +319,56 @@ class ShopCheckouts extends Component {
 
                                             <Col md={6}>
                                                 <FormGroup className="position-relative">
-
-                                                    <AvField type="select" name="provinceId"
-                                                             label={province}
-                                                        // helpMessage="This is an example. Deal with it!"
-                                                             required
-                                                             onChange={this.onProvinceChange}
-                                                             defaultValue={address?.provinceId}
+                                                    <Label
+                                                        for="exampleSelect"
+                                                        // sm={2}
+                                                        className={"text-bold"}
+                                                        style={{fontWeight: "bold"}}
                                                     >
+                                                        {province}
+                                                    </Label>
+                                                    <Input
+                                                        required
+                                                        id="exampleSelect"
+                                                        name="provinceId"
+                                                        type="select"
+                                                        value={this.state.address.provinceId}
+                                                        defaultValue={this.state.address.provinceId}
+                                                        onChange={this.onProvinceChange}
 
+                                                    >
                                                         {
                                                             provinces?.map(item => (
                                                                 <option value={item.id}>{item.name}</option>
                                                             ))
                                                         }
-                                                    </AvField>
+                                                    </Input>
                                                 </FormGroup>
                                             </Col>
                                             <Col md={6}>
                                                 <FormGroup className="position-relative">
-                                                    <AvField type="select" name="regionId" label={regions}
-                                                        // helpMessage="This is an example. Deal with it!"
-                                                             required
-                                                             defaultValue={address?.regionId}
+                                                    <Label
+                                                        for="exampleSelect1"
+                                                        className={"text-bold"}
+                                                        style={{fontWeight: "bold"}}
+                                                    >
+                                                        {regions}
+                                                    </Label>
+                                                    <Input
+                                                        required
+                                                        id="exampleSelect1"
+                                                        name="regionId"
+                                                        type="select"
+                                                        value={this.state.address.regionId}
+                                                        defaultValue={this.state.address.regionId}
+                                                        onChange={this.onRegionChange}
                                                     >
                                                         {
                                                             regionsList?.map(item => (
                                                                 <option value={item.id}>{item.name}</option>
                                                             ))
                                                         }
-                                                    </AvField>
+                                                    </Input>
                                                 </FormGroup>
                                             </Col>
                                             <Col md={6}>
