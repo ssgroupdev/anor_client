@@ -16,8 +16,6 @@ import FeatherIcon from "feather-icons-react";
 //Import Images
 import imgbg from "../../../assets/images/account/bg.png";
 import profile from "../../../assets/images/client/05.jpg";
-import exp1 from "../../../assets/images/job/Circleci.svg";
-import exp2 from "../../../assets/images/job/Codepen.svg";
 import exp3 from "../../../assets/images/job/Gitlab.svg";
 
 //Import Images
@@ -27,44 +25,11 @@ import logodark from "../../../assets/images/logo-dark.png";
 class PageProfile extends Component {
   state = {
     blogs: [
-      {
-        id: 1,
-        title: "Design your apps in your own way",
-        image: blog1,
-        likes: "33",
-        blogComments: "08",
-        author: "Krishta Joseph",
-        date: "13th August, 2019",
-      },
-      {
-        id: 2,
-        title: "How apps is changing the IT world",
-        image: blog2,
-        likes: "33",
-        blogComments: "08",
-        author: "Krishta Joseph",
-        date: "13th August, 2019",
-      },
+
     ],
     experiences: [
-      {
-        id: 3,
-        image: exp3,
-        designation: "UI Designer",
-        duration: "2 Years",
-        companyName: "Codepen",
-        location: "Perth, Australia",
-      },
     ],
     widgets: [
-      {
-        id: 1,
-        icon: "uil uil-dashboard",
-        className: "accounts active rounded d-block shadow text-center py-3",
-        title: "Profile",
-        link: "/page-profile",
-      },
-
     ],
   };
 

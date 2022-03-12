@@ -242,11 +242,11 @@ class PageBlogListSidebar extends Component {
 
               {/* sidebar */}
               <Col lg={4} xs={12} className="mt-4 mt-sm-0 pt-2 pt-sm-0">
-                <PageSearchSidebar
-                  blog01={blog01}
-                  blog07={blog07}
-                  blog08={blog08}
-                />
+                {/*<PageSearchSidebar*/}
+                {/*  blog01={blog01}*/}
+                {/*  blog07={blog07}*/}
+                {/*  blog08={blog08}*/}
+                {/*/>*/}
               </Col>
               {/* <!-- END SIDEBAR --> */}
             </Row>
