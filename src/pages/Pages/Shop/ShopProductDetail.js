@@ -272,15 +272,14 @@ class ShopProductDetail extends Component {
                             <Col md={7} className="mt-4 mt-sm-0 pt-2 pt-sm-0">
                                 <div className="section-title ml-md-4">
                                     <h4 className="title">{this.state.name}</h4>
-                                    {this.state.branch !== null ? (this.state.oldPrice > this.state.cost ?
-                                            <h5 className="text-muted">
-                                                {this.state.cost + " "}UZS
-                                                <del className="text-danger ml-2"
-                                                     style={{fontSize: "16px"}}>{"  " + this.state.oldPrice}{" "}UZS</del>
-                                            </h5> : <h5 className="text-muted">
-                                                {this.state.cost + " "}UZS
-                                            </h5>) :
-                                        <h5 className="text-danger">{this.props.lang.lang.noResidue}</h5>}
+                                    {this.state.branch !== null && this.state.branch?.totalQty > 0 ? (this.state.oldPrice > this.state.cost ?
+                                        <h5 className="text-muted">
+                                            {this.state.cost + " "}UZS
+                                            <del className="text-danger ml-2"
+                                                 style={{fontSize: "16px"}}>{"  " + this.state.oldPrice}{" "}UZS</del>
+                                        </h5> : <h5 className="text-muted">
+                                            {this.state.cost + " "}UZS
+                                        </h5>) : <h5 className="text-danger">{this.props.lang.lang.noResidue}</h5>}
                                     {/*<ul className="list-unstyled text-warning mb-0">*/}
                                     {/*    <ReactStars*/}
                                     {/*        count={this.state.rate}*/}
@@ -296,17 +295,17 @@ class ShopProductDetail extends Component {
                                     </p> : null
                                     }
 
-                                    {this.state.branch !== null ?
+                                    {this.state.branch !== null && this.state.branch?.totalQty > 0 ? (
                                         <div className="mt-4 pt-2">
-                                            <Link to="#" className="btn btn-primary">
-                                                {getShop}
-                                            </Link>
+                                            {/*<Link to="#" className="btn btn-primary">*/}
+                                            {/*    {getShop}*/}
+                                            {/*</Link>*/}
                                             <button type={"button"}
                                                     onClick={() => this.addProductToBasket(this.state.items)}
                                                     className="btn btn-soft-primary ml-2">
                                                 {addToCart}
                                             </button>
-                                        </div> : null}
+                                        </div>) : null}
                                 </div>
                             </Col>
                         </Row>
@@ -350,7 +349,7 @@ class ShopProductDetail extends Component {
                                         </NavLink>
                                     </NavItem><NavItem className="m-1">
                                     {
-                                        this.state.branch&&
+                                        this.state.branch && this.state.branch?.totalQty > 0 ? (
                                         <NavLink
                                             to="#"
                                             className={classnames(
@@ -364,7 +363,7 @@ class ShopProductDetail extends Component {
                                             <div className="text-center">
                                                 <h6 className="mb-0">{atStore}</h6>
                                             </div>
-                                        </NavLink>
+                                        </NavLink>):null
                                     }
                                 </NavItem>
 
@@ -717,18 +716,19 @@ class ShopProductDetail extends Component {
                                     <TabPane className="card border-0 fade show" tabId="4">
 
                                         <ListGroup>
-                                        {
-                                            this.state.branch?.warehouses?.map(item=>(
-                                            <ListGroupItem key={item.id} className={"d-flex justify-content-between"}>
-                                                <span  style={{fontSize:"20px", fontStyle:"bold"}}>
+                                            {
+                                                this.state.branch?.warehouses?.map(item => (
+                                                    <ListGroupItem key={item.id}
+                                                                   className={"d-flex justify-content-between"}>
+                                                <span style={{fontSize: "20px", fontStyle: "bold"}}>
                                                     {item.warehouseName}
                                                 </span>
-                                                <span className={"mr-4 text-muted"} style={{fontSize:"18px"}}>
-                                                    {item.quantity>5?"5+":item.quantity}
+                                                        <span className={"mr-4 text-muted"} style={{fontSize: "18px"}}>
+                                                    {item.quantity > 5 ? "5+" : item.quantity}
                                                 </span>
-                                            </ListGroupItem>
-                                            ))
-                                        }
+                                                    </ListGroupItem>
+                                                ))
+                                            }
                                         </ListGroup>
 
                                     </TabPane>

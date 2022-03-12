@@ -94,7 +94,7 @@ const ProductGrid = (props) => {
                             </i>
                         </Link>
                     </li>
-                    {isLogin &&
+                    {isLogin && product.branches[0]?.totalQty>0?(
                         <li className="mt-2">
                             <button
                                 type={"button"}
@@ -123,7 +123,7 @@ const ProductGrid = (props) => {
                                     />
                                 </i>
                             </button>
-                        </li>
+                        </li>):null
                     }
                 </ul>
             </div>
@@ -138,12 +138,12 @@ const ProductGrid = (props) => {
                     product.branches !== null && product.branches.length > 0 ? <>
                         <div className="d-flex justify-content-between mt-1">
                             <h6 className="text-muted small font-italic mb-0 mt-1">
-                                {product.branches[0]?.price?.oldPrice === null ? (product.branches[0]?.price?.price + props.lang.lang.sum) : (
+                                {product.branches[0]?.totalQty>0?(product.branches[0]?.price?.oldPrice === null ? (product.branches[0]?.price?.price + props.lang.lang.sum) : (
                                     <>   {product.branches[0]?.price?.oldPrice > product.branches[0]?.price?.price ? product.branches[0]?.price?.price : product.branches[0]?.price?.price+props.lang.lang.sum}
                                         {product.branches[0]?.price?.oldPrice > product.branches[0]?.price?.price ? (
                                             <del className="text-danger ml-2">
                                                 {product.branches[0]?.price?.oldPrice+props.lang.lang.sum}
-                                            </del>) : null}</>)}
+                                            </del>) : null}</>)):(noResidue)}
                             </h6>
                             {/*<ul className="list-unstyled text-warning mb-0">*/}
                             {/*    <ReactStars*/}
