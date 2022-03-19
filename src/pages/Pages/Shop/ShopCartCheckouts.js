@@ -295,7 +295,7 @@ class ShopCartCheckouts extends Component {
                                                         <span className="text-success">{delivered}</span> : (
                                                             order.status === "FINISHED" ?
                                                                 <span className="text-success">{finished}</span> : (
-                                                                    order.status === "CANCELLED" ?
+                                                                    order.status === "CANCELLED"||order.status === "CANCELLED_BY_BRANCH" ?
                                                                         <span className="text-error">{cancelled}</span> : (
                                                                             <span className="text-secondary">{processing}</span>
                                                                         )

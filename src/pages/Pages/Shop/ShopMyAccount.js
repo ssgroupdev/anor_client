@@ -497,7 +497,7 @@ class ShopMyAccount extends Component {
                                                                     <td className="text-success">{delivered}</td> : (
                                                                         value.status === "FINISHED" ?
                                                                             <td className="text-success">{finished}</td> : (
-                                                                                value.status === "CANCELLED" ?
+                                                                                value.status === "CANCELLED"||value.status === "CANCELLED_BY_BRANCH" ?
                                                                                     <td className="text-error">{cancelled}</td> : (
                                                                                         <td className="text-secondary">{processing}</td>
                                                                                     )
