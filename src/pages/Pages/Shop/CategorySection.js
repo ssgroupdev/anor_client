@@ -76,7 +76,7 @@ class CategorySection extends Component {
                                             <Col key={key} lg={3} md={4} xs={6} className="mt-4 pt-2">
                                                 <Card className="explore-feature border-0 rounded text-center bg-white">
                                                     <Link
-                                                        to={"/category-products/" + category.id}
+                                                        to={"/category-products/" + category.alias}
                                                         className="name text-dark"
                                                     > <CardBody>
                                                         <div className="icon rounded-circle shadow-lg d-inline-block">

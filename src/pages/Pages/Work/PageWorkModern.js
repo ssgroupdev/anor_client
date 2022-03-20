@@ -117,6 +117,7 @@ class PageWork extends Component {
                                     current={this.state.current}
                                     pageSize={this.state.pageSize}
                                     total={this.state.total}
+                                    hideOnSinglePage={true}
                                     onChange={this.onPaginationChange}
                                 />
                             </Col>

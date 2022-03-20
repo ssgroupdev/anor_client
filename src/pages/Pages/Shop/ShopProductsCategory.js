@@ -299,7 +299,7 @@ class ShopProducts extends Component {
                                                     <option value={"def"}>{select}</option>
                                                     {
                                                         this.state.subCategories.map((value, index) => (
-                                                            <option value={value.id} key={index}>
+                                                            <option value={value.alias} key={index}>
                                                                 {value.name}
                                                             </option>
 

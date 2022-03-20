@@ -150,11 +150,11 @@ class Topbar extends Component {
                 item.child.map(child => {
                     childs = child;
                     childs.isOpenNestedSubMenu = !child.nestedChild.length > 0;
-                    childs.link = "/category-products/" + child.id;
+                    childs.link = "/category-products/" + child.alias;
                     let arr = [];
                     child.nestedChild.map(nestedChild => {
                         nestedChilds = nestedChild;
-                        nestedChilds.link = "/category-products/" + nestedChild.id;
+                        nestedChilds.link = "/category-products/" + nestedChild.alias;
                         arr.push(nestedChilds);
                     })
                     childs.nestedChild = [];
