@@ -32,6 +32,7 @@ class ShopProducts extends Component {
             total: 0,
             pageSize: 15,
             products: [],
+            sort: new URLSearchParams(props?.props?.location?.search).get("sort") || "LATEST",
             minPrice: new URLSearchParams(props.props.location.search).get("minPrice"),
             maxPrice: new URLSearchParams(props.props.location.search).get("maxPrice")
 
@@ -51,7 +52,7 @@ class ShopProducts extends Component {
 
         this.props?.props?.history?.push({
             pathname: "/products",
-            search: `${'?sort=' + e.target.value+`&minPrice=${this.state.minPrice}&maxPrice=${this.state.maxPrice}`}`,
+            search: `${'?sort=' + e.target.value + `&minPrice=${this.state.minPrice}&maxPrice=${this.state.maxPrice}`}`,
             state: {
                 sort: e.target.value,
                 minPrice: this.state?.minPrice,
@@ -68,7 +69,7 @@ class ShopProducts extends Component {
 
         this.props?.props?.history?.push({
             pathname: "/products",
-            search: `${'?sort=' + this.state?.sort+`&minPrice=${this.state.minPrice}&maxPrice=${this.state.maxPrice}`}`,
+            search: `${'?sort=' + this.state?.sort + `&minPrice=${this.state.minPrice}&maxPrice=${this.state.maxPrice}`}`,
             state: {
                 sort: this.state.sort,
                 minPrice: this.state?.minPrice,
@@ -82,7 +83,7 @@ class ShopProducts extends Component {
         this.setState({
             sort: new URLSearchParams(this.props.props.location.search).get("sort")
         })
-        getProducts(new URLSearchParams(this.props.props.location.search).get("sort"), new URLSearchParams(this.props.props.location.search).get("searchByKey"), 0, pageSize, this.state?.minPrice!==null?this.state?.minPrice:0,  this.state?.maxPrice!==null?this.state?.maxPrice:0).then((res) => {
+        getProducts(new URLSearchParams(this.props.props.location.search).get("sort"), new URLSearchParams(this.props.props.location.search).get("searchByKey"), 0, pageSize, this.state?.minPrice !== null ? this.state?.minPrice : 0, this.state?.maxPrice !== null ? this.state?.maxPrice : 0).then((res) => {
             this.setState({
                 products: res.data.content,
                 total: res.data.totalElements
@@ -100,6 +101,7 @@ class ShopProducts extends Component {
         this.getList();
         window.addEventListener("scroll", this.scrollNavigation, true);
     }
+
     getMe = () => {
 
         getUser().then(res => {
@@ -121,6 +123,7 @@ class ShopProducts extends Component {
         })
 
     }
+
     // Make sure to remove the DOM listener when the component is unmounted.
     componentWillUnmount() {
         window.removeEventListener("scroll", this.scrollNavigation, true);
@@ -242,7 +245,9 @@ class ShopProducts extends Component {
                                 <Row className="align-items-center">
                                     <Col lg={8} md={7}>
                                         <div className="section-title">
-                                            <h5 className="mb-0">{this.state.total}{" " + from + " "}{(this.state.current - 1) * (this.state.pageSize) + 1}–{(this.state.current - 1) * (this.state.pageSize) + this.state.products.length} </h5>
+                                            <h5 className="mb-0">{this.state.total+this.props.lang.lang.element}
+                                                {/*{" " + from + " "}{(this.state.current - 1) * (this.state.pageSize) + 1}–{(this.state.current - 1) * (this.state.pageSize) + this.state.products.length} */}
+                                            </h5>
                                         </div>
                                     </Col>
 

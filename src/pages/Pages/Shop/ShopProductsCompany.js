@@ -83,12 +83,12 @@ class ShopProducts extends Component {
 
     onPaginationChange = (e) => {
         // console.log(e)
-        this.setState({current: e},()=> this.getList())
+        this.setState({current: e}, () => this.getList())
 
     }
 
     getList = () => {
-        getBranchProductByBranchId(this.state.id,  this.state.current - 1, this.state.pageSize,this.state.sort, this.state.minPrice != null ? this.state.minPrice : 0, this.state.maxPrice != null ? this.state.maxPrice : 0).then((res) => {
+        getBranchProductByBranchId(this.state.id, this.state.current - 1, this.state.pageSize, this.state.sort, this.state.minPrice != null ? this.state.minPrice : 0, this.state.maxPrice != null ? this.state.maxPrice : 0).then((res) => {
             this.setState({
                     products: res.data.content,
                     total: res.data.totalElements
@@ -268,7 +268,9 @@ class ShopProducts extends Component {
                                 <Row className="align-items-center">
                                     <Col lg={8} md={7}>
                                         <div className="section-title">
-                                            <h5 className="mb-0">{this.state.total}{" " + from + " "}{(this.state.current - 1) * (this.state.pageSize) + 1}–{(this.state.current - 1) * (this.state.pageSize) + this.state.products.length} </h5>
+                                            <h5 className="mb-0">{this.state.total+this.props.lang.lang.element}
+                                                {/*{" " + from + " "}{(this.state.current - 1) * (this.state.pageSize) + 1}–{(this.state.current - 1) * (this.state.pageSize) + this.state.products.length} */}
+                                            </h5>
                                         </div>
                                     </Col>
 
@@ -299,7 +301,7 @@ class ShopProducts extends Component {
 
                                 <Row>
                                     {this.state.products.map((product, key) => (
-                                        <ProductGrid  isLogin={this.state.isLogin} product={product} col={4}/>
+                                        <ProductGrid isLogin={this.state.isLogin} product={product} col={4}/>
                                     ))}
 
                                     <Col xs="12" className={"mt-4 pt-2 justify-items-center text-center"}>

@@ -264,9 +264,9 @@ class ShopCartCheckouts extends Component {
                         <Row>
                             <Col sm={6} className="mt-4 pt-2">
                                 <p className="h6 text-muted">
-                                    {provinceName && (provinceName + " " + lang.province + " \n")}
-                                    {regionName && (regionName + " " + lang.regions + ", ")}
-                                    {street && ("\n " + street + " " + lang.street)}
+                                    {provinceName }
+                                    {regionName }
+                                    {street && ( street )}
                                 </p>
                                 {numberHome &&
                                     <p className="h6 text-muted">{lang.numberOfHome + ": " + numberHome}</p>}

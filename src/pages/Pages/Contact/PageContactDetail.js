@@ -20,7 +20,6 @@ class PageContactDetail extends Component {
       email:   constants.mail,
       phone:  constants.phone,
       location:    constants.location,
-
       title: props.lang.lang.contactTitle,
       desc:props.lang.lang.contactDesc,
       socials: constants.socials
@@ -88,7 +87,7 @@ class PageContactDetail extends Component {
                       </i>
                     </div>
                     <Media body className="content">
-                      <h5 className="title font-weight-bold mb-0">Phone</h5>
+                      <h5 className="title font-weight-bold mb-0">{this.props.lang.lang.phone}</h5>
                       <Link
                         to="#"
                         onClick={this.callNumber}
@@ -109,7 +108,7 @@ class PageContactDetail extends Component {
                       </i>
                     </div>
                     <Media body className="content">
-                      <h5 className="title font-weight-bold mb-0">Location</h5>
+                      <h5 className="title font-weight-bold mb-0">{this.props.lang.lang.location}</h5>
                       <Link to="#" className="video-play-icon text-primary">
                         {location}
                       </Link>

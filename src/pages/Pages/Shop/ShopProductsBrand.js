@@ -69,7 +69,7 @@ class ShopProductsBrand extends Component {
         e.preventDefault();
 
         this.props?.props?.history?.push({
-            pathname:"/brands/"+this.state.id+"/products",
+            pathname: "/brands/" + this.state.id + "/products",
             search: `${'?sort=' + e.target.value + `&minPrice=${this.state.minPrice}&maxPrice=${this.state.maxPrice}`}`,
             state: {
                 sort: e.target.value,
@@ -86,7 +86,7 @@ class ShopProductsBrand extends Component {
     onInputChange = () => {
 
         this.props?.props?.history?.push({
-            pathname: "/brands/"+this.state.id+"/products",
+            pathname: "/brands/" + this.state.id + "/products",
             search: `${'?sort=' + this.state?.sort + `&minPrice=${this.state.minPrice}&maxPrice=${this.state.maxPrice}`}`,
             state: {
                 sort: this.state.sort,
@@ -104,16 +104,15 @@ class ShopProductsBrand extends Component {
     }
 
 
-
     getList = () => {
 
-        getBrandProducts(this.state.id, this.state.sort, this.state.current - 1, this.state.pageSize,this.state.minPrice!=null?this.state.minPrice:0, this.state.maxPrice!=null?this.state.maxPrice:0).then((res) => {
+        getBrandProducts(this.state.id, this.state.sort, this.state.current - 1, this.state.pageSize, this.state.minPrice != null ? this.state.minPrice : 0, this.state.maxPrice != null ? this.state.maxPrice : 0).then((res) => {
             this.setState({
                     products: res.data.products.content,
                     name: res.data.name,
                     pathItems: [...(this.state.pathItems.slice(0, 2)), {
                         name: res.data.name, id: 3
-                    }],total: res.data.products.totalElements
+                    }], total: res.data.products.totalElements
                 }
             )
         }).catch(err => {
@@ -246,7 +245,9 @@ class ShopProductsBrand extends Component {
                                 <Row className="align-items-center">
                                     <Col lg={8} md={7}>
                                         <div className="section-title">
-                                            <h5 className="mb-0">{this.state.total}{" " + from + " "}{(this.state.current - 1) * (this.state.pageSize) + 1}–{(this.state.current - 1) * (this.state.pageSize) + this.state.products.length} </h5>
+                                            <h5 className="mb-0">{this.state.total+this.props.lang.lang.element}
+                                                {/*{" " + from + " "}{(this.state.current - 1) * (this.state.pageSize) + 1}–{(this.state.current - 1) * (this.state.pageSize) + this.state.products.length} */}
+                                            </h5>
                                         </div>
                                     </Col>
 

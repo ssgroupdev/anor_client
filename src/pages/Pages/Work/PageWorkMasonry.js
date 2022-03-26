@@ -119,8 +119,7 @@ class PageWorkMasonry extends Component {
                                                             event.preventDefault();
                                                             this.setState({isOpen: true, photoIndex: key})
                                                         }}
-                                                              className="text-primary work-icon bg-white d-inline-block rounded-pill mfp-image"><i><FeatherIcon
-                                                            icon="camera" className="fea icon-sm"/></i></Link>
+                                                              className="text-primary bg-white d-inline-block  mfp-image"/>
                                                     </div>
                                                 </CardBody>
                                             </Card>
@@ -128,25 +127,25 @@ class PageWorkMasonry extends Component {
                                 </Masonry>
                             </div>
                             {/* lightbox for portfolio images */}
-                            {isOpen && (
-                                <Lightbox
-                                    mainSrc={images[photoIndex]}
-                                    nextSrc={images[(photoIndex + 1) % images.length]}
-                                    prevSrc={images[(photoIndex + images.length - 1) % images.length]}
-                                    imagePadding={100}
-                                    onCloseRequest={() => this.setState({isOpen: false})}
-                                    onMovePrevRequest={() =>
-                                        this.setState({
-                                            photoIndex: (photoIndex + images.length - 1) % images.length,
-                                        })
-                                    }
-                                    onMoveNextRequest={() =>
-                                        this.setState({
-                                            photoIndex: (photoIndex + 1) % images.length,
-                                        })
-                                    }
-                                />
-                            )}
+                            {/*{isOpen && (*/}
+                            {/*    <Lightbox*/}
+                            {/*        mainSrc={images[photoIndex]}*/}
+                            {/*        nextSrc={images[(photoIndex + 1) % images.length]}*/}
+                            {/*        prevSrc={images[(photoIndex + images.length - 1) % images.length]}*/}
+                            {/*        imagePadding={100}*/}
+                            {/*        onCloseRequest={() => this.setState({isOpen: false})}*/}
+                            {/*        onMovePrevRequest={() =>*/}
+                            {/*            this.setState({*/}
+                            {/*                photoIndex: (photoIndex + images.length - 1) % images.length,*/}
+                            {/*            })*/}
+                            {/*        }*/}
+                            {/*        onMoveNextRequest={() =>*/}
+                            {/*            this.setState({*/}
+                            {/*                photoIndex: (photoIndex + 1) % images.length,*/}
+                            {/*            })*/}
+                            {/*        }*/}
+                            {/*    />*/}
+                            {/*)}*/}
                             <Col xs="12" className={"justify-items-center text-center mt-3"}>
                                 <Pagination
                                     hideOnSinglePage={true} current={this.state.current}

@@ -300,10 +300,12 @@ class ShopMyAccount extends Component {
     }
 
     getRegions = () => {
-        getRegionsByProvince(this.state.data&&this.state.data.provinceId&&this.state.data.provinceId).then(res => {
-            this.setState({
-                regionsList: res.data
-            })
+        getRegionsByProvince(this.state.data && this.state.data.provinceId && this.state.data.provinceId).then(res => {
+            if(res&&res.data){
+                this.setState({
+                    regionsList: res.data
+                })
+            }
         }).catch()
     }
     onProvinceChange = (e) => {
@@ -497,7 +499,7 @@ class ShopMyAccount extends Component {
                                                                     <td className="text-success">{delivered}</td> : (
                                                                         value.status === "FINISHED" ?
                                                                             <td className="text-success">{finished}</td> : (
-                                                                                value.status === "CANCELLED"||value.status === "CANCELLED_BY_BRANCH" ?
+                                                                                value.status === "CANCELLED" || value.status === "CANCELLED_BY_BRANCH" ?
                                                                                     <td className="text-error">{cancelled}</td> : (
                                                                                         <td className="text-secondary">{processing}</td>
                                                                                     )
@@ -541,9 +543,9 @@ class ShopMyAccount extends Component {
                                                 <div className="pt-4 border-top">
                                                     <p className="h6">{user.fullName}</p>
                                                     <p className="h6 text-muted">
-                                                        {provinceName && (provinceName + " " + words.province + " \n")}
-                                                        {regionName && (regionName + " " + words.regions + ", ")}
-                                                        {street && ("\n " + street + " " + words.street)}
+                                                        {provinceName && (provinceName + " \n")}
+                                                        {regionName && (regionName + ", ")}
+                                                        {street && ("\n " + street)}
                                                     </p>
                                                     {numberHome &&
                                                         <p className="h6 text-muted">{words.numberOfHome + ": " + numberHome}</p>}
@@ -575,57 +577,57 @@ class ShopMyAccount extends Component {
                                                     <FormGroup className="position-relative"
                                                                disabled={true}>
 
-                                                    <Label
-                                                        for="exampleSelect"
-                                                        // sm={2}
-                                                        className={"text-bold"}
-                                                        style={{fontWeight: "bold"}}
-                                                    >
-                                                        {words.province}
-                                                    </Label>
-                                                    <Input
-                                                        required
-                                                        id="exampleSelect"
-                                                        name="provinceId"
-                                                        type="select"
-                                                        value={this.state.address.provinceId}
-                                                        defaultValue={this.state.address.provinceId}
-                                                        onChange={this.onProvinceChange}
+                                                        <Label
+                                                            for="exampleSelect"
+                                                            // sm={2}
+                                                            className={"text-bold"}
+                                                            style={{fontWeight: "bold"}}
+                                                        >
+                                                            {words.province}
+                                                        </Label>
+                                                        <Input
+                                                            required
+                                                            id="exampleSelect"
+                                                            name="provinceId"
+                                                            type="select"
+                                                            value={this.state.address.provinceId}
+                                                            defaultValue={this.state.address.provinceId}
+                                                            onChange={this.onProvinceChange}
 
-                                                    >
-                                                        {
-                                                            provinces?.map(item => (
-                                                                <option value={item.id}>{item.name}</option>
-                                                            ))
-                                                        }
-                                                    </Input>
+                                                        >
+                                                            {
+                                                                provinces?.map(item => (
+                                                                    <option value={item.id}>{item.name}</option>
+                                                                ))
+                                                            }
+                                                        </Input>
                                                     </FormGroup>
                                                 </Col>
                                                 <Col md={6}>
                                                     <FormGroup className="position-relative"
                                                                disabled={true}>
-                                                    <Label
-                                                        for="exampleSelect1"
-                                                        className={"text-bold"}
-                                                        style={{fontWeight: "bold"}}
-                                                    >
-                                                        {words.regions}
-                                                    </Label>
-                                                    <Input
-                                                        required
-                                                        id="exampleSelect1"
-                                                        name="regionId"
-                                                        type="select"
-                                                        value={this.state.address.regionId}
-                                                        defaultValue={this.state.address.regionId}
-                                                        onChange={this.onRegionChange}
-                                                    >
-                                                        {
-                                                            regionsList?.map(item => (
-                                                                <option value={item.id}>{item.name}</option>
-                                                            ))
-                                                        }
-                                                    </Input>
+                                                        <Label
+                                                            for="exampleSelect1"
+                                                            className={"text-bold"}
+                                                            style={{fontWeight: "bold"}}
+                                                        >
+                                                            {words.regions}
+                                                        </Label>
+                                                        <Input
+                                                            required
+                                                            id="exampleSelect1"
+                                                            name="regionId"
+                                                            type="select"
+                                                            value={this.state.address.regionId}
+                                                            defaultValue={this.state.address.regionId}
+                                                            onChange={this.onRegionChange}
+                                                        >
+                                                            {
+                                                                regionsList?.map(item => (
+                                                                    <option value={item.id}>{item.name}</option>
+                                                                ))
+                                                            }
+                                                        </Input>
                                                     </FormGroup>
                                                 </Col>
                                                 <Col md={6}>

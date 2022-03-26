@@ -80,9 +80,12 @@ class ShopCheckouts extends Component {
 
     getRegions = () => {
         getRegionsByProvince(this.state.data && this.state.data.provinceId && this.state.data.provinceId).then(res => {
-            this.setState({
-                regionsList: res.data
-            })
+            if (res && res.data) {
+
+                this.setState({
+                    regionsList: res.data
+                })
+            }
         }).catch()
     }
 
