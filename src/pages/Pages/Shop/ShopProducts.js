@@ -33,6 +33,7 @@ class ShopProducts extends Component {
             pageSize: 15,
             products: [],
             sort: new URLSearchParams(props?.props?.location?.search).get("sort") || "LATEST",
+            searchByKey: new URLSearchParams(props.props.location.search).get("searchByKey") || "",
             minPrice: new URLSearchParams(props.props.location.search).get("minPrice"),
             maxPrice: new URLSearchParams(props.props.location.search).get("maxPrice")
 
@@ -69,7 +70,7 @@ class ShopProducts extends Component {
 
         this.props?.props?.history?.push({
             pathname: "/products",
-            search: `${'?sort=' + this.state?.sort + `&minPrice=${this.state.minPrice}&maxPrice=${this.state.maxPrice}`}`,
+            search: `${'?sort=' + this.state?.sort + `&searchByKey=${this.state.searchByKey}&minPrice=${this.state.minPrice}&maxPrice=${this.state.maxPrice}`}`,
             state: {
                 sort: this.state.sort,
                 minPrice: this.state?.minPrice,
@@ -245,7 +246,7 @@ class ShopProducts extends Component {
                                 <Row className="align-items-center">
                                     <Col lg={8} md={7}>
                                         <div className="section-title">
-                                            <h5 className="mb-0">{this.state.total+this.props.lang.lang.element}
+                                            <h5 className="mb-0">{this.state.total + this.props.lang.lang.element}
                                                 {/*{" " + from + " "}{(this.state.current - 1) * (this.state.pageSize) + 1}–{(this.state.current - 1) * (this.state.pageSize) + this.state.products.length} */}
                                             </h5>
                                         </div>

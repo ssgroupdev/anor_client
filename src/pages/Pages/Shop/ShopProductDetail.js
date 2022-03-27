@@ -294,11 +294,11 @@ class ShopProductDetail extends Component {
                                     <h4 className="title">{this.state.name}</h4>
                                     {this.state.branch !== null && this.state.branch?.totalQty > 0 ? (this.state.oldPrice > this.state.cost ?
                                         <h5 className="text-muted">
-                                            {this.state.cost + " "}UZS
+                                            {this.state.cost + this.props.lang.lang.sum}
                                             <del className="text-danger ml-2"
-                                                 style={{fontSize: "16px"}}>{"  " + this.state.oldPrice}{" "}UZS</del>
+                                                 style={{fontSize: "16px"}}>{"  " + this.state.oldPrice + this.props.lang.lang.sum}</del>
                                         </h5> : <h5 className="text-muted">
-                                            {this.state.cost + " "}UZS
+                                            {this.state.cost + this.props.lang.lang.sum}
                                         </h5>) : <h5 className="text-danger">{this.props.lang.lang.noResidue}</h5>}
                                     {/*<ul className="list-unstyled text-warning mb-0">*/}
                                     {/*    <ReactStars*/}

@@ -374,7 +374,8 @@ class Topbar extends Component {
                                                 </div>
                                             </DropdownMenu>
                                         </Dropdown> : <>
-                                            <NavLink to={"/login"} activeStyle={{color: "white!important", padding:"100px"}}>
+                                            <NavLink to={"/login"}
+                                                     activeStyle={{color: "white!important", padding: "100px"}}>
                                                 <Button
                                                     type="button"
                                                     className="btn login-btn-light btn-soft-primary text-bold"
@@ -449,8 +450,11 @@ class Topbar extends Component {
                                             className="border bg-white rounded-pill shadow"
                                             required
                                             placeholder={searchDesc}
+                                            onChange={(e) => this.setState({searchByKey: e.target.value})}
+
                                         />
-                                        <Button type="submit" color="primary" className="btn-pills">
+                                        <Button className="btn-pills" type="button" color="primary"
+                                                onClick={this.onSearch}>
                                             {search}
                                         </Button>
                                     </FormGroup>
