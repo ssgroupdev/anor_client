@@ -41,6 +41,7 @@ import {getProductById} from "../../../server/config/web-site/product";
 import {imgUrl} from "../../../server/host";
 import {addProductToBaskets} from "../../../server/config/web-site/basket";
 import {toast} from "react-toastify";
+import {getUser} from "../../../server/config/web-site/user";
 
 class ShopProductDetail extends Component {
     constructor(props) {
@@ -71,7 +72,8 @@ class ShopProductDetail extends Component {
             desc: "",
             futureGroup: [],
             images: [],
-            branchProductId: new URLSearchParams(props.props.location.search).get("branchProduct")
+            branchProductId: new URLSearchParams(props.props.location.search).get("branchProduct"),
+            isLogin: false
         }
         ;
         this.addItem.bind(this);
@@ -113,6 +115,15 @@ class ShopProductDetail extends Component {
         }).catch(err => {
 
         })
+        getUser().then(res => {
+            if (res.status <= 510 || res.status >= 400) {
+                this.setState({isLogin: false})
+            } else {
+                this.setState({isLogin: true})
+            }
+        }).catch(err => {
+            this.setState({isLogin: false})
+        })
 
     }
 
@@ -128,14 +139,23 @@ class ShopProductDetail extends Component {
     }
 
     addProductToBasket = (count) => {
+        if (!this.state.isLogin) {
 
-        const data = {productId: this.state.id, branchProductId: this.state.branchProductId, count: count}
+            this.props.props.history.push("/login")
+        } else {
+            const data = {productId: this.state.id, branchProductId: this.state.branchProductId, count: count}
 
-        addProductToBaskets(data).then(res => {
-            toast.success(this.props.lang.lang.finish)
-        }).catch(err => {
+            addProductToBaskets(data).then(res => {
+                if (res.status <= 510 || res.status >= 400) {
+                    toast.error(this.props.lang.lang.error)
+                } else {
+                    toast.success(this.props.lang.lang.finish)
+                }
+            }).catch(err => {
+                toast.error(this.props.lang.lang.error)
+            });
+        }
 
-        });
 
     }
 
@@ -350,20 +370,20 @@ class ShopProductDetail extends Component {
                                     </NavItem><NavItem className="m-1">
                                     {
                                         this.state.branch && this.state.branch?.totalQty > 0 ? (
-                                        <NavLink
-                                            to="#"
-                                            className={classnames(
-                                                {active: this.state.activeTab === "4"},
-                                                "rounded py-2 px-5 "
-                                            )}
-                                            onClick={() => {
-                                                this.toggle("4");
-                                            }}
-                                        >
-                                            <div className="text-center">
-                                                <h6 className="mb-0">{atStore}</h6>
-                                            </div>
-                                        </NavLink>):null
+                                            <NavLink
+                                                to="#"
+                                                className={classnames(
+                                                    {active: this.state.activeTab === "4"},
+                                                    "rounded py-2 px-5 "
+                                                )}
+                                                onClick={() => {
+                                                    this.toggle("4");
+                                                }}
+                                            >
+                                                <div className="text-center">
+                                                    <h6 className="mb-0">{atStore}</h6>
+                                                </div>
+                                            </NavLink>) : null
                                     }
                                 </NavItem>
 

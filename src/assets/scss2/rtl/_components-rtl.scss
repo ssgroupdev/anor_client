@@ -510,23 +510,6 @@
     }
 }
 
-//shop-slider Slider
-.main-slider {
-    .slides {
-        .bg-slider {
-            &.slider-rtl-1 {
-                background-image: url("../../images/shop/rtl-bg1.jpg") !important;
-            }
-            &.slider-rtl-2 {
-                background-image: url("../../images/shop/rtl-bg2.jpg") !important;
-            }
-            &.slider-rtl-3 {
-                background-image: url("../../images/shop/rtl-bg3.jpg") !important;
-            }
-        }
-    }
-}
-
 //Shopping
 .shop-list {
     .shop-image {

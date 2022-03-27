@@ -34,6 +34,7 @@ class Section extends Component {
                 var e1 = document.getElementsByClassName("slick-slide");
                 for (var i = 0; i < this.state.items.length; i++) {
                     e1[i].style.background = `url(${imgUrl + this.state.items[i].imageUrl}) no-repeat center center`;
+                    e1[i].style.backgroundSize = `cover`;
                 }
             })
         }).catch(err => {
@@ -52,6 +53,7 @@ class Section extends Component {
             fade: true,
             draggable: true,
             pauseOnHover: true,
+            variableWidth: false
         };
         const {getShop, saw} = this.props.lang.lang;
         return (
@@ -62,7 +64,10 @@ class Section extends Component {
                             <li
                                 key={key}
                                 className={"bg-slider d-flex align-items-center " + item.class}
-                                style={{background: `url(${imgUrl + item.imageUrl}) center center`,backgroundRepeat:"no-repeat"}}
+                                style={{
+                                    background: `url(${imgUrl + item.imageUrl}) no-repeat center center`,
+                                    backgroundSize: "cover"
+                                }}
                             >
                                 <Container>
                                     <Row className="align-items-center mt-5">

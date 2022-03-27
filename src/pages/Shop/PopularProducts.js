@@ -28,8 +28,10 @@ class PopularProducts extends Component {
 
     getList = () => {
 
-        getProducts("POPULAR","", 0, 4).then((res) => {
-            this.setState({products: res.data.content})
+        getProducts("POPULAR", "", 0, 4).then((res) => {
+            if (res && res.data && res.data.content) {
+                this.setState({products: res.data.content})
+            }
         }).catch(err => {
 
         })
@@ -63,7 +65,7 @@ class PopularProducts extends Component {
 
                     <Row>
                         {this.state.products.map((product, key) => (
-                            <ProductGrid  isLogin={this.props.isLogin}  product={product}/>
+                            <ProductGrid isLogin={this.props.isLogin} product={product}/>
                         ))}
                     </Row>
                 </Container>

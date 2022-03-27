@@ -67,7 +67,7 @@ class Topbar extends Component {
             }
         })
         if (window.location.href.includes("/products")) {
-        window.location.reload()
+            window.location.reload()
         }
     }
     toggleWishlistModal = () => {
@@ -374,16 +374,17 @@ class Topbar extends Component {
                                                 </div>
                                             </DropdownMenu>
                                         </Dropdown> : <>
-
-                                            <NavLink to={"/login"} activeStyle={{color: "white!important"}}>
-                                                <button
+                                            <NavLink to={"/login"} activeStyle={{color: "white!important", padding:"100px"}}>
+                                                <Button
                                                     type="button"
-                                                    className="btn btn-icon btn-soft-primary"
+                                                    className="btn login-btn-light btn-soft-primary text-bold"
+                                                    // width={"50px!important"}
+                                                    // style={{width:"100px!important"}}
                                                 >
-                                                    <i className="uil uil-sign-in-alt align-middle icons"/>
-                                                </button>
+                                                    {this.props.lang.lang.login}
+                                                </Button>
                                             </NavLink>
-                                            <NavLink to={"/register"} activeStyle={{color: "white!important"}}>
+                                            {/*<NavLink to={"/register"} activeStyle={{color: "white!important"}}>
 
                                                 <button
                                                     type="button"
@@ -391,7 +392,8 @@ class Topbar extends Component {
                                                 >
                                                     <i className="uil uil-sign-out-alt align-middle icons"/>
                                                 </button>
-                                            </NavLink>
+                                            */}
+                                            {/*</NavLink>*/}
                                         </>}
                                 </li>
 
@@ -518,22 +520,24 @@ class Topbar extends Component {
                                         </Dropdown> : <>
 
                                             <NavLink to={"/login"} activeStyle={{color: "white!important"}}>
-                                                <button
+                                                <Button
                                                     type="button"
-                                                    className="btn btn-icon btn-soft-primary"
+                                                    className="btn btn-soft-primary text-bold"
+                                                    // width={"50px!important"}
+                                                    // style={{width:"100px!important"}}
                                                 >
-                                                    <i className="uil uil-sign-in-alt align-middle icons"/>
-                                                </button>
+                                                    {this.props.lang.lang.login}
+                                                </Button>
                                             </NavLink>
-                                            <NavLink to={"/register"} activeStyle={{color: "white!important"}}>
+                                            {/*<NavLink to={"/register"} activeStyle={{color: "white!important"}}>*/}
 
-                                                <button
-                                                    type="button"
-                                                    className="btn btn-icon btn-soft-primary"
-                                                >
-                                                    <i className="uil uil-sign-out-alt align-middle icons"/>
-                                                </button>
-                                            </NavLink>
+                                            {/*    <button*/}
+                                            {/*        type="button"*/}
+                                            {/*        className="btn btn-icon btn-soft-primary"*/}
+                                            {/*    >*/}
+                                            {/*        <i className="uil uil-sign-out-alt align-middle icons"/>*/}
+                                            {/*    </button>*/}
+                                            {/*</NavLink>*/}
                                         </>}
                                 </li>
 

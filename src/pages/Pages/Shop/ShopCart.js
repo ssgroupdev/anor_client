@@ -248,7 +248,7 @@ class ShopCart extends Component {
                                                     <td>
                                                         <p className="mb-0 ml-3">{item?.branchesProduct?.name}</p>
                                                     </td>
-                                                    <td className="text-center">{item?.branchesProduct?.price?.price}{" UZS"}</td>
+                                                    <td className="text-center">{item?.branchesProduct?.price?.price}{this.props.lang.lang.sum}</td>
                                                     <td className="text-center">
                                                         <Input
                                                             type="button"
@@ -276,7 +276,7 @@ class ShopCart extends Component {
                                                         />
                                                     </td>
                                                     <td className="text-center font-weight-bold">
-                                                        {item?.branchesProduct?.price?.price * item.count}{" UZS"}
+                                                        {item?.branchesProduct?.price?.price * item.count}{this.props.lang.lang.sum}
                                                     </td>
                                                 </tr>
                                             ))}
@@ -399,15 +399,15 @@ class ShopCart extends Component {
                                         <tbody>
                                         <tr>
                                             <td className="h6">{subTotal}</td>
-                                            <td className="text-center font-weight-bold">{this.state.subTotal} {" " + this.state.cur}</td>
+                                            <td className="text-center font-weight-bold">{this.state.subTotal} {this.props.lang.lang.sum}</td>
                                         </tr>
                                         {/*<tr>*/}
                                         {/*    <td className="h6">{delivery}</td>*/}
-                                        {/*    <td className="text-center font-weight-bold">{this.state.taxes}{" " + this.state.cur}</td>*/}
+                                        {/*    <td className="text-center font-weight-bold">{this.state.taxes}{this.props.lang.lang.sum}</td>*/}
                                         {/*</tr>*/}
                                         <tr className="bg-light">
                                             <td className="h6">{total}</td>
-                                            <td className="text-center font-weight-bold">{this.state.total}{" " + this.state.cur}</td>
+                                            <td className="text-center font-weight-bold">{this.state.total}{this.props.lang.lang.sum}</td>
                                         </tr>
                                         </tbody>
                                     </Table>

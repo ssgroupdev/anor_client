@@ -6086,18 +6086,6 @@ p {
   left: 15px;
 }
 
-.main-slider .slides .bg-slider.slider-rtl-1 {
-  background-image: url("src/assets/images/shop/rtl-bg1.jpg") !important;
-}
-
-.main-slider .slides .bg-slider.slider-rtl-2 {
-  background-image: url("src/assets/images/shop/rtl-bg2.jpg") !important;
-}
-
-.main-slider .slides .bg-slider.slider-rtl-3 {
-  background-image: url("src/assets/images/shop/rtl-bg3.jpg") !important;
-}
-
 .shop-list .shop-image .shop-icons {
   right: auto;
   left: 15px;

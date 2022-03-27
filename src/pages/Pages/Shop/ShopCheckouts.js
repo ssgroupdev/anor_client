@@ -286,7 +286,6 @@ class ShopCheckouts extends Component {
                                                         placeholder={yourPhone}
                                                         name="phone"
                                                         disabled
-
                                                         value={user?.username}
                                                     />
 
@@ -314,6 +313,7 @@ class ShopCheckouts extends Component {
                                                         placeholder={yourPhone}
                                                         name="phoneTwo"
                                                         value={user?.phone}
+                                                        required={true}
                                                     />
 
                                                 </FormGroup>
@@ -539,6 +539,7 @@ class ShopCheckouts extends Component {
                                                 className="form-control"
                                                 placeholder={commentYourOrder}
                                                 // value={address?.postIndex}
+                                                required={true}
                                             />
                                         </FormGroup>
                                     </div>

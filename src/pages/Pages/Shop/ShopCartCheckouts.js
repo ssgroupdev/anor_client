@@ -264,8 +264,8 @@ class ShopCartCheckouts extends Component {
                         <Row>
                             <Col sm={6} className="mt-4 pt-2">
                                 <p className="h6 text-muted">
-                                    {provinceName }
-                                    {regionName }
+                                    {provinceName + " " }
+                                    {regionName + " "}
                                     {street && ( street )}
                                 </p>
                                 {numberHome &&
@@ -307,7 +307,7 @@ class ShopCartCheckouts extends Component {
                                         </tr>
                                         <tr>
                                             <td className="h6">{subTotal}</td>
-                                            <td className="text-center font-weight-bold">{order.total ? order.total : 0}{sum}</td>
+                                            <td className="text-center font-weight-bold">{order.totalPrice ? order.totalPrice : 0}{sum}</td>
                                         </tr>
                                         {/*<tr>*/}
                                         {/*    <td className="h6">{delivery}</td>*/}
@@ -315,7 +315,7 @@ class ShopCartCheckouts extends Component {
                                         {/*</tr>*/}
                                         <tr className="bg-light">
                                             <td className="h6">{total}</td>
-                                            <td className="text-center font-weight-bold">{order.total ? order.total : 0}{sum}</td>
+                                            <td className="text-center font-weight-bold">{order.totalPrice ? order.totalPrice : 0}{sum}</td>
                                         </tr>
                                         </tbody>
                                     </Table>

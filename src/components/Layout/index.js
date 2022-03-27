@@ -52,11 +52,10 @@ class Layout extends Component {
 
                     {this.props.children}
                     {(() => {
-
                             return <Footer/>
                     })()}
 
-                    {/* <div className="btn btn-icon btn-soft-primary back-to-top"> */}
+                     <div className="btn btn-icon btn-soft-primary back-to-top">
                     {/* scrollup button */}
                     <ScrollUpButton
                         ContainerClassName="classForContainer"
@@ -65,7 +64,7 @@ class Layout extends Component {
                     >
                         <CustomDot/>
                     </ScrollUpButton>
-                    {/* </div> */}
+                     </div>
 
                 </Suspense>
             </React.Fragment>
