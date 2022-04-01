@@ -36,7 +36,11 @@ class PageRePasswordThree extends Component {
     }
 
     render() {
-        const {recoveryAccount, yourPhone, recoveryDesc, login, rememberPassword, send} = this.props.lang.lang;
+        const {
+            recoveryAccount, yourPhone,
+            errorPhone,
+            recoveryDesc, login, rememberPassword, send
+        } = this.props.lang.lang;
         return (
             <React.Fragment>
                 <div className="back-to-home rounded d-none d-sm-block">
@@ -78,13 +82,16 @@ class PageRePasswordThree extends Component {
                                                         </div>
                                                         <AvField
                                                             name="username"
-                                                            errorMessage="Invalid PhoneNumber"
+                                                            errorMessage={errorPhone}
                                                             validate={{
-                                                                required: {value: true},
+                                                                required: {value: true, errorMessage: errorPhone},
+                                                                minLength: {value: 12, errorMessage: errorPhone},
+                                                                maxLength: {value: 12, errorMessage: errorPhone},
                                                             }}
                                                             type="number"
                                                             className="form-control pl-5"
-                                                            placeholder={yourPhone}
+                                                            placeholder={"998*********"}
+                                                            defaultValue={"998*********"}
                                                         />
                                                     </FormGroup>
                                                 </Col>

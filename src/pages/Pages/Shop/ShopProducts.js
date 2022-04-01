@@ -53,11 +53,12 @@ class ShopProducts extends Component {
 
         this.props?.props?.history?.push({
             pathname: "/products",
-            search: `${'?sort=' + e.target.value + `&minPrice=${this.state.minPrice}&maxPrice=${this.state.maxPrice}`}`,
+            search: `${'?sort=' + e.target.value + `&searchByKey=${this.state.searchByKey}&minPrice=${this.state.minPrice}&maxPrice=${this.state.maxPrice}`}`,
             state: {
                 sort: e.target.value,
                 minPrice: this.state?.minPrice,
                 maxPrice: this.state?.maxPrice,
+                searchByKey: this.state?.searchByKey,
 
             }
         })

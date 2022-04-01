@@ -71,7 +71,8 @@ class VerifyingCode extends Component {
             recoveryDesc,
             login,
             rememberPassword,
-            send
+            send,
+            errorConfirmCode
         } = this.props.lang.lang;
 
         return (
@@ -114,11 +115,10 @@ class VerifyingCode extends Component {
                                                         </div>
                                                         <AvField
                                                             name="code"
-                                                            errorMessage="Invalid Code"
                                                             validate={{
-                                                                required: {value: true},
-                                                                minLength: {value: 6},
-                                                                maxLength: {value: 6}
+                                                                required: {value: true, errorMessage: errorConfirmCode},
+                                                                minLength: {value: 6, errorMessage: errorConfirmCode},
+                                                                maxLength: {value: 6, errorMessage: errorConfirmCode}
                                                             }}
                                                             type="number"
                                                             className="form-control pl-5"

@@ -116,10 +116,10 @@ class ShopProductDetail extends Component {
 
         })
         getUser().then(res => {
-            if (res.status <= 510 || res.status >= 400) {
-                this.setState({isLogin: false})
-            } else {
+            if (res && res.data && res.data.id) {
                 this.setState({isLogin: true})
+            } else {
+                this.setState({isLogin: false})
             }
         }).catch(err => {
             this.setState({isLogin: false})
@@ -142,14 +142,15 @@ class ShopProductDetail extends Component {
         if (!this.state.isLogin) {
 
             this.props.props.history.push("/login")
+
         } else {
             const data = {productId: this.state.id, branchProductId: this.state.branchProductId, count: count}
 
             addProductToBaskets(data).then(res => {
-                if (res.status <= 510 || res.status >= 400) {
-                    toast.error(this.props.lang.lang.error)
-                } else {
+                if (res && res.data) {
                     toast.success(this.props.lang.lang.finish)
+                } else {
+                    toast.error(this.props.lang.lang.error)
                 }
             }).catch(err => {
                 toast.error(this.props.lang.lang.error)

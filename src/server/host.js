@@ -4,6 +4,7 @@ import {getCookie} from "../utils/useCookies";
 import {userAccessTokenName} from "../constants/application";
 
 export let host = "http://185.196.214.27";
+// export let host = "http://localhost";
 export let port = "8081";
 
 export let token = getCookie(userAccessTokenName);

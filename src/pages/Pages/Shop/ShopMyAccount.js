@@ -301,7 +301,7 @@ class ShopMyAccount extends Component {
 
     getRegions = () => {
         getRegionsByProvince(this.state.data && this.state.data.provinceId && this.state.data.provinceId).then(res => {
-            if(res&&res.data){
+            if (res && res.data) {
                 this.setState({
                     regionsList: res.data
                 })
@@ -347,7 +347,18 @@ class ShopMyAccount extends Component {
             sum,
             deliveryDate,
             deliveryFinish,
-            finished
+            finished,
+            errorPassword,
+            errorField,
+            errorPhone,
+            errorConfirmPass,
+            errorConfirmPassword,
+            errorStreet,
+            errorNumberOfHome,
+            errorName,
+            errorSurname,
+            errorPost,
+            selectItem
         } = this.props.lang.lang
         const {
             provinceId,
@@ -593,7 +604,12 @@ class ShopMyAccount extends Component {
                                                             value={this.state.address.provinceId}
                                                             defaultValue={this.state.address.provinceId}
                                                             onChange={this.onProvinceChange}
-
+                                                            validate={{
+                                                                required: {
+                                                                    value: true,
+                                                                    errorMessage: errorField
+                                                                },
+                                                            }}
                                                         >
                                                             {
                                                                 provinces?.map(item => (
@@ -618,6 +634,12 @@ class ShopMyAccount extends Component {
                                                             id="exampleSelect1"
                                                             name="regionId"
                                                             type="select"
+                                                            validate={{
+                                                                required: {
+                                                                    value: true,
+                                                                    errorMessage: errorField
+                                                                },
+                                                            }}
                                                             value={this.state.address.regionId}
                                                             defaultValue={this.state.address.regionId}
                                                             onChange={this.onRegionChange}
@@ -646,9 +668,11 @@ class ShopMyAccount extends Component {
                                                         <AvField
                                                             type="text"
                                                             className="form-control pl-5"
-                                                            errorMessage="Invalid Street"
                                                             validate={{
-                                                                required: {value: true}
+                                                                required: {
+                                                                    value: true,
+                                                                    errorMessage: errorStreet
+                                                                }
                                                             }}
                                                             value={street}
                                                             placeholder={words.street}
@@ -673,8 +697,6 @@ class ShopMyAccount extends Component {
                                                         <AvField
                                                             type="text"
                                                             className="form-control pl-5"
-                                                            errorMessage={"Enter " + words.numberOfHome}
-                                                            value={numberHome}
                                                             name="numberHome"
                                                             placeholder={words.numberOfHome}
                                                         />
@@ -697,7 +719,6 @@ class ShopMyAccount extends Component {
                                                         <AvField
                                                             type="text"
                                                             className="form-control pl-5"
-                                                            errorMessage={"Enter " + words.porch}
                                                             value={porch}
                                                             name="porch"
                                                             placeholder={words.porch}
@@ -721,7 +742,6 @@ class ShopMyAccount extends Component {
                                                         <AvField
                                                             type="text"
                                                             className="form-control pl-5"
-                                                            errorMessage={"Enter " + words.floor}
                                                             value={floor}
                                                             name="floor"
                                                             placeholder={words.floor}
@@ -746,7 +766,12 @@ class ShopMyAccount extends Component {
                                                             type="text"
                                                             className="form-control pl-5"
                                                             errorMessage={"Enter " + words.household}
-                                                            validate={{required: {value: true}}}
+                                                            validate={{
+                                                                required: {
+                                                                    value: true,
+                                                                    errorMessage: errorNumberOfHome
+                                                                }
+                                                            }}
                                                             name={"household"}
                                                             placeholder={words.household}
                                                         />
@@ -769,9 +794,13 @@ class ShopMyAccount extends Component {
                                                         <AvField
                                                             type="number"
                                                             className="form-control pl-5"
-                                                            errorMessage={"Enter " + words.post}
                                                             validate={{
-                                                                required: {value: true},
+                                                                required: {
+                                                                    value: true,
+                                                                    errorMessage: errorPost
+                                                                },
+                                                                minLength: {value: 6, errorMessage: errorPost},
+                                                                maxLength: {value: 6, errorMessage: errorPost}
                                                             }}
                                                             value={postIndex}
                                                             name="post"
@@ -797,9 +826,16 @@ class ShopMyAccount extends Component {
                                                             type="number"
                                                             className="form-control pl-5"
                                                             errorMessage="Invalid PhoneNumber"
-                                                            placeholder={words.yourPhone}
+                                                            placeholder={"998*********"}
+                                                            validate={{
+                                                                minLength: {
+                                                                    value: 12,
+                                                                    errorMessage: errorPhone
+                                                                },
+                                                                maxLength: {value: 12, errorMessage: errorPhone}
+                                                            }}
                                                             name="phoneTwo"
-                                                            value={this.state?.address?.phoneTwo}
+                                                            value={this.state?.address?.phoneTwo ? this.state?.address?.phoneTwo : "998"}
                                                         />
                                                     </FormGroup>
                                                 </Col>
@@ -839,8 +875,12 @@ class ShopMyAccount extends Component {
                                                         <AvField
                                                             type="text"
                                                             className="form-control pl-5"
-                                                            errorMessage="Enter First Name"
-                                                            validate={{required: {value: true}}}
+                                                            validate={{
+                                                                required: {
+                                                                    value: true,
+                                                                    errorMessage: errorName
+                                                                }
+                                                            }}
                                                             placeholder={words.firstName}
                                                             name="firstName"
                                                             value={user.firstName}
@@ -863,8 +903,12 @@ class ShopMyAccount extends Component {
                                                         <AvField
                                                             type="text"
                                                             className="form-control pl-5"
-                                                            errorMessage="Enter Last Name"
-                                                            validate={{required: {value: true}}}
+                                                            validate={{
+                                                                required: {
+                                                                    value: true,
+                                                                    errorMessage: errorSurname
+                                                                }
+                                                            }}
                                                             placeholder={words.lastName}
                                                             name="lastName"
                                                             value={user.lastName}
@@ -889,9 +933,17 @@ class ShopMyAccount extends Component {
                                                             className="form-control pl-5"
                                                             errorMessage="Invalid PhoneNumber"
                                                             validate={{
-                                                                required: {value: true}
+                                                                required: {
+                                                                    value: true,
+                                                                    errorMessage: errorPhone
+                                                                },
+                                                                minLength: {
+                                                                    value: 12,
+                                                                    errorMessage: errorPhone
+                                                                },
+                                                                maxLength: {value: 12, errorMessage: errorPhone}
                                                             }}
-                                                            placeholder={words.yourPhone}
+                                                            placeholder={"998*********"}
                                                             name="username"
                                                             value={user.username}
                                                         />
@@ -948,8 +1000,16 @@ class ShopMyAccount extends Component {
                                                             <AvField
                                                                 type="password"
                                                                 className="form-control pl-5"
-                                                                errorMessage="Enter Last Name"
-                                                                validate={{required: {value: true}}}
+                                                                validate={{
+                                                                    required: {
+                                                                        value: true,
+                                                                        errorMessage: errorPassword
+                                                                    },
+                                                                    minLength: {
+                                                                        value: 6,
+                                                                        errorMessage: errorPassword
+                                                                    }
+                                                                }}
                                                                 name="oldPassword"
                                                                 placeholder={words.oldPassword}
                                                             />
@@ -968,8 +1028,16 @@ class ShopMyAccount extends Component {
                                                             <AvField
                                                                 type="password"
                                                                 className="form-control pl-5"
-                                                                errorMessage="Enter Last Name"
-                                                                validate={{required: {value: true}}}
+                                                                validate={{
+                                                                    required: {
+                                                                        value: true,
+                                                                        errorMessage: errorPassword
+                                                                    },
+                                                                    minLength: {
+                                                                        value: 6,
+                                                                        errorMessage: errorPassword
+                                                                    }
+                                                                }}
                                                                 name="newPassword"
                                                                 placeholder={words.newPassword}
                                                             />
@@ -988,10 +1056,19 @@ class ShopMyAccount extends Component {
                                                             <AvField
                                                                 type="password"
                                                                 className="form-control pl-5"
-                                                                errorMessage="Enter Re-password"
                                                                 validate={{
-                                                                    required: {value: true},
-                                                                    match: {value: "newPassword"},
+                                                                    required: {
+                                                                        value: true,
+                                                                        errorMessage: errorPassword
+                                                                    },
+                                                                    minLength: {
+                                                                        value: 6,
+                                                                        errorMessage: errorPassword
+                                                                    },
+                                                                    match: {
+                                                                        value: "newPassword",
+                                                                        errorMessage: errorConfirmPass
+                                                                    },
                                                                 }}
                                                                 name="confirmPassword"
                                                                 placeholder={words.rePassword}

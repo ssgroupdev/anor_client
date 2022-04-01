@@ -38,6 +38,7 @@ class HelpCenterSupportRequest extends Component {
         event.preventDefault();
         createMessage(this.state).then(res=>{
             this.setState({isOpen: true})
+            event.target.reset();
         }).catch(err=>{
             message.error(this.props.lang.lang.error)
         })
@@ -147,7 +148,7 @@ class HelpCenterSupportRequest extends Component {
                                                     </Col>
                                                     <Col md={12}>
                                                         <FormGroup>
-                                                            <Label>{subject}</Label>
+                                                            <Label>{subject}{" "}<span className="text-danger">*</span></Label>
                                                             <div className="position-relative">
                                                                 <i>
                                                                     <FeatherIcon
@@ -169,7 +170,7 @@ class HelpCenterSupportRequest extends Component {
                                                     </Col>
                                                     <Col md={12}>
                                                         <FormGroup>
-                                                            <Label>{comments}</Label>
+                                                            <Label>{comments}{" "}<span className="text-danger">*</span></Label>
                                                             <div className="position-relative">
                                                                 <i>
                                                                     <FeatherIcon

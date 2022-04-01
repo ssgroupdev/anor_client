@@ -196,7 +196,18 @@ class ShopCheckouts extends Component {
             payment,
             total,
             subTotal,
-            delivery
+            delivery,
+            errorPassword,
+            errorField,
+            errorPhone,
+            errorConfirmPass,
+            errorConfirmPassword,
+            errorStreet,
+            errorNumberOfHome,
+            errorName,
+            errorSurname,
+            errorPost,
+            selectItem
         } = this.props.lang.lang
         const {user, address, provinces, regionsList} = this.state
         return (
@@ -283,7 +294,7 @@ class ShopCheckouts extends Component {
                                                         type="number"
                                                         className="form-control pl-5"
                                                         errorMessage="Invalid PhoneNumber"
-                                                        placeholder={yourPhone}
+                                                        placeholder={"998*********"}
                                                         name="phone"
                                                         disabled
                                                         value={user?.username}
@@ -309,8 +320,18 @@ class ShopCheckouts extends Component {
                                                     <AvField
                                                         type="number"
                                                         className="form-control pl-5"
-                                                        errorMessage="Invalid PhoneNumber"
-                                                        placeholder={yourPhone}
+                                                        validate={{
+                                                            required: {
+                                                                value: true,
+                                                                errorMessage: errorPhone
+                                                            },
+                                                            minLength: {
+                                                                value: 12,
+                                                                errorMessage: errorPhone
+                                                            },
+                                                            maxLength: {value: 12, errorMessage: errorPhone}
+                                                        }}
+                                                        placeholder={"998*********"}
                                                         name="phoneTwo"
                                                         value={user?.phone}
                                                         required={true}
@@ -334,6 +355,12 @@ class ShopCheckouts extends Component {
                                                         required
                                                         id="exampleSelect"
                                                         name="provinceId"
+                                                        validate={{
+                                                            required: {
+                                                                value: true,
+                                                                errorMessage: errorField
+                                                            },
+                                                        }}
                                                         type="select"
                                                         value={this.state.address.provinceId}
                                                         defaultValue={this.state.address.provinceId}
@@ -361,6 +388,12 @@ class ShopCheckouts extends Component {
                                                         required
                                                         id="exampleSelect1"
                                                         name="regionId"
+                                                        validate={{
+                                                            required: {
+                                                                value: true,
+                                                                errorMessage: errorField
+                                                            },
+                                                        }}
                                                         type="select"
                                                         value={this.state.address.regionId}
                                                         defaultValue={this.state.address.regionId}
@@ -390,9 +423,11 @@ class ShopCheckouts extends Component {
                                                     <AvField
                                                         type="text"
                                                         className="form-control pl-5"
-                                                        errorMessage="Invalid Street"
                                                         validate={{
-                                                            required: {value: true}
+                                                            required: {
+                                                                value: true,
+                                                                errorMessage: errorStreet
+                                                            }
                                                         }}
                                                         value={address?.street}
                                                         placeholder={street}
@@ -417,7 +452,6 @@ class ShopCheckouts extends Component {
                                                     <AvField
                                                         type="text"
                                                         className="form-control pl-5"
-                                                        errorMessage={"Enter " + numberOfHome}
                                                         value={address?.numberHome}
                                                         name="numberHome"
                                                         placeholder={numberOfHome}
@@ -441,7 +475,6 @@ class ShopCheckouts extends Component {
                                                     <AvField
                                                         type="text"
                                                         className="form-control pl-5"
-                                                        errorMessage={"Enter " + porch}
                                                         value={address?.porch}
                                                         name="porch"
                                                         placeholder={porch}
@@ -466,7 +499,6 @@ class ShopCheckouts extends Component {
                                                         type="text"
                                                         value={address?.floor}
                                                         className="form-control pl-5"
-                                                        errorMessage={"Enter " + floor}
                                                         name="floor"
                                                         placeholder={floor}
                                                     />
@@ -489,8 +521,12 @@ class ShopCheckouts extends Component {
                                                         value={address?.household}
                                                         type="text"
                                                         className="form-control pl-5"
-                                                        errorMessage={"Enter " + household}
-                                                        validate={{required: {value: true}}}
+                                                        validate={{
+                                                            required: {
+                                                                value: true,
+                                                                errorMessage: errorNumberOfHome
+                                                            }
+                                                        }}
                                                         name={"household"}
                                                         placeholder={household}
                                                     />
@@ -513,9 +549,13 @@ class ShopCheckouts extends Component {
                                                     <AvField
                                                         type="number"
                                                         className="form-control pl-5"
-                                                        errorMessage={"Enter " + post}
                                                         validate={{
-                                                            required: {value: true},
+                                                            required: {
+                                                                value: true,
+                                                                errorMessage: errorPost
+                                                            },
+                                                            minLength: {value: 6, errorMessage: errorPost},
+                                                            maxLength: {value: 6, errorMessage: errorPost}
                                                         }}
                                                         value={address?.postIndex}
                                                         name="postIndex"
@@ -538,6 +578,12 @@ class ShopCheckouts extends Component {
                                                 rows="4"
                                                 className="form-control"
                                                 placeholder={commentYourOrder}
+                                                validate={{
+                                                    required: {
+                                                        value: true,
+                                                        errorMessage: errorField
+                                                    }
+                                                }}
                                                 // value={address?.postIndex}
                                                 required={true}
                                             />

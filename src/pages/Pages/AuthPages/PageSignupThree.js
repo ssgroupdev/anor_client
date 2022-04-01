@@ -55,14 +55,14 @@ class PageSignupThree extends Component {
         this.getList();
     }
 
-    error = () => toast(this.props.lang.lang.errorRegister);
+    // error = () => ;
 
     handleValidSubmit = (event, values) => {
 
         const sendData = {
             firstName: values.firstName,
             lastName: values.lastName,
-            username: values.phone,
+            username: values.username,
             password: values.password,
             address: {
                 regionId: values.regionId,
@@ -80,7 +80,7 @@ class PageSignupThree extends Component {
                 state: {username: res.data.username}
             })
         }).catch(err => {
-            this.error();
+            toast.error(this.props.lang.lang.errorRegister)
         })
     };
     onProvinceChange = (e, v) => {
@@ -107,7 +107,18 @@ class PageSignupThree extends Component {
             iAccept,
             termsOfServices, post,
             household,
-            street
+            street,
+            errorPassword,
+            errorField,
+            errorPhone,
+            errorConfirmPass,
+            errorConfirmPassword,
+            errorStreet,
+            errorNumberOfHome,
+            errorName,
+            errorSurname,
+            errorPost,
+            selectItem
         } = this.props.lang.lang;
         const {provinces, regionsList} = this.state
         return (
@@ -151,8 +162,12 @@ class PageSignupThree extends Component {
                                                                 <AvField
                                                                     type="text"
                                                                     className="form-control pl-5"
-                                                                    errorMessage="Enter First Name"
-                                                                    validate={{required: {value: true}}}
+                                                                    validate={{
+                                                                        required: {
+                                                                            value: true,
+                                                                            errorMessage: errorName
+                                                                        }
+                                                                    }}
                                                                     placeholder={firstName}
                                                                     name="firstName"
                                                                 />
@@ -174,8 +189,12 @@ class PageSignupThree extends Component {
                                                                 <AvField
                                                                     type="text"
                                                                     className="form-control pl-5"
-                                                                    errorMessage="Enter Last Name"
-                                                                    validate={{required: {value: true}}}
+                                                                    validate={{
+                                                                        required: {
+                                                                            value: true,
+                                                                            errorMessage: errorSurname
+                                                                        }
+                                                                    }}
                                                                     placeholder={lastName}
                                                                     name="lastName"
                                                                 />
@@ -197,12 +216,20 @@ class PageSignupThree extends Component {
                                                                 <AvField
                                                                     type="number"
                                                                     className="form-control pl-5"
-                                                                    errorMessage="Invalid PhoneNumber"
                                                                     validate={{
-                                                                        required: {value: true}
+                                                                        required: {
+                                                                            value: true,
+                                                                            errorMessage: errorPhone
+                                                                        },
+                                                                        minLength: {
+                                                                            value: 12,
+                                                                            errorMessage: errorPhone
+                                                                        },
+                                                                        maxLength: {value: 12, errorMessage: errorPhone}
                                                                     }}
-                                                                    placeholder={yourPhone}
-                                                                    name="phone"
+                                                                    placeholder={"998*********"}
+                                                                    value={"998"}
+                                                                    name="username"
                                                                 />
                                                             </FormGroup>
                                                         </Col>
@@ -222,8 +249,16 @@ class PageSignupThree extends Component {
                                                                 <AvField
                                                                     type="password"
                                                                     className="form-control pl-5"
-                                                                    errorMessage="Enter Last Name"
-                                                                    validate={{required: {value: true}}}
+                                                                    validate={{
+                                                                        required: {
+                                                                            value: true,
+                                                                            errorMessage: errorPassword
+                                                                        },
+                                                                        minLength: {
+                                                                            value: 6,
+                                                                            errorMessage: errorPassword
+                                                                        }
+                                                                    }}
                                                                     name="password"
                                                                     placeholder={password}
                                                                 />
@@ -246,10 +281,19 @@ class PageSignupThree extends Component {
                                                                 <AvField
                                                                     type="password"
                                                                     className="form-control pl-5"
-                                                                    errorMessage="Enter Re-password"
                                                                     validate={{
-                                                                        required: {value: true},
-                                                                        match: {value: "password"},
+                                                                        required: {
+                                                                            value: true,
+                                                                            errorMessage: errorPassword
+                                                                        },
+                                                                        minLength: {
+                                                                            value: 6,
+                                                                            errorMessage: errorPassword
+                                                                        },
+                                                                        match: {
+                                                                            value: "password",
+                                                                            errorMessage: errorConfirmPass
+                                                                        },
                                                                     }}
                                                                     name="repassword"
                                                                     placeholder={rePassword}
@@ -266,9 +310,16 @@ class PageSignupThree extends Component {
                                                                 <AvField type="select" name="provinceId"
                                                                          label={province}
                                                                     // helpMessage="This is an example. Deal with it!"
-                                                                         required
+                                                                         validate={{
+                                                                             required: {
+                                                                                 value: true,
+                                                                                 errorMessage: errorField
+                                                                             },
+                                                                         }}
                                                                          onChange={this.onProvinceChange}
-                                                                >
+                                                                         value={"item"}>
+                                                                    <option value={"item"} disabled={true}
+                                                                            selected={true}>{selectItem}</option>
 
                                                                     {
                                                                         provinces?.map(item => (
@@ -281,8 +332,14 @@ class PageSignupThree extends Component {
                                                         <Col md={6}>
                                                             <FormGroup className="position-relative">
                                                                 <AvField type="select" name="regionId" label={regions}
-                                                                    // helpMessage="This is an example. Deal with it!"
-                                                                         required>
+                                                                         validate={{
+                                                                             required: {
+                                                                                 value: true,
+                                                                                 errorMessage: errorField
+                                                                             },
+                                                                         }} value={"item"}>
+                                                                    <option value={"item"} disabled={true}
+                                                                            selected={true}>{selectItem}</option>
                                                                     {
                                                                         regionsList?.map(item => (
                                                                             <option value={item.id}>{item.name}</option>
@@ -307,9 +364,11 @@ class PageSignupThree extends Component {
                                                                 <AvField
                                                                     type="text"
                                                                     className="form-control pl-5"
-                                                                    errorMessage="Invalid Street"
                                                                     validate={{
-                                                                        required: {value: true}
+                                                                        required: {
+                                                                            value: true,
+                                                                            errorMessage: errorStreet
+                                                                        }
                                                                     }}
                                                                     placeholder={street}
                                                                     name="street"
@@ -332,8 +391,12 @@ class PageSignupThree extends Component {
                                                                 <AvField
                                                                     type="text"
                                                                     className="form-control pl-5"
-                                                                    errorMessage={"Enter " + household}
-                                                                    validate={{required: {value: true}}}
+                                                                    validate={{
+                                                                        required: {
+                                                                            value: true,
+                                                                            errorMessage: errorNumberOfHome
+                                                                        }
+                                                                    }}
                                                                     name={"household"}
                                                                     placeholder={household}
                                                                 />
@@ -356,9 +419,13 @@ class PageSignupThree extends Component {
                                                                 <AvField
                                                                     type="number"
                                                                     className="form-control pl-5"
-                                                                    errorMessage={"Enter " + post}
                                                                     validate={{
-                                                                        required: {value: true},
+                                                                        required: {
+                                                                            value: true,
+                                                                            errorMessage: errorPost
+                                                                        },
+                                                                        minLength: {value: 6, errorMessage: errorPost},
+                                                                        maxLength: {value: 6, errorMessage: errorPost}
                                                                     }}
                                                                     name="post"
                                                                     placeholder={post}
@@ -385,7 +452,7 @@ class PageSignupThree extends Component {
                                                             htmlFor="customCheck1"
                                                         >
                                                             <AvInput type="checkbox" name="agree" required
-                                                                     errorMessage={"This field must required"}/>
+                                                                     errorMessage={errorField}/>
 
                                                             <Link to="/page-terms" className="text-primary"
                                                                   target={"_blank"}>
@@ -424,6 +491,7 @@ class PageSignupThree extends Component {
                             </Col>
                         </Row>
                     </Container>
+                    <ToastContainer />
                 </section>
             </React.Fragment>
         );

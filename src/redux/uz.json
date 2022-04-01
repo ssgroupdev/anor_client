@@ -149,7 +149,19 @@
   "deliveryFinish": "Yetkazilgan",
   "sum": " so'm",
   "element": " ta mahsulot",
-
   "usefullLinks": "Foydali linklar",
-  "sections": "Bo'limlar"
+  "sections": "Bo'limlar",
+  "errorPhone": "Telefon raqami xato kiritildi. Iltimos (998901234567) formatida kiriting",
+  "errorPassword": "Parol uzunligi minimal 6 belgi",
+  "errorName": "Iltimos ismingizni kiriting",
+  "errorSurname": "Iltimos familyagizni kiriting",
+  "errorConfirmPass": "Parollar bir xil emas",
+  "errorField": "Maydon to'ldirilishi shart",
+  "errorStreet": "Ko'cha(yoki qishloq) to'ldirilishi shart",
+  "errorPost": "Pochta indeksi 6 xonali sondan iborat bo'lishi shart",
+  "errorNumberOfHome": "Xonadon raqami to'ldirilishi shart",
+  "selectItem": "Tanlang",
+  "errorConfirmCode": "Kod uzunligi 6 ta belgidan iborat"
+
+
 }

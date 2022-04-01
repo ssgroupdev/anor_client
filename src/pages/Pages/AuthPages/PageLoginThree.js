@@ -57,7 +57,16 @@ class PageLoginThree extends Component {
 
     render() {
         const {username, passwordUser} = this.state;
-        const {login, register, yourPhone, password, forgotPassword, haveNotAccount} = this.props.lang.lang;
+        const {
+            login,
+            register,
+            yourPhone,
+            password,
+            forgotPassword,
+            haveNotAccount,
+            errorPhone,
+            errorPassword
+        } = this.props.lang.lang;
 
         return (
             <React.Fragment>
@@ -98,11 +107,13 @@ class PageLoginThree extends Component {
                                                         <AvField
                                                             type="number"
                                                             className="form-control pl-5"
-                                                            errorMessage="Invalid PhoneNumber"
                                                             validate={{
-                                                                required: {value: true}
+                                                                required: {value: true, errorMessage: errorPhone},
+                                                                minLength: {value: 12, errorMessage: errorPhone},
+                                                                maxLength: {value: 12, errorMessage: errorPhone}
                                                             }}
-                                                            placeholder={yourPhone}
+                                                            placeholder={"998*********"}
+                                                            value={"998"}
                                                             name="username"
                                                             onChange={(e) => this.setState({phone: e.target.value})}
                                                         />
@@ -125,8 +136,13 @@ class PageLoginThree extends Component {
                                                             type="password"
                                                             className="form-control pl-5"
                                                             name="password"
-                                                            errorMessage="Enter password"
-                                                            validate={{required: {value: true}}}
+                                                            validate={{
+                                                                required: {value: true,errorMessage: errorPassword},
+                                                                minLength: {
+                                                                    value: 6,
+                                                                    errorMessage: errorPassword
+                                                                }
+                                                            }}
                                                             placeholder={password}
                                                             onChange={(e) => this.setState({password: e.target.value})}
                                                         />
