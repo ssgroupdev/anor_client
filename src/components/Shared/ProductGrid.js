@@ -74,19 +74,20 @@ const ProductGrid = (props) => {
     return (<Col key={key} lg={props.col ? props.col : 3} md={6} xs={12} className="mt-4 pt-2">
         <Card className="shop-list border-0 position-relative overflow-hidden">
             <div className="shop-image position-relative overflow-hidden rounded shadow">
-                <Link to={"/shop-product-detail/" + product.alias + "?branchProduct=" + product.branches?.at(0)?.id}>
-                    <img
-                        width={"100%"}
-                        src={`${host}:${port}/api/file/preview/${product.images && product.images[0].imageUrl}`}
-                        className="img-fluid"
-                        alt="shop"
-                        // height={"200px"}
-                    />
-                </Link>
+                {product.branches && product.branches.length > 0 &&
+                    <Link to={"/shop-product-detail/" + product.alias + "?branchProduct=" + product.branches[0].id}>
+                        <img
+                            width={"100%"}
+                            src={`${host}:${port}/api/file/preview/${product.images && product.images[0].imageUrl}`}
+                            className="img-fluid"
+                            alt="shop"
+                            // height={"200px"}
+                        />
+                    </Link>}
                 <ul className="list-unstyled shop-icons">
-                    <li className="mt-2">
+                    {product && product.branches!=null && product.branches.length > 0 && <li className="mt-2">
                         <Link
-                            to={"/shop-product-detail/" + product.alias + "?branchProduct=" + product.branches?.at(0)?.id}
+                            to={"/shop-product-detail/" + product.alias + "?branchProduct=" + product.branches[0].id}
                             className="btn btn-icon btn-pills btn-soft-primary"
                         >
                             <i>
@@ -94,7 +95,8 @@ const ProductGrid = (props) => {
                             </i>
                         </Link>
                     </li>
-                    {isLogin && product.branches[0]?.totalQty>0?(
+                    }
+                    {isLogin && product.branches && product.branches.length > 0 && product.branches[0].totalQty && product.branches[0].totalQty > 0 ? (
                         <li className="mt-2">
                             <button
                                 type={"button"}
@@ -123,27 +125,28 @@ const ProductGrid = (props) => {
                                     />
                                 </i>
                             </button>
-                        </li>):null
+                        </li>) : null
                     }
                 </ul>
             </div>
             <CardBody className="content pt-4 p-2">
-                <Link to={"/shop-product-detail/" + product.alias + "?branchProduct=" + product.branches?.at(0)?.id}
-                      className="text-dark product-name h6"
-                >
-                    {product?.name}
-                </Link>
-
+                {product.branches && product.branches.length > 0 &&
+                    <Link to={"/shop-product-detail/" + product.alias + "?branchProduct=" + product.branches?.at(0)?.id}
+                          className="text-dark product-name h6"
+                    >
+                        {product?.name}
+                    </Link>
+                }
                 {
                     product.branches !== null && product.branches.length > 0 ? <>
                         <div className="d-flex justify-content-between mt-1">
                             <h6 className="text-muted small font-italic mb-0 mt-1">
-                                {product.branches[0]?.totalQty>0?(product.branches[0]?.price?.oldPrice === null ? (product.branches[0]?.price?.price + props.lang.lang.sum) : (
-                                    <>   {product.branches[0]?.price?.oldPrice > product.branches[0]?.price?.price ? product.branches[0]?.price?.price : product.branches[0]?.price?.price+props.lang.lang.sum}
+                                {product.branches[0]?.totalQty > 0 ? (product.branches[0]?.price?.oldPrice === null ? (product.branches[0]?.price?.price + props.lang.lang.sum) : (
+                                    <>   {product.branches[0]?.price?.oldPrice > product.branches[0]?.price?.price ? product.branches[0]?.price?.price : product.branches[0]?.price?.price + props.lang.lang.sum}
                                         {product.branches[0]?.price?.oldPrice > product.branches[0]?.price?.price ? (
                                             <del className="text-danger ml-2">
-                                                {product.branches[0]?.price?.oldPrice+props.lang.lang.sum}
-                                            </del>) : null}</>)):(noResidue)}
+                                                {product.branches[0]?.price?.oldPrice + props.lang.lang.sum}
+                                            </del>) : null}</>)) : (noResidue)}
                             </h6>
                             {/*<ul className="list-unstyled text-warning mb-0">*/}
                             {/*    <ReactStars*/}
@@ -185,11 +188,11 @@ const ProductGrid = (props) => {
                                             <Col sm={"7"} className={"text-right"}>
                                                 <h6 className="text-muted small font-italic mb-0 mt-1">
                                                     {value?.price?.oldPrice === null ? (value?.price?.price + props.lang.lang.sum) : (
-                                                        <>   {value?.price?.oldPrice > value.price?.price ? value?.price?.price : value?.price?.price+props.lang.lang.sum}
+                                                        <>   {value?.price?.oldPrice > value.price?.price ? value?.price?.price : value?.price?.price + props.lang.lang.sum}
                                                             {value?.price?.oldPrice > value?.price?.price ? (
                                                                 <del className="text-danger ml-2">
-                                                                    {value?.price?.oldPrice+props.lang.lang.sum}
-                                                                </del>) :null}</>)}
+                                                                    {value?.price?.oldPrice + props.lang.lang.sum}
+                                                                </del>) : null}</>)}
 
                                                 </h6>
                                             </Col>
