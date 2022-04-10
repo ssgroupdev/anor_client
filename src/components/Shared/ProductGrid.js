@@ -20,7 +20,7 @@ import {connect} from "react-redux";
 import {toast} from "react-toastify";
 import {setProduct} from "../../redux/actions/lang";
 import {getBranchProductByProductId} from "../../server/config/web-site/brand/branches";
-
+import notFoundImg from "./../../assets/product_not_found.png"
 const ProductGrid = (props) => {
 
     const [isLogin, setLogin] = useState(false);
@@ -74,18 +74,23 @@ const ProductGrid = (props) => {
     return (<Col key={key} lg={props.col ? props.col : 3} md={6} xs={12} className="mt-4 pt-2">
         <Card className="shop-list border-0 position-relative overflow-hidden">
             <div className="shop-image position-relative overflow-hidden rounded shadow">
-                {product.branches && product.branches.length > 0 &&
-                    <Link to={"/shop-product-detail/" + product.alias + "?branchProduct=" + product.branches[0].id}>
-                        <img
+                    <Link to={"/shop-product-detail/" + product.alias + "?branchProduct=" + product.branches?.at(0).id}>
+                        {product.images && product.images.length>0?<img
                             width={"100%"}
                             src={`${host}:${port}/api/file/preview/${product.images && product.images[0].imageUrl}`}
                             className="img-fluid"
                             alt="shop"
                             // height={"200px"}
-                        />
-                    </Link>}
+                        />:<img
+                            width={"100%"}
+                            src={notFoundImg}
+                            className="img-fluid"
+                            alt="shop"
+                            height={"200px"}
+                        />}
+                    </Link>
                 <ul className="list-unstyled shop-icons">
-                    {product && product.branches!=null && product.branches.length > 0 && <li className="mt-2">
+                    {product && product.branches != null && product.branches.length > 0 && <li className="mt-2">
                         <Link
                             to={"/shop-product-detail/" + product.alias + "?branchProduct=" + product.branches[0].id}
                             className="btn btn-icon btn-pills btn-soft-primary"
@@ -130,7 +135,7 @@ const ProductGrid = (props) => {
                 </ul>
             </div>
             <CardBody className="content pt-4 p-2">
-                {product.branches && product.branches.length > 0 &&
+                {
                     <Link to={"/shop-product-detail/" + product.alias + "?branchProduct=" + product.branches?.at(0)?.id}
                           className="text-dark product-name h6"
                     >

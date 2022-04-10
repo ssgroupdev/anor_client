@@ -5,9 +5,9 @@ import {Link} from "react-router-dom";
 //Import components
 import PageBreadcrumb from "../../../components/Shared/PageBreadcrumb";
 import {connect} from "react-redux";
-import {editStatus, getOrder} from "../../../server/config/user/order";
+import {editStatus, getOrder, getOrderPdf} from "../../../server/config/user/order";
 import Price from "react-price";
-import {imgUrl} from "../../../server/host";
+import {host, imgUrl} from "../../../server/host";
 import {toast} from "react-toastify";
 
 class ShopCartCheckouts extends Component {
@@ -264,9 +264,9 @@ class ShopCartCheckouts extends Component {
                         <Row>
                             <Col sm={6} className="mt-4 pt-2">
                                 <p className="h6 text-muted">
-                                    {provinceName + " " }
+                                    {provinceName + " "}
                                     {regionName + " "}
-                                    {street && ( street )}
+                                    {street && (street)}
                                 </p>
                                 {numberHome &&
                                     <p className="h6 text-muted">{lang.numberOfHome + ": " + numberHome}</p>}
@@ -295,7 +295,7 @@ class ShopCartCheckouts extends Component {
                                                         <span className="text-success">{delivered}</span> : (
                                                             order.status === "FINISHED" ?
                                                                 <span className="text-success">{finished}</span> : (
-                                                                    order.status === "CANCELLED"||order.status === "CANCELLED_BY_BRANCH" ?
+                                                                    order.status === "CANCELLED" || order.status === "CANCELLED_BY_BRANCH" ?
                                                                         <span className="text-error">{cancelled}</span> : (
                                                                             <span className="text-secondary">{processing}</span>
                                                                         )
@@ -336,14 +336,14 @@ class ShopCartCheckouts extends Component {
                                                         order.status === "PROCESSING" ?
                                                             <Button type={"danger"} className={"btn btn-danger"}
                                                                     onClick={() => {
-                                                                        editStatus(order.id, "CANCELLED").then(res=>{
+                                                                        editStatus(order.id, "CANCELLED").then(res => {
                                                                             this.setState({
                                                                                 order: {
                                                                                     ...this.state.order,
                                                                                     status: "CANCELLED"
                                                                                 }
-                                                                            }, ()=> toast.success(lang.finish))
-                                                                        }).catch(err=>{
+                                                                            }, () => toast.success(lang.finish))
+                                                                        }).catch(err => {
 
                                                                         })
                                                                     }
@@ -354,9 +354,11 @@ class ShopCartCheckouts extends Component {
 
                                                 </Col>
                                                 <Col>
-                                                    <Link to="shop-checkouts" className="btn btn-primary">
+                                                    <span
+                                                        onClick={() => getOrderPdf(this.props?.props?.match?.params?.id)}
+                                                        className="btn btn-primary">
                                                         {printCheck}
-                                                    </Link>
+                                                    </span>
                                                 </Col>
                                             </Row>
                                         </Col>

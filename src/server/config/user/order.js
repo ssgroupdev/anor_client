@@ -47,3 +47,10 @@ export const getOrder = (id) => {
     }
     return HttpRequestHub(config);
 }
+export const getOrderPdf = (id) => {
+    const config = {
+        method: 'GET',
+        url: `/user/invoice/${id}`
+    }
+    return HttpRequestHub(config);
+}

@@ -24,7 +24,7 @@ export const setHeaders = () => {
 export let axiosInstance = axios.create({
     baseURL: `${host}:${port}` + '/api',
     headers,
-    timeout: 15000,
+    timeout: 30000,
 });
 
 export let axiosInstanceFile = axios.create({
