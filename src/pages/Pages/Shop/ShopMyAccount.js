@@ -496,7 +496,7 @@ class ShopMyAccount extends Component {
                                                     <th scope="col">{words.table.date}</th>
                                                     <th scope="col">{words.table.status}</th>
                                                     <th scope="col">{price}</th>
-                                                    <th scope="col">{deliveryDate}</th>
+                                                    {/*<th scope="col">{deliveryDate}</th>*/}
                                                     <th scope="col">{words.table.action}</th>
                                                 </tr>
                                                 </thead>
@@ -521,9 +521,9 @@ class ShopMyAccount extends Component {
                                                             <td>
                                                                 {value.totalPrice + " " + sum}
                                                             </td>
-                                                            <td>
-                                                                {value.status === "FINISHED" ? deliveryFinish : (value.status === "PROCESSING" ? notFound : new Date(value.deliveryDate).toLocaleString().slice(0, 17))}
-                                                            </td>
+                                                            {/*<td>*/}
+                                                            {/*    {value.status === "FINISHED" ? deliveryFinish : (value.status === "PROCESSING" ? notFound : new Date(value.deliveryDate).toLocaleString().slice(0, 17))}*/}
+                                                            {/*</td>*/}
                                                             <td>
                                                                 <Link to={"/my-checkouts/" + value.id}
                                                                       className="text-primary">

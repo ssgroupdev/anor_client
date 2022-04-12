@@ -549,17 +549,23 @@ class ShopCheckouts extends Component {
                                                     <AvField
                                                         type="number"
                                                         className="form-control pl-5"
+                                                        placeholder={post}
+                                                        name="postIndex"
+                                                        value={address?.postIndex}
                                                         validate={{
                                                             required: {
                                                                 value: true,
                                                                 errorMessage: errorPost
                                                             },
-                                                            minLength: {value: 6, errorMessage: errorPost},
-                                                            maxLength: {value: 6, errorMessage: errorPost}
+                                                            max: {
+                                                                value: 999999,
+                                                                errorMessage: errorPost
+                                                            },
+                                                            min: {
+                                                                value: 100000,
+                                                                errorMessage: errorPost
+                                                            }
                                                         }}
-                                                        value={address?.postIndex}
-                                                        name="postIndex"
-                                                        placeholder={post}
                                                     />
                                                 </FormGroup>
                                             </Col>

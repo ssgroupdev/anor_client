@@ -7,8 +7,9 @@ import PageBreadcrumb from "../../../components/Shared/PageBreadcrumb";
 import {connect} from "react-redux";
 import {editStatus, getOrder, getOrderPdf} from "../../../server/config/user/order";
 import Price from "react-price";
-import {host, imgUrl} from "../../../server/host";
+import {host, imgUrl, port} from "../../../server/host";
 import {toast} from "react-toastify";
+import FileSaver from 'file-saver';
 
 class ShopCartCheckouts extends Component {
     constructor(props) {
@@ -120,6 +121,21 @@ class ShopCartCheckouts extends Component {
     componentWillUnmount() {
         window.removeEventListener("scroll", this.scrollNavigation, true);
     }
+
+    getReport = () => {
+        getOrderPdf(this.props?.props?.match?.params?.id).then(res => {
+            // let files = new Blob([res], {type: "application/pdf"});
+            // a.href = URL.createObjectURL(files);
+            // a.download = "check.pdf";
+            const blob = new Blob([res], {type: 'application/pdf'});
+            FileSaver.saveAs(blob, `report.pdf`);
+            // var fileURL = URL.createObjectURL(file);
+            // window.open(fileURL);
+        }).catch(err => {
+
+        })
+    }
+
 
     scrollNavigation = () => {
         var doc = document.documentElement;
@@ -354,11 +370,14 @@ class ShopCartCheckouts extends Component {
 
                                                 </Col>
                                                 <Col>
-                                                    <span
-                                                        onClick={() => getOrderPdf(this.props?.props?.match?.params?.id)}
-                                                        className="btn btn-primary">
+                                                    <a
+                                                        // onClick={() => this.getReport()}
+                                                        href={`${host}:${port}/api/client/invoice/` + this.props?.props?.match?.params?.id}
+                                                        target={"_blank"}
+                                                        className="btn btn-primary"
+                                                    >
                                                         {printCheck}
-                                                    </span>
+                                                    </a>
                                                 </Col>
                                             </Row>
                                         </Col>
